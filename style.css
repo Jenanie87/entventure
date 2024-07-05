@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    box-sizing: border-box;
+    font-family: "Anir b", sans-serif;
+}
+
+body {
+    background-image: url(img/background/Cartoon_Forest_BG_04/Cartoon_Forest_BG_04.png);
+}
+
+h1 {
+    padding: 24px 0px;
+    text-align: center;
+    background: -webkit-linear-gradient(#B09B23, #663F1C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(4px 2px black);
+}
+
+.main_container {
+    height: calc(100svh - 216px);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    background-color: black;
+}
