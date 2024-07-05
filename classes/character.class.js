@@ -4,8 +4,7 @@ class Character extends MovableObject{
 
     constructor() {
         super();
-        this.x = 50;
-        this.y = 150;
+        this.x = -130;
         this.loadImage('img/character/2/Fairy_02__IDLE_000.png');
     }
 
