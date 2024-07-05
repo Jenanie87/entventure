@@ -7,4 +7,5 @@ function init() {
 
     console.log('My Character is', world.character);
     console.log(`The "Enemy" Orc is`, world.enemies);
+    console.log(`The Background is`, world.background);
 }
