@@ -5,7 +5,6 @@ function init() {
     canvas = document.querySelector('canvas');
     world = new World(canvas);
 
-    console.log('My Character is', world.character);
-    console.log(`The "Enemy" Orc is`, world.enemies);
-    console.log(`The Background is`, world.background);
+/*     console.log('My Character is', world.character);
+    console.log(`The "Enemy" Orc is`, world.enemies); */
 }

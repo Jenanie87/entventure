@@ -1,18 +1,22 @@
 class World {
+
     //properties
     character = new Character(); // Eine Instanz der Klasse Character
     enemies = [
-        new Orc('img/orc/1_ORK/ORK_01_WALK_000.png'),
-        new Orc('img/orc/2_ORK/ORK_02_WALK_000.png'),
-        new Orc('img/orc/3_ORK/ORK_03_WALK_000.png')
-    ]; // Ein Array, das Instanzen der Klasse Orc enthält
-    background = [
-        new Background('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', 0),
-        new Background('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', 0),
-        new Background('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png', 0),
-        new Background('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png', 0),
-        new Background('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', 0),
-    ];
+        new Enemy('img/enemies/1_ORK/ORK_01_WALK_000.png', 450, 200, 266),
+        new Enemy('img/enemies/2_ORK/ORK_02_WALK_000.png', 450, 200, 266),
+        new Enemy('img/enemies/1_ORK/ORK_01_WALK_000.png', 450, 200, 266),
+        new Enemy('img/enemies/Orc/Walking/0_Orc_Walking_000.png', 100, 100, 360),
+        new Enemy('img/enemies/Goblin/Walking/0_Goblin_Walking_000.png', 100, 100, 360),
+    ]; // Ein Array, das Instanzen der Klasse Enemy enthält
+    backgroundObjects = [
+        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png'),
+        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png'),
+        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png'),
+        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png'),
+        ,
+    ]; // Ein Array, das Instanzen der Klasse Background enthält
+    foregroundObject = new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png');
     canvas;
     ctx;
 
@@ -24,17 +28,24 @@ class World {
     //functions
     draw() { // Damit die Welt gezeichnet wird
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // cleart einmal die canvas
-        this.background.forEach(background => {
-            this.ctx.drawImage(background.img, background.x, background.y, background.width, background.height)
-        });
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
-        this.enemies.forEach(enemy => {
-            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.width, enemy.height)
-        });
+        this.addObjectsArrayToCanvas(this.backgroundObjects);
+        this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
+        this.addObjectsArrayToCanvas(this.enemies);
+        this.addToCanvas(this.foregroundObject);
 
         //draw wird immer wieder aufgerufen
         requestAnimationFrame(() => {
             this.draw();
         });
+    }
+
+    addObjectsArrayToCanvas(objects) {
+        objects.forEach(object => {
+            this.addToCanvas(object);
+    });
+    }
+
+    addToCanvas(MovableObject) {
+        this.ctx.drawImage(MovableObject.img, MovableObject.x, MovableObject.y, MovableObject.width, MovableObject.height);
     }
 }
