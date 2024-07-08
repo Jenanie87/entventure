@@ -5,6 +5,7 @@ class MovableObject {
     width = 450;
     height = 200;
     img;
+    imageCache = {};
 
     constructor() {
 
@@ -16,8 +17,25 @@ class MovableObject {
         this.img.src = path; //Hiermit würde Pfad in die src geladen <img src=path>
     }
 
+    loadImages(array) {
+        array.forEach(path => {
+            let img = new Image();
+            img.src = path;
+            this.imageCache[path] = img;
+        });
+    }
+
+    animate() {
+        setInterval(() => {
+            let i = this.currentImage % this.IMAGES_WALK.length;
+            let path = this.IMAGES_WALK[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        }, 100);
+    }
+
     moveLeft() {
-        console.log('Moving left'); 
+        console.log('Moving left');
     }
 
 }
