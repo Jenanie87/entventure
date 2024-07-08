@@ -1,6 +1,5 @@
 class Character extends MovableObject {
     // properties
-    currentImage = 0;
 
     IMAGES_WALK = [
         'img/character/2/Fairy_02__WALK_000.png',
@@ -20,7 +19,7 @@ class Character extends MovableObject {
         this.x = -130;
         this.loadImage('img/character/2/Fairy_02__IDLE_000.png');
         this.loadImages(this.IMAGES_WALK);
-        this.animate();
+        this.animate(this.IMAGES_WALK);
     }
 
     // functions
@@ -28,11 +27,14 @@ class Character extends MovableObject {
         console.log('Moving right')
     }
 
-
-
-
-
-
+    animate(array) {
+        setInterval(() => {
+            let i = this.currentImage % array.length;
+            let path = array[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        }, 100);
+    }
 
     jump() {
 

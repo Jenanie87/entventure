@@ -6,6 +6,7 @@ class MovableObject {
     height = 200;
     img;
     imageCache = {};
+    currentImage = 0;
 
     constructor() {
 
@@ -23,15 +24,6 @@ class MovableObject {
             img.src = path;
             this.imageCache[path] = img;
         });
-    }
-
-    animate() {
-        setInterval(() => {
-            let i = this.currentImage % this.IMAGES_WALK.length;
-            let path = this.IMAGES_WALK[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 100);
     }
 
     moveLeft() {

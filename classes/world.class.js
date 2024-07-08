@@ -3,18 +3,17 @@ class World {
     //properties
     character = new Character(); // Eine Instanz der Klasse Character
     enemies = [
-        new Enemy('img/enemies/1_ORK/ORK_01_WALK_000.png', 450, 200, 266),
-        new Enemy('img/enemies/2_ORK/ORK_02_WALK_000.png', 450, 200, 266),
-        new Enemy('img/enemies/1_ORK/ORK_01_WALK_000.png', 450, 200, 266),
-        new Enemy('img/enemies/Orc/Walking/0_Orc_Walking_000.png', 100, 100, 360),
-        new Enemy('img/enemies/Goblin/Walking/0_Goblin_Walking_000.png', 100, 100, 360),
+        new Orc1BigEnemy(),
+        new Orc1BigEnemy(),
+        new Orc2BigEnemy(),
+        new OrcSmallEnemy(),
+        new GoblinSmallEnemy(),
     ]; // Ein Array, das Instanzen der Klasse Enemy enthält
     backgroundObjects = [
         new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png'),
         new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png'),
         new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png'),
         new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png'),
-        ,
     ]; // Ein Array, das Instanzen der Klasse Background enthält
     foregroundObject = new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png');
     canvas;
