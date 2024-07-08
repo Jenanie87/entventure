@@ -7,6 +7,7 @@ class MovableObject {
     img;
     imageCache = {};
     currentImage = 0;
+    speed = 0.15;
 
     constructor() {
 
@@ -27,7 +28,9 @@ class MovableObject {
     }
 
     moveLeft() {
-        console.log('Moving left');
+        setInterval(() => {
+            this.x -= this.speed;
+        }, 1000 / 60);
     }
 
 }

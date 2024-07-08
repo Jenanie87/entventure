@@ -5,11 +5,13 @@ class SmallEnemy extends Enemy {
         this.width = 100;
         this.height = 100;
         this.y = 360;
+        this.speed = 0.50 + Math.random();
     }
 
     // functions
 
     animate(array) {
+        this.moveLeft();
         setInterval(() => {
             let i = this.currentImage % array.length;
             let path = array[i];

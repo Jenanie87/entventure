@@ -13,6 +13,7 @@ class Character extends MovableObject {
         'img/character/2/Fairy_02__WALK_008.png',
         'img/character/2/Fairy_02__WALK_009.png',
     ];
+    world;
 
     constructor() {
         super();
@@ -20,20 +21,28 @@ class Character extends MovableObject {
         this.loadImage('img/character/2/Fairy_02__IDLE_000.png');
         this.loadImages(this.IMAGES_WALK);
         this.animate(this.IMAGES_WALK);
+
+/*         this.moveRight(); */
     }
 
     // functions
+
     moveRight() {
-        console.log('Moving right')
+        setInterval(() => {
+            this.x += this.speed;
+        }, 1000 / 60);
     }
 
     animate(array) {
-        setInterval(() => {
-            let i = this.currentImage % array.length;
-            let path = array[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
-        }, 100);
+
+            setInterval(() => {
+                if(this.world.keyboard.RIGHT) {
+                    let i = this.currentImage % array.length;
+                    let path = array[i];
+                    this.img = this.imageCache[path];
+                    this.currentImage++;
+                }
+            }, 100);
     }
 
     jump() {

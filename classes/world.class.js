@@ -18,13 +18,21 @@ class World {
     foregroundObject = new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png');
     canvas;
     ctx;
+    keyboard;
 
-    constructor(canvas) {
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.keyboard = keyboard;
         this.draw();
+        this.setWorld();
     }
+
     //functions
+    setWorld() {
+        this.character.world = this;
+    }
+
     draw() { // Damit die Welt gezeichnet wird
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // cleart einmal die canvas
         this.addObjectsArrayToCanvas(this.backgroundObjects);
