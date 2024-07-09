@@ -11,7 +11,10 @@ class BigEnemy extends Enemy {
     // functions
 
     animate(array) {
-        this.moveLeft();
+        setInterval(() => {
+            this.moveLeft();
+        }, 1000 / 60);
+
         setInterval(() => {
             let i = this.currentImage % array.length;
             let path = array[i];

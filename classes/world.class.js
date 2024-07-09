@@ -53,6 +53,16 @@ class World {
     }
 
     addToCanvas(MovableObject) {
+        if (MovableObject.otherDirection) {
+            this.ctx.save(); // Aktuellen Zustand/Status von ctx speichern
+            this.ctx.translate(MovableObject.width, 0); // Ursprung des Koordinatensystems nach rechts verschieben
+            this.ctx.scale(-1, 1); // Bild horizontal spiegeln (an der y-Achse)
+            MovableObject.x = MovableObject.x * -1; // x-Koordinate invertieren für die Spiegelung
+        }
         this.ctx.drawImage(MovableObject.img, MovableObject.x, MovableObject.y, MovableObject.width, MovableObject.height);
+        if(MovableObject.otherDirection) { // Bedingung - wenn ctx verändert wurde
+            MovableObject.x = MovableObject.x * -1; // x-Koordinate wieder zurückinvertieren
+            this.ctx.restore(); // Ursprünglichen Zustand von ctx wiederherstellen
+        }
     }
 }
