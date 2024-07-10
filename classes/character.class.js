@@ -33,16 +33,12 @@ class Character extends MovableObject {
     animate(array) {
 
         setInterval(() => {
-            if (this.world.keyboard.RIGHT) {
-                if (this.x < this.world.levelBounds.maxX - this.world.canvas.width / 2) {
-                    this.moveRight();            
-                }
+            if (this.world.keyboard.RIGHT && this.x < this.world.levelBounds.maxX - this.world.canvas.width / 2) {
+                this.moveRight();            
                 this.otherDirection = false; // Bild nicht gespiegelt
             } 
-            if (this.world.keyboard.LEFT) {
-                if (this.x > this.world.levelBounds.minX -100) {
-                    this.moveLeft();
-                }
+            if (this.world.keyboard.LEFT && this.x > this.world.levelBounds.minX -100) {
+                this.moveLeft();
                 this.otherDirection = true; // Bild gespiegelt
             }
 
