@@ -18,7 +18,7 @@ class Character extends MovableObject {
 
     constructor() {
         super();
-        this.x = -130;
+        this.x = -100;
         this.loadImage('img/character/2/Fairy_02__IDLE_000.png');
         this.loadImages(this.IMAGES_WALK);
         this.animate(this.IMAGES_WALK);
@@ -34,14 +34,19 @@ class Character extends MovableObject {
 
         setInterval(() => {
             if (this.world.keyboard.RIGHT) {
-                this.moveRight();  
+                if (this.x < this.world.levelBounds.maxX - this.world.canvas.width / 2) {
+                    this.moveRight();            
+                }
                 this.otherDirection = false; // Bild nicht gespiegelt
             } 
             if (this.world.keyboard.LEFT) {
-                this.moveLeft();
+                if (this.x > this.world.levelBounds.minX -100) {
+                    this.moveLeft();
+                }
                 this.otherDirection = true; // Bild gespiegelt
             }
-            this.world.camera_x = -this.x;
+
+            this.updateCamera();
         }, 1000 / 60);
 
             setInterval(() => {
@@ -53,6 +58,16 @@ class Character extends MovableObject {
                     this.currentImage++;
                 }
             }, 100);
+    }
+
+
+    updateCamera() {
+        let halfCanvasWidth = this.world.canvas.width / 2;
+        let cameraOffsetToLeft = 250; // Offset zur linken Seite
+        let newCameraX = -this.x + halfCanvasWidth - cameraOffsetToLeft;
+        newCameraX = Math.max(newCameraX, -this.world.levelBounds.maxX + this.world.canvas.width);
+        newCameraX = Math.min(newCameraX, -this.world.levelBounds.minX);
+        this.world.camera_x = newCameraX;
     }
 
     jump() {
