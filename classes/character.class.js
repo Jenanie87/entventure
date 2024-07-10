@@ -15,11 +15,14 @@ class Character extends MovableObject {
         'img/character/2/Fairy_02__WALK_009.png',
     ];
     world;
+    audio_walking = new Audio('audio/walking1.mp3');
+    
 
     constructor() {
         super();
         this.x = -100;
         this.loadImage('img/character/2/Fairy_02__IDLE_000.png');
+        this.audio_walking.playbackRate = 0.5;
         this.loadImages(this.IMAGES_WALK);
         this.animate(this.IMAGES_WALK);
     }
@@ -33,11 +36,14 @@ class Character extends MovableObject {
     animate(array) {
 
         setInterval(() => {
+            this.audio_walking.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.levelBounds.maxX - this.world.canvas.width / 2) {
+                this.audio_walking.play();
                 this.moveRight();            
                 this.otherDirection = false; // Bild nicht gespiegelt
             } 
             if (this.world.keyboard.LEFT && this.x > this.world.levelBounds.minX -100) {
+                this.audio_walking.play();
                 this.moveLeft();
                 this.otherDirection = true; // Bild gespiegelt
             }

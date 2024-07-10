@@ -4,6 +4,7 @@ const level1 = new Level([
     new Orc2BigEnemy(),
     new OrcSmallEnemy(),
     new GoblinSmallEnemy(),
+    new Endboss(),
 ],
 [
     new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', 0),

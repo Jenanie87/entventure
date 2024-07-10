@@ -3,8 +3,6 @@ class BackgroundObject extends MovableObject {
 
     constructor(path, x) {
         super();
-/*         this.canvas = canvas;
-        console.log(this.canvas); */
         this.width = 720;
         this.height = 480;
         this.x = x;

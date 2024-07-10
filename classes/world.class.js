@@ -4,9 +4,7 @@ class World {
     character = new Character(); // Eine Instanz der Klasse Character
     
     // Eigenschaften aus dem Level-Objekt übernehmen
-    enemies = level1.enemies;
-    backgroundObjects = level1.backgroundObjects; 
-    foregroundObjects = level1.foregroundObjects;
+    level = level1;
     canvas;
     ctx;
     keyboard;
@@ -37,10 +35,10 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectsArrayToCanvas(this.backgroundObjects);
+        this.addObjectsArrayToCanvas(this.level.backgroundObjects);
         this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
-        this.addObjectsArrayToCanvas(this.enemies);
-        this.addObjectsArrayToCanvas(this.foregroundObjects);
+        this.addObjectsArrayToCanvas(this.level.enemies);
+        this.addObjectsArrayToCanvas(this.level.foregroundObjects);
 
         this.ctx.translate(-this.camera_x, 0);
         //draw wird immer wieder aufgerufen
