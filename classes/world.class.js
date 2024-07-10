@@ -9,21 +9,19 @@ class World {
         new OrcSmallEnemy(),
         new GoblinSmallEnemy(),
     ]; // Ein Array, das Instanzen der Klasse Enemy enthält
-    backgroundObjects = [
-        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png'),
-        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png'),
-        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png'),
-        new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png'),
-    ]; // Ein Array, das Instanzen der Klasse Background enthält
-    foregroundObject = new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png');
+    backgroundObjects = []; 
+    foregroundObjects = [];
     canvas;
     ctx;
     keyboard;
+    camera_x = 0; 
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.createBackgroundObjects();
+        this.createForegroundObjects();
         this.draw();
         this.setWorld();
     }
@@ -33,13 +31,50 @@ class World {
         this.character.world = this;
     }
 
+    createBackgroundObjects() {
+        this.backgroundObjects = [
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', -this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', -this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_02/Layers/Middle_Decor.png', -this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_03/Layers/Foreground.png', -this.canvas.width),
+
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', 0),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', 0),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png', 0),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png', 0),
+
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_03/Layers/Middle_Decor.png', this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png', this.canvas.width),
+
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', this.canvas.width * 2),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', this.canvas.width * 2),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png', this.canvas.width * 2),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_03/Layers/Foreground.png', this.canvas.width * 2),
+        ]; // Ein Array, das Instanzen der Klasse Background enthält
+    }
+
+    createForegroundObjects() {
+        this.foregroundObjects = [
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', -this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', 0),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', this.canvas.width),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', this.canvas.width * 2),
+        ];
+    }
+
     draw() { // Damit die Welt gezeichnet wird
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // cleart einmal die canvas
+
+        this.ctx.translate(this.camera_x, 0);
+
         this.addObjectsArrayToCanvas(this.backgroundObjects);
         this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
         this.addObjectsArrayToCanvas(this.enemies);
-        this.addToCanvas(this.foregroundObject);
+        this.addObjectsArrayToCanvas(this.foregroundObjects);
 
+        this.ctx.translate(-this.camera_x, 0);
         //draw wird immer wieder aufgerufen
         requestAnimationFrame(() => {
             this.draw();

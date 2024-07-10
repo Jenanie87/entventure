@@ -41,6 +41,7 @@ class Character extends MovableObject {
                 this.moveLeft();
                 this.otherDirection = true; // Bild gespiegelt
             }
+            this.world.camera_x = -this.x;
         }, 1000 / 60);
 
             setInterval(() => {
