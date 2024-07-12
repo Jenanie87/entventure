@@ -5,6 +5,8 @@
 }
 
 body {
+    height: 100svh;
+    background-size: cover;
     background-image: url(img/background/Cartoon_Forest_BG_04/Cartoon_Forest_BG_04.png);
 }
 
@@ -19,7 +21,7 @@ h1 {
 }
 
 .main_container {
-    height: calc(100svh - 216px);
+    height: calc(100% - 216px);
     display: flex;
     flex-direction: column;
     justify-content: center;

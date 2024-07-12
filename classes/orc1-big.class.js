@@ -18,6 +18,6 @@ class Orc1BigEnemy extends BigEnemy {
         super();
         this.loadImage('img/enemies/1_ORK/ORK_01_ATTAK_001.png');
         this.loadImages(this.IMAGES_WALK);
-        this.animate(this.IMAGES_WALK);
+        this.animate();
     }
 }

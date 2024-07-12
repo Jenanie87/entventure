@@ -22,6 +22,7 @@ class World {
     //functions
     setWorld() {
         this.character.world = this;
+        this.level.enemies.forEach(enemy => enemy.world = this); 
     }
 
     calculateLevelBounds(backgroundObjects) {

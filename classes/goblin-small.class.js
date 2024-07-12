@@ -20,6 +20,6 @@ class GoblinSmallEnemy extends SmallEnemy {
         super();
         this.loadImage('img/enemies/Goblin/Walking/0_Goblin_Walking_000.png');
         this.loadImages(this.IMAGES_RUN);
-        this.animate(this.IMAGES_RUN);
+        this.animate();
     }
 }

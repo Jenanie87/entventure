@@ -1,9 +1,9 @@
 class Endboss extends Enemy {
     // properties
-    width = 650;
-    height = 700;
-    y = -175; 
-    x = 2400;
+    width = 800;
+    height = 800;
+    y = -255; 
+    x = 2200;
 
     IMAGES_IDLE = [
         'img/enemies/3_ORK/ORK_03_IDLE_000.png',
@@ -16,24 +16,37 @@ class Endboss extends Enemy {
         'img/enemies/3_ORK/ORK_03_IDLE_007.png',
         'img/enemies/3_ORK/ORK_03_IDLE_008.png',
         'img/enemies/3_ORK/ORK_03_IDLE_009.png',
-    ]
+    ];
+    world;
+    audio_roar = new Audio('audio/orc_scream.mp3');
+    roarPlayed = false;
+
+
 
     constructor(path) {
         super(path);
         this.loadImage('img/enemies/3_ORK/ORK_03_IDLE_000.png');
         this.loadImages(this.IMAGES_IDLE);
-        this.animate(this.IMAGES_IDLE);
+        this.animate();
+        this.audio_roar.volume = 0.3; 
+      
     }
     
         // functions
 
-        animate(array) {            
+        animate() { 
+            
             setInterval(() => {
-                let i = this.currentImage % array.length;
-                let path = array[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
-            }, 80);
+                if (this.world && this.world.character && this.world.character.x > 1700 && !this.roarPlayed) {
+                    this.audio_roar.play();
+                    this.roarPlayed = true;
+
+                } 
+            }, 1000 / 60);
+
+            setInterval(() => {
+                this.playAnimation(this.IMAGES_IDLE);
+            }, 100);
         }
 
 }

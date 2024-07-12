@@ -20,6 +20,6 @@ class OrcSmallEnemy extends SmallEnemy {
         super();
         this.loadImage('img/enemies/Orc/Walking/0_Orc_Walking_000.png');
         this.loadImages(this.IMAGES_RUN);
-        this.animate(this.IMAGES_RUN);
+        this.animate();
     }
 }
