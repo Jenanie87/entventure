@@ -13,6 +13,7 @@ class MovableObject {
     speedY = 0;
     acceleration = 2.5;
     healthPoints = 100;
+    lastHit = 0;
 
     constructor() {
 
@@ -94,6 +95,13 @@ class MovableObject {
         if(this.healthPoints > 0) {
             this.healthPoints -= 2;
             console.log(this.healthPoints);
-        }
+        } 
+        this.lastHit = new Date().getTime();
+    }
+
+    checkIfHurt() {
+        let timePassed = new Date().getTime() - this.lastHit; // Differenz in Millisekunden
+        timePassed = timePassed / 1000; // Differenz in sekunden
+        return timePassed < 0.75;
     }
 }
