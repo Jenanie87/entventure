@@ -1,0 +1,45 @@
+class Pineconebar extends DrawableObject {
+    x = 20;
+    y = 90;
+    width = 220;
+    height = 50;
+
+    IMAGES = [
+        'img/statusbar/3_statusbar_pinecone/0.png',
+        'img/statusbar/3_statusbar_pinecone/20.png',
+        'img/statusbar/3_statusbar_pinecone/40.png',
+        'img/statusbar/3_statusbar_pinecone/60.png',
+        'img/statusbar/3_statusbar_pinecone/80.png',
+        'img/statusbar/3_statusbar_pinecone/100.png',
+    ];
+
+    percentage = 100;
+
+    constructor() {
+        super();
+        this.loadImages(this.IMAGES);
+        this.setPercentage(100);
+    }
+
+    setPercentage(percentage) {
+        this.percentage = percentage;
+        let imagePath = this.IMAGES[this.resolveImageIndex()];
+        this.img = this.imageCache[imagePath];
+    }
+
+    resolveImageIndex() {
+        if(this.percentage == 100) {
+            return 5;
+        } else if(this.percentage > 80) {
+            return 4;
+        } else if(this.percentage > 60) {
+            return 3;
+        } else if(this.percentage > 40) {
+            return 2;
+        } else if(this.percentage > 20) {
+            return 1;
+        } else {
+            return 0;
+        }
+    } 
+}

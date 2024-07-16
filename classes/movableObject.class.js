@@ -1,12 +1,5 @@
-class MovableObject {
+class MovableObject extends DrawableObject {
     // properties
-    x;
-    y = 280;
-    width = 450;
-    height = 200;
-    img;
-    imageCache = {};
-    currentImage = 0;
     speed = 0.15;
     otherDirection = false;
     offsetY = 0;
@@ -16,36 +9,10 @@ class MovableObject {
     lastHit = 0;
 
     constructor() {
-
+        super();
     }
 
     // functions
-    loadImage(path) {
-        this.img = new Image(); // this.img = document.getElementById('image')<img id="image"> oder document.createElement('img')
-        this.img.src = path; //Hiermit würde Pfad in die src geladen <img src=path>
-    }
-
-    loadImages(array) {
-        array.forEach(path => {
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
-    }
-
-    draw(ctx) {
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-    drawRect(ctx) {
-        if(this instanceof Character || this instanceof Enemy) {
-            ctx.beginPath();
-            ctx.lineWidth = '1';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    }
 
     playAnimation(array) {
         let i = this.currentImage % array.length;
@@ -94,14 +61,13 @@ class MovableObject {
     hit() {
         if(this.healthPoints > 0) {
             this.healthPoints -= 2;
-            console.log(this.healthPoints);
         } 
-        this.lastHit = new Date().getTime();
+        this.lastHit = new Date().getTime(); // Aktualisiert die Zeit des letzten Treffers
     }
 
-    checkIfHurt() {
-        let timePassed = new Date().getTime() - this.lastHit; // Differenz in Millisekunden
-        timePassed = timePassed / 1000; // Differenz in sekunden
-        return timePassed < 0.75;
+    checkIfHurt() { // Speichert Zeitpunkt wann man zuletzt verletzt wurde
+        let timePassed = new Date().getTime() - this.lastHit; // Differenz in Millisekunden - Zeitspanne
+        timePassed = timePassed / 1000; // Differenz in Sekunden
+        return timePassed < 0.75; // Wenn Zeit mehr als 0.75 Sekunden in der Vergangenheit, dann false
     }
 }

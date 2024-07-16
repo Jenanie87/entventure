@@ -2,7 +2,9 @@ class World {
 
     //properties
     character = new Character(); // Eine Instanz der Klasse Character
-    
+    healthbar = new Healthbar();
+    coinbar = new Coinbar();
+    pineconebar = new Pineconebar();
     // Eigenschaften aus dem Level-Objekt übernehmen
     level = level1;
     canvas;
@@ -31,6 +33,7 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if(this.character.isColliding(enemy)) {
                     this.character.hit();
+                    this.healthbar.setPercentage(this.character.healthPoints);
                 };
             })
         }, 200);
@@ -46,8 +49,15 @@ class World {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // cleart einmal die canvas
 
         this.ctx.translate(this.camera_x, 0);
-
         this.addObjectsArrayToCanvas(this.level.backgroundObjects);
+
+        this.ctx.translate(-this.camera_x, 0); // Back
+        // Space for fixed Objects
+        this.addToCanvas(this.healthbar);
+        this.addToCanvas(this.coinbar);
+        this.addToCanvas(this.pineconebar);
+        this.ctx.translate(this.camera_x, 0); //Forwards
+        
         this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
         this.addObjectsArrayToCanvas(this.level.enemies);
         this.addObjectsArrayToCanvas(this.level.foregroundObjects);
