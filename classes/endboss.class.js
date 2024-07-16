@@ -4,6 +4,7 @@ class Endboss extends Enemy {
     height = 800;
     y = -255; 
     x = 2200;
+    otherDirection = true; // Mit Setzen der Variable auf true, werden die enemies gespiegelt, durch Methode addToCanvas
 
     IMAGES_IDLE = [
         'img/enemies/3_ORK/ORK_03_IDLE_000.png',

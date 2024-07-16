@@ -17,12 +17,23 @@ class World {
         this.levelBounds = this.calculateLevelBounds(level1.backgroundObjects);
         this.setWorld();
         this.draw();
+        this.checkCollisions();
     }
 
     //functions
     setWorld() {
         this.character.world = this;
         this.level.enemies.forEach(enemy => enemy.world = this); 
+    }
+
+    checkCollisions() {
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if(this.character.isColliding(enemy)) {
+                    this.character.hit();
+                };
+            })
+        }, 200);
     }
 
     calculateLevelBounds(backgroundObjects) {
@@ -56,15 +67,24 @@ class World {
 
     addToCanvas(MovableObject) {
         if (MovableObject.otherDirection) {
-            this.ctx.save(); // Aktuellen Zustand/Status von ctx speichern
-            this.ctx.translate(MovableObject.width, 0); // Ursprung des Koordinatensystems nach rechts verschieben
-            this.ctx.scale(-1, 1); // Bild horizontal spiegeln (an der y-Achse)
-            MovableObject.x = MovableObject.x * -1; // x-Koordinate invertieren für die Spiegelung
+            this.flipImage(MovableObject);
         }
-        this.ctx.drawImage(MovableObject.img, MovableObject.x, MovableObject.y, MovableObject.width, MovableObject.height);
+        MovableObject.draw(this.ctx);
+        MovableObject.drawRect(this.ctx);
         if(MovableObject.otherDirection) { // Bedingung - wenn ctx verändert wurde
-            MovableObject.x = MovableObject.x * -1; // x-Koordinate wieder zurückinvertieren
-            this.ctx.restore(); // Ursprünglichen Zustand von ctx wiederherstellen
+            this.flipImageBack(MovableObject);
         }
+    }
+
+    flipImage(object) {
+        this.ctx.save(); // Aktuellen Zustand/Status von ctx speichern
+        this.ctx.translate(object.width, 0); // Ursprung des Koordinatensystems nach rechts verschieben
+        this.ctx.scale(-1, 1); // Bild horizontal spiegeln (an der y-Achse)
+        object.x = object.x * -1; // x-Koordinate invertieren für die Spiegelung
+    }
+
+    flipImageBack(object) {
+        object.x = object.x * -1; // x-Koordinate wieder zurückinvertieren
+        this.ctx.restore(); // Ursprünglichen Zustand von ctx wiederherstellen
     }
 }

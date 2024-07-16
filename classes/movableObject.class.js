@@ -9,8 +9,10 @@ class MovableObject {
     currentImage = 0;
     speed = 0.15;
     otherDirection = false;
+    offsetY = 0;
     speedY = 0;
     acceleration = 2.5;
+    healthPoints = 100;
 
     constructor() {
 
@@ -30,6 +32,20 @@ class MovableObject {
         });
     }
 
+    draw(ctx) {
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    drawRect(ctx) {
+        if(this instanceof Character || this instanceof Enemy) {
+            ctx.beginPath();
+            ctx.lineWidth = '1';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
+
     playAnimation(array) {
         let i = this.currentImage % array.length;
         let path = array[i];
@@ -37,8 +53,14 @@ class MovableObject {
         this.currentImage++;
     }
 
+    moveRight() {
+        this.x += this.speed;
+        this.otherDirection = false; // Bild nicht gespiegelt
+    }
+
     moveLeft() {
         this.x -= this.speed;
+        this.otherDirection = true; // Bild gespiegelt
     }
 
     applyGravity() {
@@ -52,5 +74,26 @@ class MovableObject {
 
     isAboveGround() {
         return this.y < 280;
+    }
+
+    jump() {
+        this.speedY = 25;
+    }
+
+    isColliding (obj) {
+        return  (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) && 
+                (this.y + this.offsetY + this.height) >= obj.y &&
+                (this.y + this.offsetY) <= (obj.y + obj.height);
+    }
+
+    isDead() {
+        return this.healthPoints == 0;
+    }
+
+    hit() {
+        if(this.healthPoints > 0) {
+            this.healthPoints -= 2;
+            console.log(this.healthPoints);
+        }
     }
 }

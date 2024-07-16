@@ -40,6 +40,32 @@ class Character extends MovableObject {
         'img/character/2/Fairy_02__IDLE_008.png',
         'img/character/2/Fairy_02__IDLE_009.png',
     ];
+
+    IMAGES_HURT = [
+        'img/character/2/Fairy_02__HURT_000.png',
+        'img/character/2/Fairy_02__HURT_001.png',
+        'img/character/2/Fairy_02__HURT_002.png',
+        'img/character/2/Fairy_02__HURT_003.png',
+        'img/character/2/Fairy_02__HURT_004.png',
+        'img/character/2/Fairy_02__HURT_005.png',
+        'img/character/2/Fairy_02__HURT_006.png',
+        'img/character/2/Fairy_02__HURT_007.png',
+        'img/character/2/Fairy_02__HURT_008.png',
+        'img/character/2/Fairy_02__HURT_009.png',
+    ];
+
+    IMAGES_DIE = [
+        'img/character/2/Fairy_02__DIE_000.png',
+        'img/character/2/Fairy_02__DIE_001.png',
+        'img/character/2/Fairy_02__DIE_002.png',
+        'img/character/2/Fairy_02__DIE_003.png',
+        'img/character/2/Fairy_02__DIE_004.png',
+        'img/character/2/Fairy_02__DIE_005.png',
+        'img/character/2/Fairy_02__DIE_006.png',
+        'img/character/2/Fairy_02__DIE_007.png',
+        'img/character/2/Fairy_02__DIE_008.png',
+        'img/character/2/Fairy_02__DIE_009.png',
+    ];
     world;
     audio_walking = new Audio('audio/walking1.mp3');
     
@@ -53,15 +79,15 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_WALK);
         this.loadImages(this.IMAGES_JUMP);
         this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DIE);
         this.applyGravity();
         this.animate();
     }
 
     // functions
 
-    moveRight() {
-        this.x += this.speed;
-    }
+
 
     animate() {
 
@@ -70,12 +96,10 @@ class Character extends MovableObject {
             if (this.world.keyboard.RIGHT && this.x < this.world.levelBounds.maxX - this.world.canvas.width / 2) {
                 this.audio_walking.play();
                 this.moveRight();            
-                this.otherDirection = false; // Bild nicht gespiegelt
             } 
             if (this.world.keyboard.LEFT && this.x > this.world.levelBounds.minX -100) {
                 this.audio_walking.play();
-                this.moveLeft();
-                this.otherDirection = true; // Bild gespiegelt
+                this.moveLeft();           
             }
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 // !this.isAboveGround() -> Character ist nicht über dem Boden, also auf dem Boden
@@ -91,14 +115,15 @@ class Character extends MovableObject {
                 } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     // Walk animation
                     this.playAnimation(this.IMAGES_WALK);
+                } else if(this.isHurt()) {
+                    this.playAnimation(this.IMAGES_HURT);
+                } else if(this.isDead()) {
+                    this.playAnimation(this.IMAGES_DIE);
                 } else {
                     this.playAnimation(this.IMAGES_IDLE);
                 }
             }, 100);
     }
-
-
-
 
     updateCamera() {
         let halfCanvasWidth = this.world.canvas.width / 2;
@@ -108,9 +133,4 @@ class Character extends MovableObject {
         newCameraX = Math.min(newCameraX, -this.world.levelBounds.minX);
         this.world.camera_x = newCameraX;
     }
-
-    jump() {
-        this.speedY = 23;
-    }
-
 }
