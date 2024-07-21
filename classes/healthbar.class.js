@@ -1,8 +1,8 @@
 class Healthbar extends DrawableObject {
     x = 20;
     y = 5;
-    width = 220;
-    height = 50;
+    width = 200;
+    height = 60;
 
     IMAGES = [
         'img/statusbar/2_statusbar_health/0.png',

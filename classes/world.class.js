@@ -5,11 +5,13 @@ class World {
     healthbar = new Healthbar();
     coinbar = new Coinbar();
     pineconebar = new Pineconebar();
+    throwableObjects = [];
     // Eigenschaften aus dem Level-Objekt übernehmen
     level = level1;
     canvas;
     ctx;
     keyboard;
+    isThrowing = false;
     camera_x = 0; 
 
     constructor(canvas, keyboard) {
@@ -19,24 +21,46 @@ class World {
         this.levelBounds = this.calculateLevelBounds(level1.backgroundObjects);
         this.setWorld();
         this.draw();
-        this.checkCollisions();
+        this.run();
     }
 
     //functions
     setWorld() {
         this.character.world = this;
+        this.level.pinecones.forEach(pinecone => {
+            pinecone.world = this;
+            pinecone.setRandomPosition();
+        });
         this.level.enemies.forEach(enemy => enemy.world = this); 
     }
 
-    checkCollisions() {
+    run() {
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if(this.character.isColliding(enemy)) {
-                    this.character.hit();
-                    this.healthbar.setPercentage(this.character.healthPoints);
-                };
-            })
-        }, 200);
+            this.checkCollisions();
+            this.checkThrowObjects();
+        }, 100);
+    }
+
+    checkCollisions() {
+        this.level.enemies.forEach((enemy) => {
+            if(this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.healthbar.setPercentage(this.character.healthPoints);
+            };
+        })
+    }
+
+    checkThrowObjects() {
+        if(this.keyboard.THROW) {
+            if(this.throwableObjects.length < 10) {
+                let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
+                this.throwableObjects.push(pinecone);
+                console.log(this.throwableObjects);
+            }
+            this.isThrowing = true;
+        } else {
+            this.isThrowing = false;
+        }
     }
 
     calculateLevelBounds(backgroundObjects) {
@@ -50,6 +74,7 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsArrayToCanvas(this.level.backgroundObjects);
+ 
 
         this.ctx.translate(-this.camera_x, 0); // Back
         // Space for fixed Objects
@@ -59,7 +84,9 @@ class World {
         this.ctx.translate(this.camera_x, 0); //Forwards
         
         this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
+        this.addObjectsArrayToCanvas(this.throwableObjects);
         this.addObjectsArrayToCanvas(this.level.enemies);
+        this.addObjectsArrayToCanvas(this.level.pinecones);
         this.addObjectsArrayToCanvas(this.level.foregroundObjects);
 
         this.ctx.translate(-this.camera_x, 0);

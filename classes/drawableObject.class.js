@@ -1,7 +1,7 @@
 class DrawableObject {
     // properties
     x;
-    y = 280;
+    y = 257;
     width = 450;
     height = 200;
     img;
@@ -31,7 +31,7 @@ class DrawableObject {
     }
 
     drawRect(ctx) {
-        if(this instanceof Character || this instanceof Enemy) {
+        if(this instanceof Character || this instanceof Enemy || this instanceof ThrowableObject || this instanceof Pinecone) {
             ctx.beginPath();
             ctx.lineWidth = '1';
             ctx.strokeStyle = 'blue';

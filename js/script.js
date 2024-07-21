@@ -2,9 +2,12 @@ let canvas;
 let world; // Erstellung des Objektes World
 let keyboard = new Keyboard(); // Erstellung der Instanz Keyboard
 
+
 function init() {
     canvas = document.querySelector('canvas');
     world = new World(canvas, keyboard);
+    console.log(world.character);
+    console.log(world.level.pinecones);
 }
 
 
@@ -49,3 +52,34 @@ document.addEventListener('keyup', (event) => {
         keyboard.THROW = false;
     } 
 });
+
+function toggleFullScreen() {
+    let content = document.querySelector('.content');
+    if(document.fullscreenElement === content) {
+        closeFullscreen();
+    } else {
+        openFullscreen(content);
+    }
+};
+
+/* View in fullscreen */
+function openFullscreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.webkitRequestFullscreen) { /* Safari */
+    element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) { /* IE11 */
+    element.msRequestFullscreen();
+    }
+  };
+  
+  /* Close fullscreen */
+  function closeFullscreen() {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { /* Safari */
+      document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE11 */
+      document.msExitFullscreen();
+    }
+  };

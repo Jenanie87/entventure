@@ -4,7 +4,11 @@
     font-family: "Anir b", sans-serif;
 }
 
-body {
+.d_none {
+    display: none;
+}
+
+.content {
     height: 100svh;
     background-size: cover;
     background-image: url(img/background/Cartoon_Forest_BG_04/Cartoon_Forest_BG_04.png);
@@ -21,7 +25,8 @@ h1 {
 }
 
 .main_container {
-    height: calc(100% - 216px);
+/*     height: calc(100% - 216px); */
+    height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -29,5 +34,46 @@ h1 {
 }
 
 canvas {
-    background-color: black;
+    display: block;
+}
+
+.fullscreen {
+    width: 720px;
+    height: 480px;
+    position: absolute;
+}
+
+.img_fullscreen {
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    position: absolute;
+    top: 430px;
+    right: 20px;
+    transition: transform 100ms ease-in-out;
+}
+
+.img_fullscreen:hover {
+    transform: rotate(25deg);
+    filter: drop-shadow(1px 1px 5px rgb(31, 165, 4));
+}
+
+/* smartphones */
+
+@media screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+    .fullscreen {
+        width: 100%;
+    }
+}
+
+@media screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+    .fullscreen {
+        height: 100vh;
+    }
 }

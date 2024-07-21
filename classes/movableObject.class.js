@@ -5,7 +5,7 @@ class MovableObject extends DrawableObject {
     offsetY = 0;
     speedY = 0;
     acceleration = 2.5;
-    healthPoints = 100;
+    healthPoints = 500;
     lastHit = 0;
 
     constructor() {
@@ -41,7 +41,11 @@ class MovableObject extends DrawableObject {
     }
 
     isAboveGround() {
-        return this.y < 280;
+        if(this instanceof ThrowableObject) { // throwableObject should always fall
+            return true;
+        } else {
+            return this.y < 257;
+        }
     }
 
     jump() {

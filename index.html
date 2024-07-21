@@ -9,12 +9,18 @@
     <link rel="icon" type="image/svg+xml" href="img/favicon.png"/>
 </head>
 <body onload="init()">
-    <h1>Entventure: Bark & Bounce</h1>
-    <div class="main_container">
-        <canvas width="720" height="480">
-    
-        </canvas>
+    <div class="content">
+        <h1 class="d_none">Entventure: Bark & Bounce</h1>
+        <div class="main_container">
+            <canvas width="720" height="480">
+        
+            </canvas>
+            <div class="fullscreen">
+                <img onclick="toggleFullScreen()" class="img_fullscreen" src="img/settings/screen.png" alt="screen img">
+            </div>
+        </div>
     </div>
+
     <script src="classes/drawableObject.class.js"></script>
     <script src="classes/movableObject.class.js"></script>
     <script src="classes/character.class.js"></script>
@@ -32,6 +38,8 @@
     <script src="classes/healthbar.class.js"></script>
     <script src="classes/coinbar.class.js"></script>
     <script src="classes/pineconebar.class.js"></script>
+    <script src="classes/throwableObject.class.js"></script>
+    <script src="classes/pinecone.class.js"></script>
     <script src="classes/level.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="js/script.js"></script>
