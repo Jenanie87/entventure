@@ -5,7 +5,7 @@ class MovableObject extends DrawableObject {
     offsetY = 0;
     speedY = 0;
     acceleration = 2.5;
-    healthPoints = 500;
+    healthPoints = 100;
     lastHit = 0;
 
     constructor() {

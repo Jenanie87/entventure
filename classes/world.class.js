@@ -5,7 +5,7 @@ class World {
     healthbar = new Healthbar();
     coinbar = new Coinbar();
     pineconebar = new Pineconebar();
-    throwableObjects = [];
+    throwableObjects = [new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject()];
     // Eigenschaften aus dem Level-Objekt übernehmen
     level = level1;
     canvas;
@@ -28,7 +28,7 @@ class World {
     //functions
     setWorld() {
         this.character.world = this;
-        this.level.pinecones.forEach(pinecone => {
+        this.level.pinecones.forEach((pinecone) => {
             pinecone.world = this;
             pinecone.setRandomPosition();
         });
@@ -49,6 +49,12 @@ class World {
                 this.healthbar.setPercentage(this.character.healthPoints);
             };
         })
+        this.level.pinecones.forEach((pinecone) => {
+            if(this.character.isColliding(pinecone)) {
+                pinecone.collectPinecone();
+                this.pineconebar.setPercentage(this.throwableObjects.length);
+            }
+        })
     }
 
     checkThrowObjects() {
@@ -56,6 +62,7 @@ class World {
             if(this.throwableObjects.length < 10) {
                 let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
                 this.throwableObjects.push(pinecone);
+                this.pineconebar.setPercentage(this.throwableObjects.length - 1);
                 console.log(this.throwableObjects);
             }
             this.isThrowing = true;
@@ -79,7 +86,6 @@ class World {
 
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsArrayToCanvas(this.level.backgroundObjects);
- 
 
         this.ctx.translate(-this.camera_x, 0); // Back
         // Space for fixed Objects

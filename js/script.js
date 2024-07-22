@@ -7,7 +7,6 @@ function init() {
     canvas = document.querySelector('canvas');
     world = new World(canvas, keyboard);
     console.log(world.character);
-    console.log(world.level.pinecones);
 }
 
 
@@ -83,3 +82,12 @@ function openFullscreen(element) {
       document.msExitFullscreen();
     }
   };
+
+  function toggleSound() {
+    let img = document.querySelector('.img_sound');
+    if(img.src.match('misic')) {
+        img.src = 'img/settings/music_off.png';
+    } else {
+        img.src = 'img/settings/misic.png';
+    }
+  }

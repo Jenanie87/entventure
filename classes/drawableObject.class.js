@@ -30,15 +30,6 @@ class DrawableObject {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
-/*     drawRect(ctx) {
-        if(this instanceof Character || this instanceof Enemy || this instanceof ThrowableObject || this instanceof Pinecone) {
-            ctx.beginPath();
-            ctx.lineWidth = '1';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
-        }
-    } */
     drawRect(ctx) {
         if(this instanceof Character || this instanceof Enemy || this instanceof ThrowableObject || this instanceof Pinecone) {
             ctx.beginPath();

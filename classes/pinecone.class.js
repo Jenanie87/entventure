@@ -1,18 +1,26 @@
-class Pinecone extends DrawableObject {
+class Pinecone extends MovableObject {
     y = 330;
     minDistance = 100;
     offset = {
         top: 70,
-        right: 25,
+        right: 50,
         bottom: 20,
-        left: 60
+        left: 50
     };
 
-    constructor(path) {
+    IMAGES = [
+        'img/pinecone/1_pinecone_on_ground.png',
+        'img/pinecone/2_pinecone_on_ground.png',
+    ];
+
+    constructor(index) {
         super();
+        this.index = index;
         this.width = 150;
         this.height = 150;
-        this.loadImage(path);
+        this.loadImage('img/pinecone/1_pinecone_on_ground.png');
+        this.loadImages(this.IMAGES);
+        this.animate();
     }
     world;
 
@@ -48,5 +56,23 @@ class Pinecone extends DrawableObject {
 
     isTooClose(pinecone) {
         return Math.abs(this.x - pinecone.x) < this.minDistance;
+    }
+
+    animate() {
+        setInterval(() => {
+            this.playAnimation(this.IMAGES);
+        }, 500);
+    }
+
+    collectPinecone() {
+        if(!this.world.throwableObjects.length <= 0) {
+            this.world.level.pinecones.splice(this.index, 1);
+            this.world.level.pinecones.forEach((pinecone, index) => {
+                pinecone.index = index;
+            });
+            this.world.throwableObjects.pop();
+
+        }
+        console.log(this.world.throwableObjects);
     }
 }

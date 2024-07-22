@@ -6,18 +6,9 @@ const level1 = new Level([
     new GoblinSmallEnemy(),
     new Endboss(),
 ],
-[
-    new Pinecone('img/pinecone/1_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/1_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/1_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/1_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/1_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/2_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/2_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/2_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/2_pinecone_on_ground.png'),
-    new Pinecone('img/pinecone/2_pinecone_on_ground.png')
-],
+
+Array.from({ length: 10 }, (_, index) => new Pinecone(index)),
+
 [
     new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', 0),
     new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', 0),
