@@ -49,13 +49,14 @@ class MovableObject extends DrawableObject {
     }
 
     jump() {
-        this.speedY = 23;
+        this.speedY = 25;
     }
 
-    isColliding (obj) {
-        return  (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) && 
-                (this.y + this.offsetY + this.height) >= obj.y &&
-                (this.y + this.offsetY) <= (obj.y + obj.height);
+    isColliding(obj) {
+        return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&
+               this.y + this.height - this.offset.bottom > obj.y + obj.offset.top &&   
+               this.x + this.offset.left < obj.x + obj.width - obj.offset.right &&
+               this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom;
     }
 
     isDead() {

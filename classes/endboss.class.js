@@ -2,8 +2,16 @@ class Endboss extends Enemy {
     // properties
     width = 800;
     height = 800;
-    y = -255; 
+    y = -260; 
     x = 2200;
+
+    offset = {
+        top: 330,
+        right: 330,
+        bottom: 90,
+        left: 350
+    };
+
     otherDirection = true; // Mit Setzen der Variable auf true, werden die enemies gespiegelt, durch Methode addToCanvas
 
     IMAGES_IDLE = [

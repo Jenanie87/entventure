@@ -1,5 +1,12 @@
 class BigEnemy extends Enemy {
 
+    offset = {
+        top: 100,
+        right: 185,
+        bottom: 30,
+        left: 200
+    };
+
     constructor() {
         super();
         this.width = 450;

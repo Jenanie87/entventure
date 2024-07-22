@@ -30,12 +30,26 @@ class DrawableObject {
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }
 
-    drawRect(ctx) {
+/*     drawRect(ctx) {
         if(this instanceof Character || this instanceof Enemy || this instanceof ThrowableObject || this instanceof Pinecone) {
             ctx.beginPath();
             ctx.lineWidth = '1';
             ctx.strokeStyle = 'blue';
             ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    } */
+    drawRect(ctx) {
+        if(this instanceof Character || this instanceof Enemy || this instanceof ThrowableObject || this instanceof Pinecone) {
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'red';
+
+            let offsetX = this.x + this.offset.left;
+            let offsetY = this.y + this.offset.top;
+            let offsetWidth = this.width - this.offset.left - this.offset.right;
+            let offsetHeight = this.height - this.offset.top - this.offset.bottom;
+            ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
             ctx.stroke();
         }
     }

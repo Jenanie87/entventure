@@ -6,6 +6,12 @@ class ThrowableObject extends MovableObject {
         'img/pinecone/pinecone_rotation/4_pinecone_rotation.png',
     ];
     collected = 0;
+    offset = {
+        top: 10,
+        right: 10,
+        bottom: 10,
+        left: 10
+    };
 
     constructor(x, y) {
         super();

@@ -1,5 +1,12 @@
 class SmallEnemy extends Enemy {
 
+    offset = {
+        top: 25,
+        right: 35,
+        bottom: 20,
+        left: 30
+    };
+
     constructor(path) {
         super(path);
         this.width = 100;

@@ -1,6 +1,12 @@
 class Pinecone extends DrawableObject {
     y = 330;
     minDistance = 100;
+    offset = {
+        top: 70,
+        right: 25,
+        bottom: 20,
+        left: 60
+    };
 
     constructor(path) {
         super();

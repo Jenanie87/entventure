@@ -32,6 +32,7 @@ h1 {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    position: relative;
 }
 
 canvas {
@@ -44,19 +45,24 @@ canvas {
     position: absolute;
 }
 
-.img_fullscreen {
-    cursor: pointer;
+.wrapper {
+    position: absolute;
+    display: flex;
+    gap: 16px;
+    right: 20px;
+    top: 390px;
+}
+
+.img_wrapper {
     width: 40px;
     height: 40px;
-    position: absolute;
-    top: 390px;
-    right: 20px;
+    cursor: pointer;
     transition: transform 100ms ease-in-out;
 }
 
-.img_fullscreen:hover {
-    transform: rotate(25deg);
+.img_wrapper:hover {
     filter: drop-shadow(1px 1px 5px rgb(31, 165, 4));
+    transform: rotate(25deg);
 }
 
 .settings {
