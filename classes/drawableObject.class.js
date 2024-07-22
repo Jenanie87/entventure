@@ -1,9 +1,9 @@
 class DrawableObject {
     // properties
     x;
-    y = 257;
+    y = 280;
     width = 450;
-    height = 200;
+    height = 175;
     img;
     imageCache = {};
     currentImage = 0;

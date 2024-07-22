@@ -1,7 +1,7 @@
 * {
     margin: 0;
     box-sizing: border-box;
-    font-family: "Anir b", sans-serif;
+
 }
 
 .d_none {
@@ -15,6 +15,7 @@
 }
 
 h1 {
+    font-family: "Anir b", sans-serif;
     font-size: 48px;
     padding: 24px 0px;
     text-align: center;
@@ -25,8 +26,8 @@ h1 {
 }
 
 .main_container {
-/*     height: calc(100% - 216px); */
-    height: 100vh;
+    height: calc(100% - 216px);
+/*     height: 100vh; */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -48,7 +49,7 @@ canvas {
     width: 40px;
     height: 40px;
     position: absolute;
-    top: 430px;
+    top: 390px;
     right: 20px;
     transition: transform 100ms ease-in-out;
 }
@@ -56,6 +57,42 @@ canvas {
 .img_fullscreen:hover {
     transform: rotate(25deg);
     filter: drop-shadow(1px 1px 5px rgb(31, 165, 4));
+}
+
+.settings {
+    padding: 8px;
+    width: 720px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.keyboard_content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-family: "Jungle Adventure", sans-serif;
+}
+
+.img_key {
+    height: 56px;
+    width: 56px;
+/*     filter: drop-shadow(1px 1px black); */
+}
+
+.rotate_right {
+    transform: rotate(90deg);
+}
+
+.rotate_left {
+    transform: rotate(270deg);
+}
+
+.key_text {
+    font-size: 40px;
+    background: -webkit-linear-gradient(#B09B23, #663F1C);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(4px 2px black);
 }
 
 /* smartphones */

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="de">
+<html lang="en" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,13 +10,30 @@
 </head>
 <body onload="init()">
     <div class="content">
-        <h1 class="d_none">Entventure: Bark & Bounce</h1>
+        <h1 class="/d_none">Entventure: Bark & Bounce</h1>
         <div class="main_container">
             <canvas width="720" height="480">
         
             </canvas>
             <div class="fullscreen">
                 <img onclick="toggleFullScreen()" class="img_fullscreen" src="img/settings/screen.png" alt="screen img">
+            </div>
+            <div class="settings">
+                <div class="keyboard_content">
+                    <div>
+                        <img class="img_key rotate_left" src="img/settings/arrow_icon.png" alt="arrow icon">
+                        <img class="img_key rotate_right" src="img/settings/arrow_icon.png" alt="arrow icon">
+                    </div>
+                    <p class="key_text"> - Walk</p>
+                </div>
+                <div class="keyboard_content">
+                    <img class="img_key" src="img/settings/space_bar.png" alt="space bar icon">
+                    <p class="key_text"> - Jump</p>
+                </div>
+                <div class="keyboard_content">
+                    <img class="img_key" src="img/settings/key_d.png" alt="key d icon">
+                    <p class="key_text"> - Throw</p>
+                </div>
             </div>
         </div>
     </div>

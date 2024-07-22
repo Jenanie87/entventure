@@ -81,6 +81,7 @@ class Character extends MovableObject {
     ];
     world;
     audio_walking = new Audio('audio/walking1.mp3');
+    audio_jumping = new Audio('audio/jump_man.mp3');
     
 
     constructor() {
@@ -118,6 +119,7 @@ class Character extends MovableObject {
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
                 // !this.isAboveGround() -> Character ist nicht über dem Boden, also auf dem Boden
                 this.jump();
+                this.audio_jumping.play();
             }
              this.updateCamera();
         }, 1000 / 60);

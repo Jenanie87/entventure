@@ -44,12 +44,12 @@ class MovableObject extends DrawableObject {
         if(this instanceof ThrowableObject) { // throwableObject should always fall
             return true;
         } else {
-            return this.y < 257;
+            return this.y < 280;
         }
     }
 
     jump() {
-        this.speedY = 25;
+        this.speedY = 23;
     }
 
     isColliding (obj) {

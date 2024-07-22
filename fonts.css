@@ -3,7 +3,12 @@
     src: url("fonts/anirb___.ttf") format('truetype'); 
     }
 
+@font-face { 
+    font-family: "Anir m"; 
+    src: url("fonts/anirm___.ttf") format('truetype'); 
+    }
+
     @font-face { 
-        font-family: "Anir m"; 
-        src: url("fonts/anirm___.ttf") format('truetype');; 
+        font-family: "Jungle Adventure"; 
+        src: url("fonts/JungleAdventurer.ttf") format('truetype');
         }

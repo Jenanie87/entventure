@@ -12,6 +12,7 @@ class World {
     ctx;
     keyboard;
     isThrowing = false;
+    canThrow = true;
     camera_x = 0; 
 
     constructor(canvas, keyboard) {
@@ -51,13 +52,17 @@ class World {
     }
 
     checkThrowObjects() {
-        if(this.keyboard.THROW) {
+        if(this.keyboard.THROW && this.canThrow) {
             if(this.throwableObjects.length < 10) {
                 let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
                 this.throwableObjects.push(pinecone);
                 console.log(this.throwableObjects);
             }
             this.isThrowing = true;
+            this.canThrow = false;
+            setTimeout(() => {
+                this.canThrow = true;
+            }, 1000);
         } else {
             this.isThrowing = false;
         }
