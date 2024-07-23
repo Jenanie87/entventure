@@ -33,6 +33,7 @@ class World {
             pinecone.setRandomPosition();
         });
         this.level.enemies.forEach(enemy => enemy.world = this); 
+        this.throwableObjects.forEach(object => object.world = this); 
     }
 
     run() {
@@ -61,9 +62,11 @@ class World {
         if(this.keyboard.THROW && this.canThrow) {
             if(this.throwableObjects.length < 10) {
                 let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
+                pinecone.world = this;
                 this.throwableObjects.push(pinecone);
                 this.pineconebar.setPercentage(this.throwableObjects.length - 1);
-                console.log(this.throwableObjects);
+                pinecone.throw();
+                this.createNewPinecone();
             }
             this.isThrowing = true;
             this.canThrow = false;
@@ -73,6 +76,14 @@ class World {
         } else {
             this.isThrowing = false;
         }
+    }
+
+    createNewPinecone() {
+        let newIndex = this.level.pinecones.length;
+        let newPinecone = new Pinecone(newIndex);
+        newPinecone.world = this;
+        newPinecone.setRandomPosition();
+        this.level.pinecones.push(newPinecone);
     }
 
     calculateLevelBounds(backgroundObjects) {

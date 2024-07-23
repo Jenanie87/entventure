@@ -5,7 +5,7 @@ class ThrowableObject extends MovableObject {
         'img/pinecone/pinecone_rotation/3_pinecone_rotation.png',
         'img/pinecone/pinecone_rotation/4_pinecone_rotation.png',
     ];
-    collected = 0;
+    world;
     offset = {
         top: 10,
         right: 10,
@@ -22,15 +22,20 @@ class ThrowableObject extends MovableObject {
         this.loadImage('img/pinecone/pinecone_rotation/1_pinecone_rotation.png');
         this.loadImages(this.IMAGES_THROW);
         this.animate();
-        this.throw();
     }
 
     throw() {
-        this.speedY = 20;
-        this.applyGravity();
-        setInterval(() => {
-            this.x += 15;
-        }, 30);
+        if (this.world) {
+            this.speedY = 20;
+            this.applyGravity();
+            setInterval(() => {
+                if (!this.world.character.otherDirection && this.world) {
+                    this.x += 15;
+                } else {
+                    this.x -= 15;
+                }
+            }, 30);
+        }
     }
 
     animate() {

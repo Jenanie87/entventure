@@ -73,6 +73,5 @@ class Pinecone extends MovableObject {
             this.world.throwableObjects.pop();
 
         }
-        console.log(this.world.throwableObjects);
     }
 }
