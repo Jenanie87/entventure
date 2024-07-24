@@ -32,6 +32,10 @@ class World {
             pinecone.world = this;
             pinecone.setRandomPosition();
         });
+        this.level.coins.forEach((coin) => {
+            coin.world = this;
+/*             coin.setRandomPosition(); */
+        });
         this.level.enemies.forEach(enemy => enemy.world = this); 
         this.throwableObjects.forEach(object => object.world = this); 
     }
@@ -60,19 +64,24 @@ class World {
 
     checkThrowObjects() {
         if(this.keyboard.THROW && this.canThrow) {
+            console.log("Throw key pressed");
             if(this.throwableObjects.length < 10) {
                 let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
                 pinecone.world = this;
                 this.throwableObjects.push(pinecone);
                 this.pineconebar.setPercentage(this.throwableObjects.length - 1);
                 pinecone.throw();
-                this.createNewPinecone();
+                console.log("Throwable object created and thrown:", pinecone);
+                this.isThrowing = true;
+                setTimeout(() => {
+                    console.log("Creating new pinecone after delay");
+                    this.createNewPinecone();  
+                }, 5000);
             }
-            this.isThrowing = true;
             this.canThrow = false;
             setTimeout(() => {
                 this.canThrow = true;
-            }, 1000);
+            }, 500);
         } else {
             this.isThrowing = false;
         }
@@ -109,6 +118,7 @@ class World {
         this.addObjectsArrayToCanvas(this.throwableObjects);
         this.addObjectsArrayToCanvas(this.level.enemies);
         this.addObjectsArrayToCanvas(this.level.pinecones);
+        this.addObjectsArrayToCanvas(this.level.coins);
         this.addObjectsArrayToCanvas(this.level.foregroundObjects);
 
         this.ctx.translate(-this.camera_x, 0);

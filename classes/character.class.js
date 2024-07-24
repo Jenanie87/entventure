@@ -116,12 +116,10 @@ class Character extends MovableObject {
             this.audio_walking.pause();
             if (this.world.keyboard.RIGHT && this.x < this.world.levelBounds.maxX - this.world.canvas.width / 2) {
                 this.audio_walking.play();
-                console.log(this.otherDirection);
                 this.moveRight();            
             } 
             if (this.world.keyboard.LEFT && this.x > this.world.levelBounds.minX -100) {
                 this.audio_walking.play();
-                console.log(this.otherDirection);
                 this.moveLeft();           
             }
             if (this.world.keyboard.SPACE && !this.isAboveGround()) {
@@ -138,6 +136,7 @@ class Character extends MovableObject {
                 } else if (this.isAboveGround()) {
                     this.playAnimation(this.IMAGES_JUMP);
                 } else if(this.world.isThrowing) {
+                    console.log(this.world.throwableObjects);
                     this.playAnimation(this.IMAGES_ATTACK);
                 } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     // Walk animation
