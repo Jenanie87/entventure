@@ -36,6 +36,7 @@ class Coin extends MovableObject {
         'img/coin/coin_10.png'
     ];
     world;
+    audio_collecting = new Audio('audio/coin.mp3');
 
     constructor(x, y) {
         super();
@@ -56,6 +57,11 @@ class Coin extends MovableObject {
     adjustWidth() {
         let currentImageIndex = this.currentImage % this.IMAGES.length;
         this.width = this.widthMapping[currentImageIndex];
+    }
+
+    collectCoin() {
+        console.log(this.world.level.coins);
+        this.audio_collecting.play();
     }
 
 }

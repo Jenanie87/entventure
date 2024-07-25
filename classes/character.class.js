@@ -86,8 +86,8 @@ class Character extends MovableObject {
         'img/character/1/Ent_01__DIE_009.png',
     ];
     world;
-    audio_walking = new Audio('audio/walking1.mp3');
-    audio_jumping = new Audio('audio/jump_man.mp3');
+    audio_walking = new Audio('audio/walking.mp3');
+    audio_jumping = new Audio('audio/jumping2.mp3');
     
 
     constructor() {
@@ -136,7 +136,6 @@ class Character extends MovableObject {
                 } else if (this.isAboveGround()) {
                     this.playAnimation(this.IMAGES_JUMP);
                 } else if(this.world.isThrowing) {
-                    console.log(this.world.throwableObjects);
                     this.playAnimation(this.IMAGES_ATTACK);
                 } else if(this.world.keyboard.RIGHT || this.world.keyboard.LEFT) {
                     // Walk animation

@@ -34,7 +34,6 @@ class World {
         });
         this.level.coins.forEach((coin) => {
             coin.world = this;
-/*             coin.setRandomPosition(); */
         });
         this.level.enemies.forEach(enemy => enemy.world = this); 
         this.throwableObjects.forEach(object => object.world = this); 
@@ -60,18 +59,22 @@ class World {
                 this.pineconebar.setPercentage(this.throwableObjects.length);
             }
         })
+        this.level.coins.forEach((coin, index) => {
+            if(this.character.isColliding(coin)) {
+                console.log(index);
+                coin.collectCoin();
+            }
+        })
     }
 
     checkThrowObjects() {
         if(this.keyboard.THROW && this.canThrow) {
-            console.log("Throw key pressed");
             if(this.throwableObjects.length < 10) {
                 let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
                 pinecone.world = this;
                 this.throwableObjects.push(pinecone);
                 this.pineconebar.setPercentage(this.throwableObjects.length - 1);
                 pinecone.throw();
-                console.log("Throwable object created and thrown:", pinecone);
                 this.isThrowing = true;
                 setTimeout(() => {
                     console.log("Creating new pinecone after delay");

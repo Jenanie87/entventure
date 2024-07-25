@@ -31,7 +31,7 @@ class DrawableObject {
     }
 
     drawRect(ctx) {
-        if(this instanceof Character || this instanceof Enemy || this instanceof ThrowableObject || this instanceof Pinecone || this instanceof Coin) {
+        if(this instanceof Character || this instanceof Enemy || this instanceof ThrowableObject || this instanceof Coin) {
             ctx.beginPath();
             ctx.lineWidth = '2';
             ctx.strokeStyle = 'red';
