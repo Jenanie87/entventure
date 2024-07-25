@@ -12,6 +12,7 @@ class Pinecone extends MovableObject {
         'img/pinecone/1_pinecone_on_ground.png',
         'img/pinecone/2_pinecone_on_ground.png',
     ];
+    audio_collect = new Audio('audio/collect.mp3');
 
     constructor(index) {
         super();
@@ -71,7 +72,7 @@ class Pinecone extends MovableObject {
                 pinecone.index = index;
             });
             this.world.throwableObjects.pop();
-
+            this.audio_collect.play();
         }
     }
 }

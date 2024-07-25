@@ -95,7 +95,7 @@ class Character extends MovableObject {
         this.x = -100;
         this.loadImage('img/character/1/Ent_01__IDLE_000.png');
         this.audio_walking.playbackRate = 0.5;
-        this.audio_walking.volume = 0.3;  
+        this.audio_jumping.volume = 0.3;  
         this.loadImages(this.IMAGES_WALK);
         this.loadImages(this.IMAGES_JUMP);
         this.loadImages(this.IMAGES_IDLE);

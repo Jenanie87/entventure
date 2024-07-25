@@ -44,6 +44,7 @@ class Coin extends MovableObject {
         this.y = y;
         this.loadImage('img/coin/coin_1.png');
         this.loadImages(this.IMAGES);
+        this.audio_collecting.volume = 0.3;  
         this.animate();
     }
 
@@ -59,9 +60,9 @@ class Coin extends MovableObject {
         this.width = this.widthMapping[currentImageIndex];
     }
 
-    collectCoin() {
-        console.log(this.world.level.coins);
+    collectCoin(index) {
         this.audio_collecting.play();
+        this.world.level.coins.splice(index, 1);
     }
 
 }

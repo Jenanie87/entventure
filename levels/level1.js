@@ -3,8 +3,8 @@ const level1 = new Level([
     new Orc1BigEnemy(),
     new Orc2BigEnemy(),
     new OrcSmallEnemy(),
-    new GoblinSmallEnemy(),
-    new Endboss(), */
+    new GoblinSmallEnemy(), */
+    new Endboss(),
 ],
 
 Array.from({ length: 10 }, (_, index) => new Pinecone(index)),

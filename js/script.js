@@ -6,7 +6,7 @@ let keyboard = new Keyboard(); // Erstellung der Instanz Keyboard
 function init() {
     canvas = document.querySelector('canvas');
     world = new World(canvas, keyboard);
-    console.log(world.character);
+/*     console.log(world.character); */
 }
 
 
@@ -87,7 +87,48 @@ function openFullscreen(element) {
     let img = document.querySelector('.img_sound');
     if(img.src.match('misic')) {
         img.src = 'img/settings/music_off.png';
+        turnSoundOff();
     } else {
         img.src = 'img/settings/misic.png';
+        turnSoundOn();
     }
+  }
+
+  function toggleMusic() {
+    let img = document.querySelector('.img_music');
+    if(img.src.match('sisic')) {
+        img.src = 'img/settings/sound_off.png';
+        turnMusicOff();
+    } else {
+        img.src = 'img/settings/sisic.png';
+        turnMusicOn();
+    }
+  }
+
+  function turnSoundOff() {
+    world.audio_bgMusic.pause();
+    world.character.audio_jumping.volume = 0.0;
+    world.character.audio_walking.volume = 0.0;
+    world.level.coins.forEach(coin => {
+        coin.audio_collecting.volume = 0.0;
+    });
+    world.level.enemies[world.level.enemies.length - 1].audio_roar.volume = 0.0;
+  }
+
+  function turnSoundOn() {
+    world.audio_bgMusic.play();
+    world.character.audio_jumping.volume = 0.3;
+    world.character.audio_walking.volume = 0.3;
+    world.level.coins.forEach(coin => {
+        coin.audio_collecting.volume = 0.3;
+    });
+    world.level.enemies[world.level.enemies.length - 1].audio_roar.volume = 0.3;
+  }
+
+  function turnMusicOff() {
+    world.audio_bgMusic.pause();
+  }
+  
+  function turnMusicOn() {
+    world.audio_bgMusic.play();
   }

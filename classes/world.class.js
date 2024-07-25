@@ -14,6 +14,7 @@ class World {
     isThrowing = false;
     canThrow = true;
     camera_x = 0; 
+    audio_bgMusic = new Audio('audio/bg_nature.mp3');
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -23,6 +24,7 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
+        this.playBgMusicLoop();
     }
 
     //functions
@@ -61,8 +63,7 @@ class World {
         })
         this.level.coins.forEach((coin, index) => {
             if(this.character.isColliding(coin)) {
-                console.log(index);
-                coin.collectCoin();
+                coin.collectCoin(index);
             }
         })
     }
@@ -158,5 +159,12 @@ class World {
     flipImageBack(object) {
         object.x = object.x * -1; // x-Koordinate wieder zurückinvertieren
         this.ctx.restore(); // Ursprünglichen Zustand von ctx wiederherstellen
+    }
+
+    playBgMusicLoop() {
+        this.audio_bgMusic.volume = 0.2;
+        this.audio_bgMusic.loop = true;
+/*         this.audio_bgMusic.load(); */
+        this.audio_bgMusic.play();
     }
 }
