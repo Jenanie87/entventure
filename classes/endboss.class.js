@@ -4,6 +4,8 @@ class Endboss extends Enemy {
     height = 800;
     y = -260; 
     x = 2200;
+    damage = 10;
+    healthPoints = 250;
 
     offset = {
         top: 330,

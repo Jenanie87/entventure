@@ -68,7 +68,6 @@ class World {
                 pinecone.throw();
                 this.isThrowing = true;
                 setTimeout(() => {
-/*                     console.log("Creating new pinecone after delay"); */
                     this.createNewPinecone();  
                 }, 5000);
             }
@@ -179,7 +178,11 @@ class World {
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)) {
-                this.character.hit();
+                this.character.hit(enemy.damage);
+                enemy.hit(this.character.damage);
+                console.log(enemy.healthPoints);
+/*                 console.log(enemy.damage);
+                console.log(this.character.healthPoints); */
                 this.healthbar.setPercentage(this.character.healthPoints);
             };
         })

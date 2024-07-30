@@ -5,8 +5,9 @@ class MovableObject extends DrawableObject {
     offsetY = 0;
     speedY = 0;
     acceleration = 2.5;
-    healthPoints = 100;
+    healthPoints = 200;
     lastHit = 0;
+    damage = 5;
 
     constructor() {
         super();
@@ -60,12 +61,12 @@ class MovableObject extends DrawableObject {
     }
 
     isDead() {
-        return this.healthPoints == 0;
+        return this.healthPoints <= 0;
     }
 
-    hit() {
+    hit(damage) {
         if(this.healthPoints > 0) {
-            this.healthPoints -= 2;
+            this.healthPoints -= damage;
         } 
         this.lastHit = new Date().getTime(); // Aktualisiert die Zeit des letzten Treffers
     }
