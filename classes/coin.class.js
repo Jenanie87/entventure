@@ -1,6 +1,5 @@
 class Coin extends MovableObject {
     // properties
-/*     width = 50; */
     height = 50;
 
     offset = {
@@ -11,16 +10,16 @@ class Coin extends MovableObject {
     };
 
     widthMapping = {
-        0: 50, // img_1 (front view, full width)
+        0: 50, // img_1 
         1: 45, // img_2
         2: 37.5, // img_3
         3: 30, // img_4
         4: 25, // img_5
-        5: 12.5, // img_6 (thinnest side view)
+        5: 12.5, // img_6 
         6: 25, // img_7
         7: 30, // img_8
         8: 37.5, // img_9
-        9: 45  // img_10 (reset to full width, similar to img_1)
+        9: 45  // img_10 
     };
 
     IMAGES = [

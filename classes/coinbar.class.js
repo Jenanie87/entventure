@@ -3,6 +3,7 @@ class Coinbar extends DrawableObject {
     y = 45;
     width = 200;
     height = 60;
+    collectedCoin = 0;
 
     IMAGES = [
         'img/statusbar/1_statusbar_coin/0.png',
@@ -13,12 +14,12 @@ class Coinbar extends DrawableObject {
         'img/statusbar/1_statusbar_coin/100.png',
     ];
 
-    percentage = 100;
+/*     percentage = 100; */
 
     constructor() {
         super();
         this.loadImages(this.IMAGES);
-        this.setPercentage(0);
+        this.setPercentage(this.collectedCoin);
     }
 
     setPercentage(percentage) {
@@ -28,15 +29,15 @@ class Coinbar extends DrawableObject {
     }
 
     resolveImageIndex() {
-        if(this.percentage == 100) {
+        if(this.percentage == 20) {
             return 5;
-        } else if(this.percentage > 80) {
+        } else if(this.percentage >= 16) {
             return 4;
-        } else if(this.percentage > 60) {
+        } else if(this.percentage >= 12) {
             return 3;
-        } else if(this.percentage > 40) {
+        } else if(this.percentage >= 8) {
             return 2;
-        } else if(this.percentage > 20) {
+        } else if(this.percentage >= 4) {
             return 1;
         } else {
             return 0;

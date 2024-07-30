@@ -148,6 +148,13 @@ class Character extends MovableObject {
             }, 100);
     }
 
+    lostGame() {
+        if (this.isDead()) {
+            this.world.isGameLost = true;
+            setLostScreen();
+        }
+    }
+
     updateCamera() {
         let halfCanvasWidth = this.world.canvas.width / 2;
         let cameraOffsetToLeft = 250; // Offset zur linken Seite

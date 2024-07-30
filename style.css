@@ -37,6 +37,15 @@ h1 {
 
 canvas {
     display: block;
+    transition: filter 1s ease, background-color 1s ease;
+}
+
+canvas.grayscale {
+    filter: grayscale(1);
+}
+
+canvas.redtone {
+    filter: grayscale(1) sepia(1) hue-rotate(-30deg) saturate(2) brightness(0.7);
 }
 
 .fullscreen {
@@ -81,8 +90,31 @@ canvas {
     border-color:
       rgb(0, 0, 0)
       rgb(0, 0, 0)
-      rgb(0, 0, 0);
-      
+      rgb(0, 0, 0);    
+}
+
+.lost_screen {
+    position: absolute;
+/*     display: flex;
+    justify-content: center;
+    align-items: center; */
+/*     width: 720px;
+    height: 480px; */
+/*     top: 12px;
+    left: 183px; */
+}
+
+.screen_text {
+    font-family: "Jungle Adventure", sans-serif;
+    font-size: 64px;
+    letter-spacing: 1.5px;
+    color: #ff0000; /* Rot für den Text */
+    text-shadow: 
+        -4px -4px 0 #000,  
+        4px -4px 0 #000,
+        -4px 4px 0 #000,
+        4px 4px 0 #000,
+        0 0 4px #000; /* Zusätzliches, weiches Schatten für dickeren Rand */
 }
 
 .keyboard_content {
@@ -95,7 +127,6 @@ canvas {
 .img_key {
     height: 56px;
     width: 56px;
-/*     filter: drop-shadow(1px 1px black); */
 }
 
 .rotate_right {

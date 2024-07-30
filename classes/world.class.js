@@ -14,6 +14,7 @@ class World {
     isThrowing = false;
     canThrow = true;
     camera_x = 0; 
+    isGameLost = false;
     audio_bgMusic = new Audio('audio/bg_nature.mp3');
 
     constructor(canvas, keyboard) {
@@ -24,7 +25,6 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
-        this.playBgMusicLoop();
     }
 
     //functions
@@ -45,27 +45,17 @@ class World {
         setInterval(() => {
             this.checkCollisions();
             this.checkThrowObjects();
+            this.checkEndbossMusic();
+            if (!this.isGameLost) {
+                this.character.lostGame();
+            }
         }, 100);
     }
 
     checkCollisions() {
-        this.level.enemies.forEach((enemy) => {
-            if(this.character.isColliding(enemy)) {
-                this.character.hit();
-                this.healthbar.setPercentage(this.character.healthPoints);
-            };
-        })
-        this.level.pinecones.forEach((pinecone) => {
-            if(this.character.isColliding(pinecone)) {
-                pinecone.collectPinecone();
-                this.pineconebar.setPercentage(this.throwableObjects.length);
-            }
-        })
-        this.level.coins.forEach((coin, index) => {
-            if(this.character.isColliding(coin)) {
-                coin.collectCoin(index);
-            }
-        })
+        this.collisionWithEnemy();
+        this.collisionWithPinecone();
+        this.collisionWithCoin();
     }
 
     checkThrowObjects() {
@@ -78,7 +68,7 @@ class World {
                 pinecone.throw();
                 this.isThrowing = true;
                 setTimeout(() => {
-                    console.log("Creating new pinecone after delay");
+/*                     console.log("Creating new pinecone after delay"); */
                     this.createNewPinecone();  
                 }, 5000);
             }
@@ -164,7 +154,50 @@ class World {
     playBgMusicLoop() {
         this.audio_bgMusic.volume = 0.2;
         this.audio_bgMusic.loop = true;
-/*         this.audio_bgMusic.load(); */
         this.audio_bgMusic.play();
+    }
+
+    collisionWithCoin() {
+        this.level.coins.forEach((coin, index) => {
+            if(this.character.isColliding(coin)) {
+                coin.collectCoin(index);
+                this.coinbar.collectedCoin++;
+                this.coinbar.setPercentage(this.coinbar.collectedCoin);
+            }
+        })
+    };
+
+    collisionWithPinecone() {
+        this.level.pinecones.forEach((pinecone) => {
+            if(this.character.isColliding(pinecone)) {
+                pinecone.collectPinecone();
+                this.pineconebar.setPercentage(this.throwableObjects.length);
+            }
+        })
+    }
+
+    collisionWithEnemy() {
+        this.level.enemies.forEach((enemy) => {
+            if(this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.healthbar.setPercentage(this.character.healthPoints);
+            };
+        })
+    }
+
+    checkEndbossMusic() {
+        if (this.character.x > 2000 && !this.level.enemies[world.level.enemies.length - 1].endbossMusicPlayed) {
+            this.playEndbossMusic();
+        }
+    }
+
+    playEndbossMusic() {
+        let imgSound = document.querySelector('.img_sound');
+        let imgMusic = document.querySelector('.img_music');
+        if(imgSound.src.includes('misic.png') && imgMusic.src.includes('sisic.png')) {
+            this.audio_bgMusic.pause();
+            this.level.enemies[world.level.enemies.length - 1].audio_endbossMusic.play();
+            this.level.enemies[world.level.enemies.length - 1].endbossMusicPlayed = true;
+        }    
     }
 }

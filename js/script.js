@@ -107,28 +107,75 @@ function openFullscreen(element) {
 
   function turnSoundOff() {
     world.audio_bgMusic.pause();
+    world.level.enemies.forEach(enemy => {
+        if (enemy.audio_endbossMusic) {
+            enemy.audio_endbossMusic.pause();
+        }
+        if (enemy.audio_roar) {
+            enemy.audio_roar.volume = 0.0;
+        }
+    });
     world.character.audio_jumping.volume = 0.0;
     world.character.audio_walking.volume = 0.0;
     world.level.coins.forEach(coin => {
         coin.audio_collecting.volume = 0.0;
     });
-    world.level.enemies[world.level.enemies.length - 1].audio_roar.volume = 0.0;
+    world.level.pinecones.forEach(pinecone => {
+        pinecone.audio_collect.volume = 0.0;
+    });
   }
 
   function turnSoundOn() {
-    world.audio_bgMusic.play();
+    let endbossMusicPlaying = false;
+    playMusicEndboss();
+    
+    if (!endbossMusicPlaying) {
+        world.audio_bgMusic.play();
+    }
     world.character.audio_jumping.volume = 0.3;
     world.character.audio_walking.volume = 0.3;
     world.level.coins.forEach(coin => {
         coin.audio_collecting.volume = 0.3;
     });
-    world.level.enemies[world.level.enemies.length - 1].audio_roar.volume = 0.3;
+    world.level.pinecones.forEach(pinecone => {
+        pinecone.audio_collect.volume = 0.3;
+    });
   }
 
   function turnMusicOff() {
     world.audio_bgMusic.pause();
+    world.level.enemies.forEach(enemy => {
+        if (enemy.endbossMusicPlayed) {
+            enemy.audio_endbossMusic.pause();
+        }
+    });
   }
   
   function turnMusicOn() {
-    world.audio_bgMusic.play();
+    let endbossMusicPlaying = false;
+    playMusicEndboss();
+    
+    if (!endbossMusicPlaying) {
+        world.audio_bgMusic.play();
+    }
   }
+
+  function playMusicEndboss() {
+    world.level.enemies.forEach(enemy => {
+        if (enemy.endbossMusicPlayed) {
+            endbossMusicPlaying = true;
+            enemy.audio_endbossMusic.play();
+        }
+    });
+  }
+
+    function setLostScreen() {
+      setTimeout(() => {
+          canvas.classList.add('grayscale'); 
+          setTimeout(() => {
+              canvas.classList.replace('grayscale', 'redtone'); 
+              let lostScreen = document.querySelector('.lost_screen');
+              lostScreen.classList.remove('d_none');
+          }, 1500); 
+      }, 1000); 
+    }

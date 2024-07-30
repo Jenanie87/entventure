@@ -28,6 +28,8 @@ class Endboss extends Enemy {
     ];
     world;
     audio_roar = new Audio('audio/orc_scream.mp3');
+    audio_endbossMusic = new Audio('audio/endboss.mp3');
+    endbossMusicPlayed = false;
     roarPlayed = false;
 
 
@@ -38,24 +40,20 @@ class Endboss extends Enemy {
         this.loadImages(this.IMAGES_IDLE);
         this.animate();
         this.audio_roar.volume = 0.3; 
-      
     }
     
         // functions
 
-        animate() { 
-            
-            setInterval(() => {
-                if (this.world && this.world.character && this.world.character.x > 1700 && !this.roarPlayed) {
-                    this.audio_roar.play();
-                    this.roarPlayed = true;
-
-                } 
-            }, 1000 / 60);
-
-            setInterval(() => {
-                this.playAnimation(this.IMAGES_IDLE);
-            }, 100);
-        }
-
+    animate() { 
+        
+        setInterval(() => {
+            if (this.world && this.world.character && this.world.character.x > 1700 && !this.roarPlayed) {
+                this.audio_roar.play();
+                this.roarPlayed = true;
+            } 
+        }, 1000 / 60);
+        setInterval(() => {
+            this.playAnimation(this.IMAGES_IDLE);
+        }, 100);
+    }
 }
