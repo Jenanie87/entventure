@@ -163,4 +163,8 @@ class Character extends MovableObject {
         newCameraX = Math.min(newCameraX, -this.world.levelBounds.minX);
         this.world.camera_x = newCameraX;
     }
+
+    bounceOffEnemy() {
+        this.speedY = 15;
+    }
 }

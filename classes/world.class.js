@@ -56,6 +56,7 @@ class World {
         this.collisionWithEnemy();
         this.collisionWithPinecone();
         this.collisionWithCoin();
+        this.collisionWithThrowableObjects();
     }
 
     checkThrowObjects() {
@@ -178,14 +179,30 @@ class World {
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy) => {
             if(this.character.isColliding(enemy)) {
-                this.character.hit(enemy.damage);
-                enemy.hit(this.character.damage);
-                console.log(enemy.healthPoints);
-                console.log(enemy.damage);
-                console.log(this.character.healthPoints);
+                if(this.character.isAboveGround()) {
+                    this.character.bounceOffEnemy();
+                    enemy.hit(this.character.damage);
+                } else {
+                    this.character.hit(enemy.damage);
+                }
                 this.healthbar.setPercentage(this.character.healthPoints);
             };
         })
+    }
+
+    collisionWithThrowableObjects() {
+        this.throwableObjects.forEach((pinecone) => {
+            this.level.enemies.forEach((enemy) => {
+                if(pinecone.isColliding(enemy) && !enemy.isHitByPinecone) {
+                    enemy.hit(pinecone.damage);
+                    console.log(enemy.healthPoints);
+                    enemy.isHitByPinecone = true;
+                    setTimeout(() => {
+                        enemy.isHitByPinecone = false;
+                    }, 1000);
+                }
+            });
+        });
     }
 
     checkEndbossMusic() {

@@ -8,6 +8,7 @@ class MovableObject extends DrawableObject {
     healthPoints = 100;
     lastHit = 0;
     damage = 5;
+    isDead = false;
     
 
     constructor() {
@@ -62,8 +63,10 @@ class MovableObject extends DrawableObject {
     }
 
     checkIsDead() {
-        return this.healthPoints <= 0;
-    }
+        if (this.healthPoints <= 0) {
+            this.isDead = true;
+        }
+        return this.isDead;    }
 
     hit(damage) {
         if(this.healthPoints > 0) {
