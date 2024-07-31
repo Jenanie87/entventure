@@ -131,7 +131,7 @@ class Character extends MovableObject {
         }, 1000 / 60);
 
             setInterval(() => {
-                if (this.isDead()) {
+                if (this.checkIsDead()) {
                     this.playAnimation(this.IMAGES_DIE);
                 } else if (this.isAboveGround()) {
                     this.playAnimation(this.IMAGES_JUMP);
@@ -149,7 +149,7 @@ class Character extends MovableObject {
     }
 
     lostGame() {
-        if (this.isDead()) {
+        if (this.checkIsDead()) {
             this.world.isGameLost = true;
             setLostScreen();
         }

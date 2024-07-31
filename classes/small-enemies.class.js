@@ -22,11 +22,19 @@ class SmallEnemy extends Enemy {
 
     animate() {
         setInterval(() => {
-            this.moveLeft();
+            if(!this.checkIsDead() && !this.checkIfHurt()) {
+                this.moveLeft();
+            }
         }, 1000 / 60);
         
         setInterval(() => {
-            this.playAnimation(this.IMAGES_RUN);
+            if(this.checkIsDead()) {
+                this.playAnimation(this.IMAGES_DIE);
+            } else if(this.checkIfHurt()) {
+                this.playAnimation(this.IMAGES_HURT);
+            } else {
+                this.playAnimation(this.IMAGES_RUN);
+            }
         }, 75);
     }
 }

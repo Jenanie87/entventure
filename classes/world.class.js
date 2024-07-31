@@ -181,8 +181,8 @@ class World {
                 this.character.hit(enemy.damage);
                 enemy.hit(this.character.damage);
                 console.log(enemy.healthPoints);
-/*                 console.log(enemy.damage);
-                console.log(this.character.healthPoints); */
+                console.log(enemy.damage);
+                console.log(this.character.healthPoints);
                 this.healthbar.setPercentage(this.character.healthPoints);
             };
         })

@@ -5,9 +5,10 @@ class MovableObject extends DrawableObject {
     offsetY = 0;
     speedY = 0;
     acceleration = 2.5;
-    healthPoints = 200;
+    healthPoints = 100;
     lastHit = 0;
     damage = 5;
+    
 
     constructor() {
         super();
@@ -60,7 +61,7 @@ class MovableObject extends DrawableObject {
                this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom;
     }
 
-    isDead() {
+    checkIsDead() {
         return this.healthPoints <= 0;
     }
 

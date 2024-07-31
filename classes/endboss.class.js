@@ -5,7 +5,7 @@ class Endboss extends Enemy {
     y = -260; 
     x = 2200;
     damage = 10;
-    healthPoints = 250;
+    healthPoints = 60;
 
     offset = {
         top: 330,
@@ -26,7 +26,33 @@ class Endboss extends Enemy {
         'img/enemies/3_ORK/ORK_03_IDLE_006.png',
         'img/enemies/3_ORK/ORK_03_IDLE_007.png',
         'img/enemies/3_ORK/ORK_03_IDLE_008.png',
-        'img/enemies/3_ORK/ORK_03_IDLE_009.png',
+        'img/enemies/3_ORK/ORK_03_IDLE_009.png'
+    ];
+
+    IMAGES_HURT = [
+        'img/enemies/3_ORK/ORK_03_HURT_000.png',
+        'img/enemies/3_ORK/ORK_03_HURT_001.png',
+        'img/enemies/3_ORK/ORK_03_HURT_002.png',
+        'img/enemies/3_ORK/ORK_03_HURT_003.png',
+        'img/enemies/3_ORK/ORK_03_HURT_004.png',
+        'img/enemies/3_ORK/ORK_03_HURT_005.png',
+        'img/enemies/3_ORK/ORK_03_HURT_006.png',
+        'img/enemies/3_ORK/ORK_03_HURT_007.png',
+        'img/enemies/3_ORK/ORK_03_HURT_008.png',
+        'img/enemies/3_ORK/ORK_03_HURT_009.png'
+    ];
+
+    IMAGES_DIE = [
+        'img/enemies/3_ORK/ORK_03_DIE_000.png',
+        'img/enemies/3_ORK/ORK_03_DIE_001.png',
+        'img/enemies/3_ORK/ORK_03_DIE_002.png',
+        'img/enemies/3_ORK/ORK_03_DIE_003.png',
+        'img/enemies/3_ORK/ORK_03_DIE_004.png',
+        'img/enemies/3_ORK/ORK_03_DIE_005.png',
+        'img/enemies/3_ORK/ORK_03_DIE_006.png',
+        'img/enemies/3_ORK/ORK_03_DIE_007.png',
+        'img/enemies/3_ORK/ORK_03_DIE_008.png',
+        'img/enemies/3_ORK/ORK_03_DIE_009.png'
     ];
     world;
     audio_roar = new Audio('audio/orc_scream.mp3');
@@ -40,6 +66,8 @@ class Endboss extends Enemy {
         super(path);
         this.loadImage('img/enemies/3_ORK/ORK_03_IDLE_000.png');
         this.loadImages(this.IMAGES_IDLE);
+        this.loadImages(this.IMAGES_HURT);
+        this.loadImages(this.IMAGES_DIE);
         this.animate();
         this.audio_roar.volume = 0.3; 
     }
@@ -55,7 +83,13 @@ class Endboss extends Enemy {
             } 
         }, 1000 / 60);
         setInterval(() => {
-            this.playAnimation(this.IMAGES_IDLE);
+            if(this.checkIsDead()) {
+                this.playAnimation(this.IMAGES_DIE);
+            } else if(this.checkIfHurt()) {
+                this.playAnimation(this.IMAGES_HURT);
+            } else {
+                this.playAnimation(this.IMAGES_IDLE);
+            }
         }, 100);
     }
 }
