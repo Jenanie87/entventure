@@ -14,7 +14,8 @@ class World {
     isThrowing = false;
     canThrow = true;
     camera_x = 0; 
-    isGameLost = false;
+    killedEnemies = 0;
+    isGameOver = false;
     audio_bgMusic = new Audio('audio/bg_nature.mp3');
 
     constructor(canvas, keyboard) {
@@ -46,8 +47,8 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
             this.checkEndbossMusic();
-            if (!this.isGameLost) {
-                this.character.lostGame();
+            if (!this.isGameOver) {
+                this.character.endGame();
             }
         }, 100);
     }
@@ -177,24 +178,30 @@ class World {
     }
 
     collisionWithEnemy() {
-        this.level.enemies.forEach((enemy) => {
+        this.level.enemies.forEach((enemy, index) => {
             if(this.character.isColliding(enemy) && !enemy.checkIsDead()) {
-                if(this.character.isAboveGround()) {
+                if(this.character.isAboveEnemy(enemy) && this.character.isAboveGround()) {
                     this.character.bounceOffEnemy();
                     enemy.hit(this.character.damage);
+                    if (enemy.checkIsDead()) {
+                    this.removeEnemy(enemy, index);
+                    }
                 } else {
                     this.character.hit(enemy.damage);
                 }
                 this.healthbar.setPercentage(this.character.healthPoints);
             };
-        })
+        });
     }
 
     collisionWithThrowableObjects() {
         this.throwableObjects.forEach((pinecone) => {
-            this.level.enemies.forEach((enemy) => {
+            this.level.enemies.forEach((enemy, index) => {
                 if(pinecone.isColliding(enemy) && !enemy.isHitByPinecone) {
                     enemy.hit(pinecone.damage);
+                    if (enemy.checkIsDead()) {
+                        this.removeEnemy(enemy, index);
+                        }
                     enemy.isHitByPinecone = true;
                     setTimeout(() => {
                         enemy.isHitByPinecone = false;
@@ -204,8 +211,16 @@ class World {
         });
     }
 
-    removeEnemy() {
+    removeEnemy(enemy) {
+        setTimeout(() => {
+            this.level.enemies = this.level.enemies.filter(e => e !== enemy);
         
+            // Aktualisiere die Indizes der verbleibenden Feinde
+            this.level.enemies.forEach((e, index) => {
+                e.index = index;
+            });
+        }, 2000);
+        this.killedEnemies++;
     }
 
     checkEndbossMusic() {

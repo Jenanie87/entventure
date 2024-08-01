@@ -68,6 +68,11 @@ class MovableObject extends DrawableObject {
                this.y + this.offset.top < obj.y + obj.height - obj.offset.bottom;
     }
 
+    isAboveEnemy(obj) {
+        return this.y + this.height * 0.75 < obj.y + obj.height &&
+        this.y + this.height * 0.75 > obj.y;
+    }
+
     checkIsDead() {
         if (this.healthPoints <= 0) {
             this.isDead = true;

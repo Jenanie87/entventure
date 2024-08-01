@@ -38,10 +38,6 @@ class Pinecone extends MovableObject {
             attempts++;
         // Wiederhole, wenn es eine Kollision gibt und die maximale Anzahl von Versuchen noch nicht erreicht wurde
         } while (colliding && attempts < maxAttempts);
-
-/*         if (attempts >= maxAttempts) {
-            console.warn("Konnte keine gültige Position für Pinecone finden");
-        } */
     }
 
     checkCollisionWithOtherPinecones() {

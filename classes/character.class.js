@@ -148,11 +148,16 @@ class Character extends MovableObject {
             }, 100);
     }
 
-    lostGame() {
+    endGame() {
         if (this.checkIsDead()) {
             disabledKeyboard();
-            this.world.isGameLost = true;
-            setLostScreen();
+            this.world.isGameOver = true;
+            setLostScreen('lost');
+        }
+        if (this.world.level.enemies[world.level.enemies.length - 1].checkIsDead()) {
+            disabledKeyboard();
+            this.world.isGameOver = true;
+            setLostScreen('win');   
         }
     }
 

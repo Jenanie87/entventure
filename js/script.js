@@ -192,13 +192,32 @@ function openFullscreen(element) {
     });
   }
 
-    function setLostScreen() {
-      setTimeout(() => {
-          canvas.classList.add('grayscale'); 
-          setTimeout(() => {
-              canvas.classList.replace('grayscale', 'redtone'); 
-              let lostScreen = document.querySelector('.lost_screen');
-              lostScreen.classList.remove('d_none');
-          }, 1500); 
-      }, 1000); 
+    function setLostScreen(status) {
+        setTimeout(() => {
+            canvas.classList.add('grayscale');
+            setTimeout(() => {
+                if (status === 'lost') {
+                    canvas.classList.replace('grayscale', 'redtone');
+                    document.querySelector('.lost_screen').classList.remove('d_none');
+                }
+            }, 1500);
+            setTimeout(() => {
+                const endscreen = document.querySelector('.endscreen');
+                document.querySelector('.lost_screen').classList.add('d_none');
+                endscreen.classList.add('show_endscreen');
+                endscreen.style.display = 'flex';
+                endscreen.style.backgroundImage = status === 'win' ? `url('img/settings/menu_win.png')` : '';
+                document.querySelector('.collectableInfos').innerHTML = generateCollectableInfosHTML();
+            }, status === 'lost' ? 4000 : 3000);
+        }, 1000);
+    }
+
+    function generateCollectableInfosHTML() {
+        return /* HTML */ `
+            <div class="coins">Collected Coins ${world.coinbar.collectedCoin} 
+                <img class="img_endscreen" src="img/coin/coin_9.png" alt="coin"> 
+            </div>
+            <div class="enemies">Killed Enemies ${world.killedEnemies} 
+                <img class="img_endscreen" src="img/settings/enemy.png" alt="enemy"> 
+            </div>`;
     }

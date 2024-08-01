@@ -60,6 +60,7 @@ canvas.redtone {
     gap: 16px;
     right: 20px;
     top: 390px;
+/*     z-index: 1; */
 }
 
 .img_wrapper {
@@ -95,13 +96,6 @@ canvas.redtone {
 
 .lost_screen {
     position: absolute;
-/*     display: flex;
-    justify-content: center;
-    align-items: center; */
-/*     width: 720px;
-    height: 480px; */
-/*     top: 12px;
-    left: 183px; */
 }
 
 .screen_text {
@@ -115,6 +109,63 @@ canvas.redtone {
         -4px 4px 0 #000,
         4px 4px 0 #000,
         0 0 4px #000; /* Zusätzliches, weiches Schatten für dickeren Rand */
+}
+
+.endscreen {
+    font-family: "Jungle Adventure", sans-serif;
+    position: fixed;
+    top: 158px;
+    width: calc(720px / 2);
+    height: 480px;
+    background-image: url('img/settings/menu_loose.png');
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+    font-size: 24px;
+    color: black;
+    opacity: 1;
+    transition: opacity 2s ease-in-out;
+}
+
+.show_endscreen {
+    opacity: 1;
+}
+
+.btn_playAgain {
+    cursor: pointer;
+    font-family: "Jungle Adventure", sans-serif;
+    letter-spacing: 1.5px;
+    font-size: 32px;
+    border: 4px solid #F6EFD7;
+    border-radius: 16px;
+    color: #F6EFD7;
+    background-image: linear-gradient(to bottom right, #46790D, #559D1F);
+    padding: 8px 16px;
+}
+
+.collectableInfos {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+    margin-top: 32px;
+}
+
+.img_endscreen {
+    width: 32px;
+    height: 32px;
+}
+
+.coins,
+.enemies {
+    align-items: center;
+    display: flex;
+    gap: 8px;
 }
 
 .keyboard_content {
