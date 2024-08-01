@@ -17,11 +17,17 @@ class MovableObject extends DrawableObject {
 
     // functions
 
-    playAnimation(array) {
-        let i = this.currentImage % array.length;
-        let path = array[i];
-        this.img = this.imageCache[path];
-        this.currentImage++;
+    playAnimation(array, stopAtEnd = false) {
+        if (this.currentImage < array.length) {
+            let i = this.currentImage % array.length;
+            let path = array[i];
+            this.img = this.imageCache[path];
+            this.currentImage++;
+        } else if (stopAtEnd) {
+            this.img = this.imageCache[array[array.length - 1]];
+        } else {
+            this.currentImage = 0; // Reset for other animations
+        }
     }
 
     moveRight() {
@@ -66,7 +72,8 @@ class MovableObject extends DrawableObject {
         if (this.healthPoints <= 0) {
             this.isDead = true;
         }
-        return this.isDead;    }
+        return this.isDead;    
+    }
 
     hit(damage) {
         if(this.healthPoints > 0) {

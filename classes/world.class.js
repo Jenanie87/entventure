@@ -178,7 +178,7 @@ class World {
 
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy) => {
-            if(this.character.isColliding(enemy)) {
+            if(this.character.isColliding(enemy) && !enemy.checkIsDead()) {
                 if(this.character.isAboveGround()) {
                     this.character.bounceOffEnemy();
                     enemy.hit(this.character.damage);
@@ -195,7 +195,6 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if(pinecone.isColliding(enemy) && !enemy.isHitByPinecone) {
                     enemy.hit(pinecone.damage);
-                    console.log(enemy.healthPoints);
                     enemy.isHitByPinecone = true;
                     setTimeout(() => {
                         enemy.isHitByPinecone = false;
@@ -203,6 +202,10 @@ class World {
                 }
             });
         });
+    }
+
+    removeEnemy() {
+        
     }
 
     checkEndbossMusic() {

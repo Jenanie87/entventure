@@ -52,6 +52,29 @@ document.addEventListener('keyup', (event) => {
     } 
 });
 
+function disabledKeyboard() {
+    document.addEventListener('keydown', (event) => {
+        if(event.key == 'ArrowRight') {
+            keyboard.RIGHT = false;
+        }
+        if(event.key == 'ArrowLeft') {
+            keyboard.LEFT = false;
+        } 
+        if(event.key == 'ArrowUp') {
+            keyboard.UP = false;
+        } 
+        if(event.key == 'ArrowDown') {
+            keyboard.DOWN = false;
+        } 
+        if(event.key == ' ') {
+            keyboard.SPACE = false;
+        } 
+        if(event.key == 'd') {
+            keyboard.THROW = false;
+        } 
+    });
+};
+
 function toggleFullScreen() {
     let content = document.querySelector('.content');
     if(document.fullscreenElement === content) {

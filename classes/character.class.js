@@ -132,7 +132,7 @@ class Character extends MovableObject {
 
             setInterval(() => {
                 if (this.checkIsDead()) {
-                    this.playAnimation(this.IMAGES_DIE);
+                    this.playAnimation(this.IMAGES_DIE, true);
                 } else if (this.isAboveGround()) {
                     this.playAnimation(this.IMAGES_JUMP);
                 } else if(this.world.isThrowing) {
@@ -150,6 +150,7 @@ class Character extends MovableObject {
 
     lostGame() {
         if (this.checkIsDead()) {
+            disabledKeyboard();
             this.world.isGameLost = true;
             setLostScreen();
         }

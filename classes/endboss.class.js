@@ -84,7 +84,7 @@ class Endboss extends Enemy {
         }, 1000 / 60);
         setInterval(() => {
             if(this.checkIsDead()) {
-                this.playAnimation(this.IMAGES_DIE);
+                this.playAnimation(this.IMAGES_DIE, true);
             } else if(this.checkIfHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else {
