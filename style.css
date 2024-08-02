@@ -113,8 +113,8 @@ canvas.redtone {
 
 .endscreen {
     font-family: "Jungle Adventure", sans-serif;
-    position: fixed;
-    top: 158px;
+    position: absolute;
+    top: 0px;
     width: calc(720px / 2);
     height: 480px;
     background-image: url('img/settings/menu_loose.png');

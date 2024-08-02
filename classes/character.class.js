@@ -88,6 +88,7 @@ class Character extends MovableObject {
     world;
     audio_walking = new Audio('audio/walking.mp3');
     audio_jumping = new Audio('audio/jumping2.mp3');
+    audio_bouncing = new Audio('audio/boing1.mp3');
     
 
     constructor() {
@@ -149,15 +150,17 @@ class Character extends MovableObject {
     }
 
     endGame() {
-        if (this.checkIsDead()) {
-            disabledKeyboard();
-            this.world.isGameOver = true;
-            setLostScreen('lost');
-        }
-        if (this.world.level.enemies[world.level.enemies.length - 1].checkIsDead()) {
-            disabledKeyboard();
-            this.world.isGameOver = true;
-            setLostScreen('win');   
+        if(this.world.endboss != null) {
+            if (this.checkIsDead()) {
+                disabledKeyboard();
+                this.world.isGameOver = true;
+                setLostScreen('lost');
+            }
+            if (this.world.endboss.checkIsDead()) {
+                disabledKeyboard();
+                this.world.isGameOver = true;
+                setLostScreen('win');   
+            }
         }
     }
 
@@ -172,5 +175,7 @@ class Character extends MovableObject {
 
     bounceOffEnemy() {
         this.speedY = 15;
+        this.audio_bouncing.currentTime = 0;
+        this.audio_bouncing.play();
     }
 }

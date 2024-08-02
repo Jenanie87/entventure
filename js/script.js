@@ -139,6 +139,8 @@ function openFullscreen(element) {
         }
     });
     world.character.audio_jumping.volume = 0.0;
+    world.character.audio_bouncing.volume = 0.0;
+    world.audio_roar.volume = 0.0;
     world.character.audio_walking.volume = 0.0;
     world.level.coins.forEach(coin => {
         coin.audio_collecting.volume = 0.0;
@@ -156,6 +158,8 @@ function openFullscreen(element) {
         world.audio_bgMusic.play();
     }
     world.character.audio_jumping.volume = 0.3;
+    world.character.audio_bouncing.volume = 0.3;
+    world.audio_roar.volume = 0.3;
     world.character.audio_walking.volume = 0.3;
     world.level.coins.forEach(coin => {
         coin.audio_collecting.volume = 0.3;
@@ -197,6 +201,7 @@ function openFullscreen(element) {
             canvas.classList.add('grayscale');
             setTimeout(() => {
                 if (status === 'lost') {
+                    world.audio_wasted.play();
                     canvas.classList.replace('grayscale', 'redtone');
                     document.querySelector('.lost_screen').classList.remove('d_none');
                 }
