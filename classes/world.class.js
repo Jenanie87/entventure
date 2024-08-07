@@ -1,13 +1,11 @@
 class World {
 
     //properties
-    character = new Character(); // Eine Instanz der Klasse Character
+    character = new Character(); 
     healthbar = new Healthbar();
     coinbar = new Coinbar();
     pineconebar = new Pineconebar();
-
     throwableObjects = [new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject()];
-    // Eigenschaften aus dem Level-Objekt übernehmen
     level = level1;
     canvas;
     ctx;
@@ -22,7 +20,7 @@ class World {
     endboss = null;
     audio_bgMusic = new Audio('audio/bg_nature.mp3');
     audio_wasted = new Audio('audio/wasted.mp3');
-    audio_roar = new Audio('audio/orc_scream.mp3');
+    audio_roar = new Audio('audio/orc_scream1.mp3');
     roarPlayed = false;
 
     constructor(canvas, keyboard) {
@@ -55,11 +53,10 @@ class World {
             this.checkCollisions();
             this.checkThrowObjects();
             this.startEndboss();
-/*             this.checkEndbossMusic(); */
             if (!this.isGameOver) {
                 this.character.endGame();
             }
-        }, 100);
+        }, 50);
     }
 
     checkCollisions() {
@@ -202,10 +199,6 @@ class World {
                     this.character.hit(enemy.damage);
                 }
                 this.healthbar.setPercentage(this.character.healthPoints);
-                if(this.endboss != null) {
-                    console.log(this.endboss.healthPoints);
-                    this.healthbar_endboss.setPercentage(this.endboss.healthPoints);
-                }
             };
         });
     }
@@ -223,7 +216,7 @@ class World {
                         enemy.isHitByPinecone = false;
                     }, 1000);
                     if(this.endboss != null) {
-                        console.log(this.endboss.healthPoints);
+/*                         console.log(this.endboss.healthPoints); */
                         this.healthbar_endboss.setPercentage(this.endboss.healthPoints);
                     }
                 }
@@ -242,31 +235,61 @@ class World {
         this.killedEnemies++;
     }
 
-/*     checkEndbossMusic() {
-        if (this.character.x > 2000 && !this.level.enemies[world.level.enemies.length - 1].endbossMusicPlayed) {
-            this.playEndbossMusic();
-        }
-    } */
-
     playEndbossMusic() {
         let imgSound = document.querySelector('.img_sound');
         let imgMusic = document.querySelector('.img_music');
         if(imgSound.src.includes('misic.png') && imgMusic.src.includes('sisic.png')) {
-            this.audio_bgMusic.pause();
             this.level.enemies[world.level.enemies.length - 1].audio_endbossMusic.play();
             this.level.enemies[world.level.enemies.length - 1].endbossMusicPlayed = true;
         }    
     }
 
+    moveCharacterToX(xPosition) {
+        let moveToPosition = () => {
+            if (this.character.x < xPosition) {
+                this.character.moveRight();
+                requestAnimationFrame(moveToPosition);
+            } else {
+                // Stoppe die Bewegung und starte den Kampfmodus
+                this.character.x = xPosition;
+                this.startBattleMode();
+            }
+        };
+        moveToPosition();
+    }
+
     startEndboss() {
-        if(!this.endbossFightStarted && this.character.x > 1700 && !this.endboss) {
-            this.endbossFightStarted = true;
-            this.healthbar_endboss = new HealthbarEndboss();
-            this.endboss = new Endboss();
-            this.level.enemies.push(this.endboss);
+        if (!this.endbossFightStarted && this.character.x > 1900 && !this.endboss) {
+            this.initializeBossFight();
+            setTimeout(() => {
+                this.moveCharacterToX(2095); 
+            }, 1500);
+        }       
+    }
+
+    initializeBossFight() {
+        this.endboss = new Endboss();
+        this.level.enemies.push(this.endboss);
+        disableKeyboard();
+        setTimeout(() => {
             this.audio_roar.play();
             this.roarPlayed = true;
-            this.playEndbossMusic();
-        }
+        }, 500);
+        setTimeout(() => {
+            document.querySelector('.screen_endboss').classList.add('show_screen_endboss');
+            this.audio_bgMusic.pause();
+        }, 1000);
+    }
+
+    startBattleMode() {
+        this.endbossFightStarted = true;
+        setTimeout(() => {
+            document.querySelector('.screen_endboss').classList.remove('show_screen_endboss');
+        }, 3000);
+        setTimeout(() => {
+            this.healthbar_endboss = new HealthbarEndboss();
+            this.playEndbossMusic(); 
+            enableKeyboard();
+        }, 5000);
     }
 }

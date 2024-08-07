@@ -14,10 +14,9 @@
     background-image: url(img/background/Cartoon_Forest_BG_04/Cartoon_Forest_BG_04.png);
 }
 
-h1 {
+h1,
+h2 {
     font-family: "Anir b", sans-serif;
-    font-size: 48px;
-    padding: 24px 0px;
     text-align: center;
     background: -webkit-linear-gradient(#B09B23, #663F1C);
     -webkit-background-clip: text;
@@ -35,6 +34,49 @@ h1 {
     position: relative;
 }
 
+.headline_size {
+    font-size: 48px;
+    padding: 24px 0px;
+}
+
+.start_screen {
+    width: 720px;
+    height: 480px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+
+.position_container {
+    position: absolute;
+    display: flex;
+    margin-top: 55px;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.img_startScreen {
+    width: 100%;
+    height: 100%;
+}
+
+.text_startScreen {
+    line-height: 50px;
+    font-size: 2.7em;
+}
+
+.button_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.start_game {
+    width: 175px;
+}
+
 canvas {
     display: block;
     transition: filter 1s ease, background-color 1s ease;
@@ -49,18 +91,35 @@ canvas.redtone {
 }
 
 .fullscreen {
+/*     border: 1px solid red; */
     width: 720px;
     height: 480px;
+    margin-top: -87px;
     position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
 }
 
 .wrapper {
-    position: absolute;
     display: flex;
     gap: 16px;
-    right: 20px;
-    top: 390px;
-/*     z-index: 1; */
+    width: 100%;
+    padding: 0 15px;
+    position: absolute;
+    z-index: 1;
+}
+
+.left_part {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.right_part {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
 }
 
 .img_wrapper {
@@ -94,6 +153,24 @@ canvas.redtone {
       rgb(0, 0, 0);    
 }
 
+.screen_endboss {
+    position: absolute;
+    text-align: center;
+    font-family: "Anir b", sans-serif;
+    background: -webkit-linear-gradient(#ff0000, #330303);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(4px 2px black);
+    font-size: 40px;
+    top: 220px;
+    opacity: 0;
+    transition: opacity 4s ease-in-out;
+}
+ 
+.show_screen_endboss {
+    opacity: 1;
+}
+
 .lost_screen {
     position: absolute;
 }
@@ -114,7 +191,9 @@ canvas.redtone {
 .endscreen {
     font-family: "Jungle Adventure", sans-serif;
     position: absolute;
-    top: 0px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     width: calc(720px / 2);
     height: 480px;
     background-image: url('img/settings/menu_loose.png');
@@ -136,7 +215,7 @@ canvas.redtone {
     opacity: 1;
 }
 
-.btn_playAgain {
+.btn {
     cursor: pointer;
     font-family: "Jungle Adventure", sans-serif;
     letter-spacing: 1.5px;
@@ -146,6 +225,10 @@ canvas.redtone {
     color: #F6EFD7;
     background-image: linear-gradient(to bottom right, #46790D, #559D1F);
     padding: 8px 16px;
+}
+
+.btn:hover {
+    background-image: linear-gradient(to bottom right, #63aa12, #72d229);
 }
 
 .collectableInfos {
@@ -198,20 +281,67 @@ canvas.redtone {
 
 /* smartphones */
 
-@media screen and (max-width: 720px) {
-    canvas {
-        width: 100%;
+@media screen and (max-width: 930px) {
+    .headline_size {
+        line-height: 55px;
+    }
+}
+
+@media screen and (max-width: 730px) {
+
+.main_container {
+    height: calc(100% - 126px);
+}
+    .settings {
+        width: 99%;
+        padding: 4px;
     }
     .fullscreen {
+        margin-top: -75px;
+    }
+    .headline_size {
+        padding: 8px 0px;
+    }
+}
+
+@media screen and (max-width: 720px) {
+    canvas,
+    .fullscreen,
+    .start_screen {
         width: 100%;
+    }
+
+    .keyboard_content {
+        gap: 8px;
+    }
+    .key_text {
+        font-size: 24px;
+    }
+    .img_key {
+        height: 40px;
+        width: 40px;
+    }
+    .fullscreen {
+        margin-top: -65px;
+    }
+}
+
+@media screen and (max-width: 650px) {
+    .headline_size {
+        font-size: 40px;
     }
 }
 
 @media screen and (max-height: 480px) {
-    canvas {
+    canvas,
+    .fullscreen,
+    .start_screen {
         height: 100vh;
     }
-    .fullscreen {
-        height: 100vh;
+    .settings {
+        padding: 4px;
+    }
+    .keyboard_content {
+        gap: 8px;
     }
 }

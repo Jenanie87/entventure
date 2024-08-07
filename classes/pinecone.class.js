@@ -17,6 +17,7 @@ class Pinecone extends MovableObject {
     constructor(index) {
         super();
         this.index = index;
+        this.audio_collect.volume = 0.3;
         this.width = 150;
         this.height = 150;
         this.loadImage('img/pinecone/1_pinecone_on_ground.png');

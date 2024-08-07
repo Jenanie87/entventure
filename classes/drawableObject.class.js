@@ -35,12 +35,7 @@ class DrawableObject {
             ctx.beginPath();
             ctx.lineWidth = '2';
             ctx.strokeStyle = 'red';
-
-            let offsetX = this.x + this.offset.left;
-            let offsetY = this.y + this.offset.top;
-            let offsetWidth = this.width - this.offset.left - this.offset.right;
-            let offsetHeight = this.height - this.offset.top - this.offset.bottom;
-            ctx.rect(offsetX, offsetY, offsetWidth, offsetHeight);
+            ctx.rect(this.x + this.offset.left, this.y + this.offset.top,(this.x + this.width - this.offset.right) - (this.x + this.offset.left),(this.y + this.height - this.offset.bottom) - (this.y + this.offset.top));
             ctx.stroke();
         }
     }

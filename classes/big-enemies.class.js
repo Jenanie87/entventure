@@ -19,7 +19,6 @@ class BigEnemy extends Enemy {
     }
 
     // functions
-
     animate() {
         setInterval(() => {
             if(!this.checkIsDead() && !this.checkIfHurt()) {

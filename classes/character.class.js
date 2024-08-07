@@ -96,7 +96,8 @@ class Character extends MovableObject {
         this.x = -100;
         this.loadImage('img/character/1/Ent_01__IDLE_000.png');
         this.audio_walking.playbackRate = 0.5;
-        this.audio_jumping.volume = 0.3;  
+        this.audio_jumping.volume = 0.3; 
+        this.audio_bouncing.volume = 0.3; 
         this.loadImages(this.IMAGES_WALK);
         this.loadImages(this.IMAGES_JUMP);
         this.loadImages(this.IMAGES_IDLE);
@@ -108,9 +109,6 @@ class Character extends MovableObject {
     }
 
     // functions
-
-
-
     animate() {
 
         setInterval(() => {
@@ -150,18 +148,18 @@ class Character extends MovableObject {
     }
 
     endGame() {
-        if(this.world.endboss != null) {
             if (this.checkIsDead()) {
-                disabledKeyboard();
+                disableKeyboard();
                 this.world.isGameOver = true;
                 setLostScreen('lost');
             }
-            if (this.world.endboss.checkIsDead()) {
-                disabledKeyboard();
-                this.world.isGameOver = true;
-                setLostScreen('win');   
+            if (this.world.endboss != null) {
+                if (this.world.endboss.checkIsDead()) {
+                    disableKeyboard();
+                    this.world.isGameOver = true;
+                    setLostScreen('win');   
+                }
             }
-        }
     }
 
     updateCamera() {
@@ -178,4 +176,5 @@ class Character extends MovableObject {
         this.audio_bouncing.currentTime = 0;
         this.audio_bouncing.play();
     }
+
 }

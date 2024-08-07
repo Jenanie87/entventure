@@ -8,19 +8,40 @@
     <title>Entventure: Bark & Bounce</title>
     <link rel="icon" type="image/svg+xml" href="img/favicon.png"/>
 </head>
-<body onload="init()">
+<body>
     <div class="content">
-        <h1 class="/d_none">Entventure: Bark & Bounce</h1>
+        <h1 class="/d_none headline_size">Entventure: Bark & Bounce</h1>
         <div class="main_container">
-            <canvas width="720" height="480">
+            <canvas class="d_none" width="720" height="480">
         
             </canvas>
+            <div class="start_screen">
+                <div class="position_container">
+                    <h2 class="text_startScreen">Entventure: <br> Bark & Bounce</h2>
+                    <div class="button_container">
+                        <button onclick="startGame()" class="btn start_game">Play</button>
+                        <button class="btn start_game">Ent-Mode</button>
+                    </div>
+                </div>
+                <img class="img_startScreen" src="img/start_screen.png" alt="">
+            </div>
+
             <div class="fullscreen">
                 <div class="wrapper">
-                    <img onclick="toggleMusic()" class="img_wrapper img_music" src="img/settings/sisic.png" alt="music icon">
-                   <img onclick="toggleSound()" class="img_wrapper img_sound" src="img/settings/misic.png" alt="sound icon">
-                   <img onclick="toggleFullScreen()" class="img_wrapper" src="img/settings/screen.png" alt="screen img">
+                    <div class="left_part">
+                        <img class="img_wrapper" src="img/settings/about.png" alt="information icon">
+                    </div>
+                    <div class="right_part">
+                        <img onclick="toggleMusic()" class="img_wrapper img_music" src="img/settings/sisic.png" alt="music icon">
+                        <img onclick="toggleSound()" class="img_wrapper img_sound" src="img/settings/misic.png" alt="sound icon">
+                        <img onclick="toggleFullScreen()" class="img_wrapper" src="img/settings/screen.png" alt="screen img">
+                    </div>
+
                 </div>
+            </div>
+            <div class="screen_endboss">
+                <p class="firstname_endboss">Grimgor</p>
+                <p class="secondname_endboss">der Eisenhäuter</p>
             </div>
             <div class="d_none lost_screen">
                 <p class="screen_text">wasted</p>
@@ -29,7 +50,7 @@
                 <div class="collectableInfos">
 
                 </div>
-                <button class="btn_playAgain">Play again?</button>
+                <button class="btn">Play again?</button>
             </div>
             <div class="settings">
                 <div class="keyboard_content">

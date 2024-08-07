@@ -70,7 +70,7 @@ class MovableObject extends DrawableObject {
 
     isAboveEnemy(obj) {
         return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&
-                this.y + this.height - this.offset.bottom > obj.y + obj.offset.top
+               this.y + this.height - this.offset.bottom > obj.y + obj.offset.top
     }
 
     checkIsDead() {

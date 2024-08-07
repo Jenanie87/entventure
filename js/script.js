@@ -1,79 +1,87 @@
 let canvas;
 let world; // Erstellung des Objektes World
 let keyboard = new Keyboard(); // Erstellung der Instanz Keyboard
+let keyboardListeners = [];
 
+
+function startGame() {
+    document.querySelector('canvas').classList.remove('d_none');
+    document.querySelector('.start_screen').style.display = 'none';
+    init();
+}
 
 function init() {
     canvas = document.querySelector('canvas');
+    enableKeyboard();
     world = new World(canvas, keyboard);
-/*     console.log(world.character); */
+    world.audio_bgMusic.play();
 }
 
+function disableKeyboard() {
+    keyboardListeners = [
+        { event: 'keydown', listener: handleKeyDown },
+        { event: 'keyup', listener: handleKeyUp }
+    ];
+    keyboardListeners.forEach(({ event, listener }) => window.removeEventListener(event, listener));
 
-document.addEventListener('keydown', (event) => {
-    if(event.key == 'ArrowRight') {
-        keyboard.RIGHT = true;
+    // Reset
+    Object.keys(world.keyboard).forEach(key => world.keyboard[key] = false);
+}
+
+function enableKeyboard() {
+    keyboardListeners.forEach(({ event, listener }) => window.addEventListener(event, listener));
+}
+
+function handleKeyDown(event) {
+    switch(event.key) {
+        case 'ArrowRight':
+            world.keyboard.RIGHT = true;
+            break;
+        case 'ArrowLeft':
+            world.keyboard.LEFT = true;
+            break;
+        case 'ArrowUp':
+            world.keyboard.UP = true;
+            break;
+        case 'ArrowDown':
+            world.keyboard.DOWN = true;
+            break;
+        case ' ':
+            world.keyboard.SPACE = true;
+            break;
+        case 'd':
+        case 'D':
+            world.keyboard.THROW = true;
+            break;
     }
-    if(event.key == 'ArrowLeft') {
-        keyboard.LEFT = true;
-    } 
-    if(event.key == 'ArrowUp') {
-        keyboard.UP = true;
-    } 
-    if(event.key == 'ArrowDown') {
-        keyboard.DOWN = true;
-    } 
-    if(event.key == ' ') {
-        keyboard.SPACE = true;
-    } 
-    if(event.key == 'd') {
-        keyboard.THROW = true;
-    } 
-});
+}
 
-document.addEventListener('keyup', (event) => {
-    if(event.key == 'ArrowRight') {
-        keyboard.RIGHT = false;
+function handleKeyUp(event) {
+    switch(event.key) {
+        case 'ArrowRight':
+            world.keyboard.RIGHT = false;
+            break;
+        case 'ArrowLeft':
+            world.keyboard.LEFT = false;
+            break;
+        case 'ArrowUp':
+            world.keyboard.UP = false;
+            break;
+        case 'ArrowDown':
+            world.keyboard.DOWN = false;
+            break;
+        case ' ':
+            world.keyboard.SPACE = false;
+            break;
+        case 'd':
+        case 'D':
+            world.keyboard.THROW = false;
+            break;
     }
-    if(event.key == 'ArrowLeft') {
-        keyboard.LEFT = false;
-    } 
-    if(event.key == 'ArrowUp') {
-        keyboard.UP = false;
-    } 
-    if(event.key == 'ArrowDown') {
-        keyboard.DOWN = false;
-    } 
-    if(event.key == ' ') {
-        keyboard.SPACE = false;
-    } 
-    if(event.key == 'd') {
-        keyboard.THROW = false;
-    } 
-});
+}
 
-function disabledKeyboard() {
-    document.addEventListener('keydown', (event) => {
-        if(event.key == 'ArrowRight') {
-            keyboard.RIGHT = false;
-        }
-        if(event.key == 'ArrowLeft') {
-            keyboard.LEFT = false;
-        } 
-        if(event.key == 'ArrowUp') {
-            keyboard.UP = false;
-        } 
-        if(event.key == 'ArrowDown') {
-            keyboard.DOWN = false;
-        } 
-        if(event.key == ' ') {
-            keyboard.SPACE = false;
-        } 
-        if(event.key == 'd') {
-            keyboard.THROW = false;
-        } 
-    });
-};
+window.addEventListener('keydown', handleKeyDown);
+window.addEventListener('keyup', handleKeyUp);
 
 function toggleFullScreen() {
     let content = document.querySelector('.content');
@@ -138,35 +146,16 @@ function openFullscreen(element) {
             enemy.audio_roar.volume = 0.0;
         }
     });
-    world.character.audio_jumping.volume = 0.0;
-    world.character.audio_bouncing.volume = 0.0;
-    world.audio_roar.volume = 0.0;
-    world.character.audio_walking.volume = 0.0;
-    world.level.coins.forEach(coin => {
-        coin.audio_collecting.volume = 0.0;
-    });
-    world.level.pinecones.forEach(pinecone => {
-        pinecone.audio_collect.volume = 0.0;
-    });
+    changeVolume(0.0);
   }
 
   function turnSoundOn() {
     let endbossMusicPlaying = false;
     playMusicEndboss();
-    
     if (!endbossMusicPlaying) {
         world.audio_bgMusic.play();
     }
-    world.character.audio_jumping.volume = 0.3;
-    world.character.audio_bouncing.volume = 0.3;
-    world.audio_roar.volume = 0.3;
-    world.character.audio_walking.volume = 0.3;
-    world.level.coins.forEach(coin => {
-        coin.audio_collecting.volume = 0.3;
-    });
-    world.level.pinecones.forEach(pinecone => {
-        pinecone.audio_collect.volume = 0.3;
-    });
+    changeVolume(0.3);
   }
 
   function turnMusicOff() {
@@ -185,6 +174,20 @@ function openFullscreen(element) {
     if (!endbossMusicPlaying) {
         world.audio_bgMusic.play();
     }
+  }
+
+  function changeVolume(volume) {
+    world.character.audio_jumping.volume = volume;
+    world.character.audio_bouncing.volume = volume;
+    world.audio_roar.volume = volume;
+    world.character.audio_walking.volume = volume;
+    world.audio_wasted.volume = volume;
+    world.level.coins.forEach(coin => {
+        coin.audio_collecting.volume = volume;
+    });
+    world.level.pinecones.forEach(pinecone => {
+        pinecone.audio_collect.volume = volume;
+    });
   }
 
   function playMusicEndboss() {
