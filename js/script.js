@@ -256,7 +256,6 @@ function currentDisplayStyle() {
 
 function toggleSources() {
     let currentDisplay = currentDisplayStyle();
-    console.log(currentDisplay);
     if (currentDisplay == 'none') {
         document.querySelector('.screen_sources').style.display = 'flex';
     } else {
