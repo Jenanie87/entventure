@@ -1,6 +1,5 @@
 class Keyboard {
     // properties
-
     LEFT = false;
     RIGHT = false;
     UP = false;

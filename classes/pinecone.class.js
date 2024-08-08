@@ -1,4 +1,5 @@
 class Pinecone extends MovableObject {
+    //properties
     y = 330;
     minDistance = 100;
     offset = {
@@ -12,7 +13,6 @@ class Pinecone extends MovableObject {
         'img/pinecone/1_pinecone_on_ground.png',
         'img/pinecone/2_pinecone_on_ground.png',
     ];
-    audio_collect = new Audio('audio/collect.mp3');
 
     constructor(index) {
         super();
@@ -24,36 +24,29 @@ class Pinecone extends MovableObject {
         this.loadImages(this.IMAGES);
         this.animate();
     }
+    audio_collect = new Audio('audio/collect.mp3');
     world;
 
+    //functions
     setRandomPosition() {
-        const maxAttempts = 100; // Maximalversuche, um eine passende Position zu finden
+        const maxAttempts = 100;
         let attempts = 0;
         let colliding;
         do {
-            // Setze eine zufällige x-Position zwischen 200 und 2200 (200 + 2000)
             this.x = 200 + Math.floor(Math.random() * 2000);
-            // Prüfe, ob diese Position mit einer anderen Pinecone kollidiert
             colliding = this.checkCollisionWithOtherPinecones();
-            // Erhöhe den Versuchszähler
             attempts++;
-        // Wiederhole, wenn es eine Kollision gibt und die maximale Anzahl von Versuchen noch nicht erreicht wurde
         } while (colliding && attempts < maxAttempts);
     }
 
     checkCollisionWithOtherPinecones() {
-        if (!this.world) return false; // Wenn kein Bezug zur Welt besteht, gibt es keine Kollision
+        if (!this.world) return false;
         for (let pinecone of this.world.level.pinecones) {
-            // Überprüfe jedes andere Pinecone-Objekt in der Welt
-            if (this !== pinecone && this.isTooClose(pinecone)) {
-                return true; // Kollision gefunden
+            if (this.isCollisionCandidate(pinecone)) {
+                return true;
             }
         }
-        return false; // Keine Kollision
-    }
-
-    isTooClose(pinecone) {
-        return Math.abs(this.x - pinecone.x) < this.minDistance;
+        return false;
     }
 
     animate() {
@@ -63,7 +56,7 @@ class Pinecone extends MovableObject {
     }
 
     collectPinecone() {
-        if(!this.world.throwableObjects.length <= 0) {
+        if (this.hasThrowableObjects()) {
             this.world.level.pinecones.splice(this.index, 1);
             this.world.level.pinecones.forEach((pinecone, index) => {
                 pinecone.index = index;
@@ -71,5 +64,17 @@ class Pinecone extends MovableObject {
             this.world.throwableObjects.pop();
             this.audio_collect.play();
         }
+    }
+
+    hasThrowableObjects() {
+        return !this.world.throwableObjects.length <= 0;
+    }
+
+    isCollisionCandidate(pinecone) {
+        return this !== pinecone && this.isTooClose(pinecone);
+    }
+
+    isTooClose(pinecone) {
+        return Math.abs(this.x - pinecone.x) < this.minDistance;
     }
 }

@@ -28,18 +28,18 @@ class HealthbarEndboss extends DrawableObject {
     }
 
     resolveImageIndex() {
-        if(this.percentage == 60) {
+        if (this.percentage == 60) {
             return 5;
-        } else if(this.percentage > 48) {
+        } else if (this.percentage > 48) {
             return 4;
-        } else if(this.percentage > 36) {
+        } else if (this.percentage > 36) {
             return 3;
-        } else if(this.percentage > 24) {
+        } else if (this.percentage > 24) {
             return 2;
-        } else if(this.percentage > 12) {
+        } else if (this.percentage > 12) {
             return 1;
         } else {
             return 0;
         }
-    } 
+    }
 }

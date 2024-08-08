@@ -1,7 +1,6 @@
 class World {
-
     //properties
-    character = new Character(); 
+    character = new Character();
     healthbar = new Healthbar();
     coinbar = new Coinbar();
     pineconebar = new Pineconebar();
@@ -13,7 +12,7 @@ class World {
     healthbar_endboss;
     isThrowing = false;
     canThrow = true;
-    camera_x = 0; 
+    camera_x = 0;
     killedEnemies = 0;
     isGameOver = false;
     endbossFightStarted = false;
@@ -24,7 +23,7 @@ class World {
     roarPlayed = false;
 
     constructor(canvas, keyboard, soundEnabled, musicEnabled) {
-        this.audio_roar.volume = 0.3; 
+        this.audio_roar.volume = 0.3;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -47,8 +46,8 @@ class World {
         this.level.coins.forEach((coin) => {
             coin.world = this;
         });
-        this.level.enemies.forEach(enemy => enemy.world = this); 
-        this.throwableObjects.forEach(object => object.world = this); 
+        this.level.enemies.forEach(enemy => enemy.world = this);
+        this.throwableObjects.forEach(object => object.world = this);
     }
 
     run() {
@@ -83,7 +82,7 @@ class World {
         this.level.pinecones.forEach(pinecone => {
             pinecone.audio_collect.volume = volume;
         });
-      }
+    }
 
     checkCollisions() {
         this.collisionWithEnemy();
@@ -93,25 +92,33 @@ class World {
     }
 
     checkThrowObjects() {
-        if(this.keyboard.THROW && this.canThrow) {
-            if(this.throwableObjects.length < 10) {
-                let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
-                pinecone.world = this;
-                this.throwableObjects.push(pinecone);
-                this.pineconebar.setPercentage(this.throwableObjects.length - 1);
-                pinecone.throw();
-                this.isThrowing = true;
-                setTimeout(() => {
-                    this.createNewPinecone();  
-                }, 5000);
+        if (this.canThrowPinecones()) {
+            if (this.hasPineconeCapacity()) {
+                this.createAndThrowPinecone();
             }
-            this.canThrow = false;
-            setTimeout(() => {
-                this.canThrow = true;
-            }, 500);
+            this.resetThrowingAbility();
         } else {
             this.isThrowing = false;
         }
+    }
+
+    createAndThrowPinecone() {
+        let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
+        pinecone.world = this;
+        this.throwableObjects.push(pinecone);
+        this.pineconebar.setPercentage(this.throwableObjects.length - 1);
+        pinecone.throw();
+        this.isThrowing = true;
+        setTimeout(() => {
+            this.createNewPinecone();
+        }, 5000);
+    }
+
+    resetThrowingAbility() {
+        this.canThrow = false;
+        setTimeout(() => {
+            this.canThrow = true;
+        }, 500);
     }
 
     createNewPinecone() {
@@ -135,25 +142,12 @@ class World {
         this.addObjectsArrayToCanvas(this.level.backgroundObjects);
 
         this.ctx.translate(-this.camera_x, 0); // Back
-        // Space for fixed Objects
-        this.addToCanvas(this.healthbar);
-        this.addToCanvas(this.coinbar);
-        this.addToCanvas(this.pineconebar);
-        if(this.healthbar_endboss) {
-            this.addToCanvas(this.healthbar_endboss);
-        }
+        this.drawFixedUIElements();
         this.ctx.translate(this.camera_x, 0); //Forwards
-        
-        this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
-        this.addObjectsArrayToCanvas(this.throwableObjects);
-        this.addObjectsArrayToCanvas(this.level.enemies);
-        this.addObjectsArrayToCanvas(this.level.pinecones);
-        this.addObjectsArrayToCanvas(this.level.coins);
-        this.addObjectsArrayToCanvas(this.level.foregroundObjects);
 
+        this.drawingMovingObjects();
         this.ctx.translate(-this.camera_x, 0);
-        //draw wird immer wieder aufgerufen
-        requestAnimationFrame(() => {
+        requestAnimationFrame(() => { //draw wird immer wieder aufgerufen
             this.draw();
         });
     }
@@ -161,7 +155,7 @@ class World {
     addObjectsArrayToCanvas(objects) {
         objects.forEach(object => {
             this.addToCanvas(object);
-    });
+        });
     }
 
     addToCanvas(MovableObject) {
@@ -170,9 +164,27 @@ class World {
         }
         MovableObject.draw(this.ctx);
         MovableObject.drawRect(this.ctx);
-        if(MovableObject.otherDirection) { // Bedingung - wenn ctx verändert wurde
+        if (MovableObject.otherDirection) { // Bedingung - wenn ctx verändert wurde
             this.flipImageBack(MovableObject);
         }
+    }
+
+    drawFixedUIElements() {
+        this.addToCanvas(this.healthbar);
+        this.addToCanvas(this.coinbar);
+        this.addToCanvas(this.pineconebar);
+        if (this.healthbar_endboss) {
+            this.addToCanvas(this.healthbar_endboss);
+        };
+    }
+
+    drawingMovingObjects() {
+        this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
+        this.addObjectsArrayToCanvas(this.throwableObjects);
+        this.addObjectsArrayToCanvas(this.level.enemies);
+        this.addObjectsArrayToCanvas(this.level.pinecones);
+        this.addObjectsArrayToCanvas(this.level.coins);
+        this.addObjectsArrayToCanvas(this.level.foregroundObjects);
     }
 
     flipImage(object) {
@@ -188,14 +200,14 @@ class World {
     }
 
     playBgMusicLoop() {
-        this.audio_bgMusic.volume = 0.2;
+        this.audio_bgMusic.volume = 0.3;
         this.audio_bgMusic.loop = true;
         this.audio_bgMusic.play();
     }
 
     collisionWithCoin() {
         this.level.coins.forEach((coin, index) => {
-            if(this.character.isColliding(coin)) {
+            if (this.character.isColliding(coin)) {
                 coin.collectCoin(index);
                 this.coinbar.collectedCoin++;
                 this.coinbar.setPercentage(this.coinbar.collectedCoin);
@@ -205,7 +217,7 @@ class World {
 
     collisionWithPinecone() {
         this.level.pinecones.forEach((pinecone) => {
-            if(this.character.isColliding(pinecone)) {
+            if (this.character.isColliding(pinecone)) {
                 pinecone.collectPinecone();
                 this.pineconebar.setPercentage(this.throwableObjects.length);
             }
@@ -214,13 +226,9 @@ class World {
 
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy, index) => {
-            if(this.character.isColliding(enemy) && !enemy.checkIsDead()) {
-                if(this.character.isAboveEnemy(enemy) && this.character.isAboveGround()) {
-                    this.character.bounceOffEnemy();
-                    enemy.hit(this.character.damage);
-                    if (enemy.checkIsDead()) {
-                    this.removeEnemy(enemy, index);
-                    }
+            if (this.characterHitsAliveEnemy(enemy)) {
+                if (this.characterStompsEnemy(enemy)) {
+                    this.handleEnemyStomp(enemy, index);
                 } else {
                     this.character.hit(enemy.damage);
                 }
@@ -229,31 +237,41 @@ class World {
         });
     }
 
+    handleEnemyStomp(enemy, index) {
+        this.character.bounceOffEnemy();
+        enemy.hit(this.character.damage);
+        if (enemy.checkIsDead()) {
+            this.removeEnemy(enemy, index);
+        }
+    }
+
     collisionWithThrowableObjects() {
         this.throwableObjects.forEach((pinecone) => {
             this.level.enemies.forEach((enemy, index) => {
-                if(pinecone.isColliding(enemy) && !enemy.isHitByPinecone) {
-                    enemy.hit(pinecone.damage);
-                    if (enemy.checkIsDead()) {
-                        this.removeEnemy(enemy, index);
-                        }
-                    enemy.isHitByPinecone = true;
-                    setTimeout(() => {
-                        enemy.isHitByPinecone = false;
-                    }, 1000);
-                    if(this.endboss != null) {
-/*                         console.log(this.endboss.healthPoints); */
-                        this.healthbar_endboss.setPercentage(this.endboss.healthPoints);
-                    }
+                if (this.isValidPineconeHit(pinecone, enemy)) {
+                    this.handlePineconeCollisionWithEnemy(pinecone, enemy, index);
                 }
             });
         });
     }
 
+    handlePineconeCollisionWithEnemy(pinecone, enemy, index) {
+        enemy.hit(pinecone.damage);
+        if (enemy.checkIsDead()) {
+            this.removeEnemy(enemy, index);
+        }
+        enemy.isHitByPinecone = true;
+        setTimeout(() => {
+            enemy.isHitByPinecone = false;
+        }, 1000);
+        if (this.endboss != null) {
+            this.healthbar_endboss.setPercentage(this.endboss.healthPoints);
+        }
+    }
+
     removeEnemy(enemy) {
         setTimeout(() => {
             this.level.enemies = this.level.enemies.filter(e => e !== enemy);
-        
             this.level.enemies.forEach((e, index) => {
                 e.index = index;
             });
@@ -264,19 +282,18 @@ class World {
     playEndbossMusic() {
         let imgSound = document.querySelector('.img_sound');
         let imgMusic = document.querySelector('.img_music');
-        if(imgSound.src.includes('misic.png') && imgMusic.src.includes('sisic.png')) {
+        if (this.areSoundsSet(imgSound, imgMusic)) {
             this.level.enemies[world.level.enemies.length - 1].audio_endbossMusic.play();
             this.level.enemies[world.level.enemies.length - 1].endbossMusicPlayed = true;
-        }    
+        }
     }
 
     moveCharacterToX(xPosition) {
         let moveToPosition = () => {
-            if (this.character.x < xPosition) {
+            if (this.isCharacterLeftOf(xPosition)) {
                 this.character.moveRight();
                 requestAnimationFrame(moveToPosition);
             } else {
-                // Stoppe die Bewegung und starte den Kampfmodus
                 this.character.x = xPosition;
                 this.startBattleMode();
             }
@@ -285,12 +302,12 @@ class World {
     }
 
     startEndboss() {
-        if (!this.endbossFightStarted && this.character.x > 1900 && !this.endboss) {
+        if (this.canEndbossFightStart()) {
             this.initializeBossFight();
             setTimeout(() => {
-                this.moveCharacterToX(2095); 
+                this.moveCharacterToX(2095);
             }, 1500);
-        }       
+        }
     }
 
     initializeBossFight() {
@@ -311,11 +328,43 @@ class World {
         this.endbossFightStarted = true;
         setTimeout(() => {
             document.querySelector('.screen_endboss').classList.remove('show_screen_endboss');
-        }, 3000);
+        }, 2000);
         setTimeout(() => {
             this.healthbar_endboss = new HealthbarEndboss();
-            this.playEndbossMusic(); 
+            this.playEndbossMusic();
             enableKeyboard();
-        }, 5000);
+        }, 4000);
+    }
+
+    canThrowPinecones() {
+        return this.keyboard.THROW && this.canThrow;
+    }
+
+    hasPineconeCapacity() {
+        return this.throwableObjects.length < 10;
+    }
+
+    characterHitsAliveEnemy(enemy) {
+        return this.character.isColliding(enemy) && !enemy.checkIsDead();
+    }
+
+    characterStompsEnemy(enemy) {
+        return this.character.isAboveEnemy(enemy) && this.character.isAboveGround();
+    }
+
+    isValidPineconeHit(pinecone, enemy) {
+        return pinecone.isColliding(enemy) && !enemy.isHitByPinecone;
+    }
+
+    areSoundsSet(imgSound, imgMusic) {
+        return imgSound.src.includes('misic.png') && imgMusic.src.includes('sisic.png');
+    }
+
+    isCharacterLeftOf(xPosition) {
+        return this.character.x < xPosition;
+    }
+
+    canEndbossFightStart() {
+        return !this.endbossFightStarted && this.character.x > 1900 && !this.endboss;
     }
 }

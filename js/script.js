@@ -12,29 +12,10 @@ function startGame() {
     init();
 }
 
-function startEntMode() {
-    document.querySelector('canvas').classList.remove('d_none');
-    document.querySelector('.start_screen').style.display = 'none';
-    initEntMode();
-}
-
 function init() {
     canvas = document.querySelector('canvas');
     enableKeyboard();
     world = new World(canvas, keyboard, soundEnabled, musicEnabled);
-    if (musicEnabled) {
-        world.audio_bgMusic.play();
-    }
-}
-
-function initEntMode() {
-    canvas = document.querySelector('canvas');
-    enableKeyboard();
-    world = new World(canvas, keyboard);
-    world.character.speed = world.character.speed / 2; // Verlangsamt den Charakter
-    world.character.height *= 1.5; // Vergrößert den Charakter
-    world.character.width *= 1.5; // Vergrößert den Charakter
-    world.character.y = 100;
     if (musicEnabled) {
         world.audio_bgMusic.play();
     }
@@ -56,7 +37,7 @@ function enableKeyboard() {
 }
 
 function handleKeyDown(event) {
-    switch(event.key) {
+    switch (event.key) {
         case 'ArrowRight':
             world.keyboard.RIGHT = true;
             break;
@@ -80,7 +61,7 @@ function handleKeyDown(event) {
 }
 
 function handleKeyUp(event) {
-    switch(event.key) {
+    switch (event.key) {
         case 'ArrowRight':
             world.keyboard.RIGHT = false;
             break;
@@ -108,7 +89,7 @@ window.addEventListener('keyup', handleKeyUp);
 
 function toggleFullScreen() {
     let content = document.querySelector('.content');
-    if(document.fullscreenElement === content) {
+    if (document.fullscreenElement === content) {
         closeFullscreen();
     } else {
         openFullscreen(content);
@@ -120,26 +101,26 @@ function openFullscreen(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
     } else if (element.webkitRequestFullscreen) { /* Safari */
-    element.webkitRequestFullscreen();
+        element.webkitRequestFullscreen();
     } else if (element.msRequestFullscreen) { /* IE11 */
-    element.msRequestFullscreen();
+        element.msRequestFullscreen();
     }
-  };
-  
-  /* Close fullscreen */
-  function closeFullscreen() {
-    if (document.exitFullscreen) {
-      document.exitFullscreen();
-    } else if (document.webkitExitFullscreen) { /* Safari */
-      document.webkitExitFullscreen();
-    } else if (document.msExitFullscreen) { /* IE11 */
-      document.msExitFullscreen();
-    }
-  };
+};
 
-  function toggleSound() {
+/* Close fullscreen */
+function closeFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.webkitExitFullscreen) { /* Safari */
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { /* IE11 */
+        document.msExitFullscreen();
+    }
+};
+
+function toggleSound() {
     let img = document.querySelector('.img_sound');
-    if(img.src.match('misic')) {
+    if (img.src.match('misic')) {
         img.src = 'img/settings/music_off.png';
         turnSoundOff();
         soundEnabled = false;
@@ -150,11 +131,11 @@ function openFullscreen(element) {
         soundEnabled = true;
         musicEnabled = true;
     }
-  }
+}
 
-  function toggleMusic() {
+function toggleMusic() {
     let img = document.querySelector('.img_music');
-    if(img.src.match('sisic')) {
+    if (img.src.match('sisic')) {
         img.src = 'img/settings/sound_off.png';
         turnMusicOff();
         musicEnabled = false;
@@ -163,9 +144,9 @@ function openFullscreen(element) {
         turnMusicOn();
         musicEnabled = true;
     }
-  }
+}
 
-  function turnSoundOff() {
+function turnSoundOff() {
     if (world) {
         world.audio_bgMusic.pause();
         world.level.enemies.forEach(enemy => {
@@ -178,9 +159,9 @@ function openFullscreen(element) {
         });
         world.changeVolume(0.0);
     }
-  }
+}
 
-  function turnSoundOn() {
+function turnSoundOn() {
     if (world) {
         let endbossMusicPlaying = false;
         playMusicEndboss();
@@ -189,9 +170,9 @@ function openFullscreen(element) {
         }
         world.changeVolume(0.3);
     }
-  }
+}
 
-  function turnMusicOff() {
+function turnMusicOff() {
     if (world) {
         world.audio_bgMusic.pause();
         world.level.enemies.forEach(enemy => {
@@ -200,21 +181,20 @@ function openFullscreen(element) {
             }
         });
     }
-  }
-  
-  function turnMusicOn() {
+}
+
+function turnMusicOn() {
     if (world) {
         let endbossMusicPlaying = false;
         playMusicEndboss();
-        
         if (!endbossMusicPlaying) {
             world.audio_bgMusic.play();
         }
     }
 
-  }
+}
 
-  function playMusicEndboss() {
+function playMusicEndboss() {
     if (world) {
         world.level.enemies.forEach(enemy => {
             if (enemy.endbossMusicPlayed) {
@@ -223,52 +203,67 @@ function openFullscreen(element) {
             }
         });
     }
-  }
+}
 
-  function setLostScreen(status) {
-      setTimeout(() => {
-          canvas.classList.add('grayscale');
-          setTimeout(() => {
-              if (status === 'lost') {
-                  world.audio_wasted.play();
-                  canvas.classList.replace('grayscale', 'redtone');
-                  document.querySelector('.lost_screen').classList.remove('d_none');
-              }
-          }, 1500);
-          setTimeout(() => {
-              const endscreen = document.querySelector('.endscreen');
-              document.querySelector('.lost_screen').classList.add('d_none');
-              endscreen.classList.add('show_endscreen');
-              endscreen.style.display = 'flex';
-              endscreen.style.backgroundImage = status === 'win' ? `url('img/settings/menu_win.png')` : '';
-              document.querySelector('.collectableInfos').innerHTML = generateCollectableInfosHTML();
-          }, status === 'lost' ? 4000 : 3000);
-      }, 1000);
-  }
+function setLostScreen(status) {
+    setTimeout(() => {
+        canvas.classList.add('grayscale');
+        setTimeout(() => {
+            if (isGameLost(status)) {
+                handleLoss();
+            }
+        }, 1500);
+        setTimeout(() => {
+            displayEndScreen(status);
+        }, getEndScreenDelay(status));
+    }, 1000);
+}
 
-    function generateCollectableInfosHTML() {
-        return /* HTML */ `
+function handleLoss() {
+    world.audio_wasted.play();
+    canvas.classList.replace('grayscale', 'redtone');
+    document.querySelector('.lost_screen').classList.remove('d_none');
+}
+
+function getEndScreenDelay(status) {
+    return this.isGameLost(status) ? 4500 : 3000;
+}
+
+function displayEndScreen(status) {
+    const endscreen = document.querySelector('.endscreen');
+    document.querySelector('.lost_screen').classList.add('d_none');
+    endscreen.classList.add('show_endscreen');
+    endscreen.style.display = 'flex';
+    endscreen.style.backgroundImage = status === 'win' ? `url('img/settings/menu_win.png')` : '';
+    document.querySelector('.collectableInfos').innerHTML = generateCollectableInfosHTML();
+}
+
+function generateCollectableInfosHTML() {
+    return /* HTML */ `
             <div class="coins">Collected Coins ${world.coinbar.collectedCoin} 
                 <img class="img_endscreen" src="img/coin/coin_9.png" alt="coin"> 
             </div>
             <div class="enemies">Killed Enemies ${world.killedEnemies} 
                 <img class="img_endscreen" src="img/settings/enemy.png" alt="enemy"> 
             </div>`;
-    }
+}
 
-    function currentDisplayStyle() {
-        let screenSources = document.querySelector('.screen_sources');
-        let cssObj = window.getComputedStyle(screenSources, null);
-        return cssObj.getPropertyValue('display');
-    }
+function currentDisplayStyle() {
+    let screenSources = document.querySelector('.screen_sources');
+    let cssObj = window.getComputedStyle(screenSources, null);
+    return cssObj.getPropertyValue('display');
+}
 
-    function toggleSources() {
-        let currentDisplay = currentDisplayStyle();
-        console.log(currentDisplay);
-        if(currentDisplay == 'none') {
-            document.querySelector('.screen_sources').style.display = 'flex'; 
-        } else {
-            document.querySelector('.screen_sources').style.display = 'none';
-        }
-
+function toggleSources() {
+    let currentDisplay = currentDisplayStyle();
+    console.log(currentDisplay);
+    if (currentDisplay == 'none') {
+        document.querySelector('.screen_sources').style.display = 'flex';
+    } else {
+        document.querySelector('.screen_sources').style.display = 'none';
     }
+}
+
+function isGameLost(status) {
+    return status === 'lost';
+}

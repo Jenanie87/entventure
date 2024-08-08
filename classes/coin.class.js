@@ -43,10 +43,11 @@ class Coin extends MovableObject {
         this.y = y;
         this.loadImage('img/coin/coin_1.png');
         this.loadImages(this.IMAGES);
-        this.audio_collecting.volume = 0.3;  
+        this.audio_collecting.volume = 0.3;
         this.animate();
     }
 
+    //functions
     animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES);

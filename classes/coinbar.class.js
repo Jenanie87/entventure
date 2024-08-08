@@ -1,4 +1,5 @@
 class Coinbar extends DrawableObject {
+    //properties
     x = 20;
     y = 45;
     width = 200;
@@ -20,6 +21,7 @@ class Coinbar extends DrawableObject {
         this.setPercentage(this.collectedCoin);
     }
 
+    //functions
     setPercentage(percentage) {
         this.percentage = percentage;
         let imagePath = this.IMAGES[this.resolveImageIndex()];
@@ -27,18 +29,18 @@ class Coinbar extends DrawableObject {
     }
 
     resolveImageIndex() {
-        if(this.percentage == 20) {
+        if (this.percentage == 20) {
             return 5;
-        } else if(this.percentage >= 16) {
+        } else if (this.percentage >= 16) {
             return 4;
-        } else if(this.percentage >= 12) {
+        } else if (this.percentage >= 12) {
             return 3;
-        } else if(this.percentage >= 8) {
+        } else if (this.percentage >= 8) {
             return 2;
-        } else if(this.percentage >= 4) {
+        } else if (this.percentage >= 4) {
             return 1;
         } else {
             return 0;
         }
-    } 
+    }
 }

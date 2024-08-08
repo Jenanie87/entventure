@@ -5,12 +5,12 @@ class Pineconebar extends DrawableObject {
     height = 60;
 
     IMAGES = [
-        'img/statusbar/3_statusbar_pinecone/0.png', 
-        'img/statusbar/3_statusbar_pinecone/20.png', 
-        'img/statusbar/3_statusbar_pinecone/40.png', 
-        'img/statusbar/3_statusbar_pinecone/60.png', 
-        'img/statusbar/3_statusbar_pinecone/80.png', 
-        'img/statusbar/3_statusbar_pinecone/100.png', 
+        'img/statusbar/3_statusbar_pinecone/0.png',
+        'img/statusbar/3_statusbar_pinecone/20.png',
+        'img/statusbar/3_statusbar_pinecone/40.png',
+        'img/statusbar/3_statusbar_pinecone/60.png',
+        'img/statusbar/3_statusbar_pinecone/80.png',
+        'img/statusbar/3_statusbar_pinecone/100.png',
     ];
 
     percentage = 100;
@@ -28,18 +28,18 @@ class Pineconebar extends DrawableObject {
     }
 
     resolveImageIndex() {
-        if(this.percentage == 100) {
+        if (this.percentage == 100) {
             return 5;
-        } else if(this.percentage >= 80) {
+        } else if (this.percentage >= 80) {
             return 4;
-        } else if(this.percentage >= 60) {
+        } else if (this.percentage >= 60) {
             return 3;
-        } else if(this.percentage >= 40) {
+        } else if (this.percentage >= 40) {
             return 2;
-        } else if(this.percentage >= 20) {
+        } else if (this.percentage >= 20) {
             return 1;
         } else {
             return 0;
         }
-    } 
+    }
 }

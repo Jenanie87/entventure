@@ -2,7 +2,7 @@ class Endboss extends Enemy {
     // properties
     width = 800;
     height = 800;
-    y = -260; 
+    y = -260;
     x = 2200;
     damage = 10;
     healthPoints = 60;
@@ -57,7 +57,7 @@ class Endboss extends Enemy {
     world;
     audio_endbossMusic = new Audio('audio/endboss.mp3');
     endbossMusicPlayed = false;
-    
+
     constructor(path) {
         super(path);
         this.loadImage('img/enemies/3_ORK/ORK_03_IDLE_000.png');
@@ -66,14 +66,13 @@ class Endboss extends Enemy {
         this.loadImages(this.IMAGES_DIE);
         this.animate();
     }
-    
-    // functions
 
-    animate() { 
+    // functions
+    animate() {
         setInterval(() => {
-            if(this.checkIsDead()) {
+            if (this.checkIsDead()) {
                 this.playAnimation(this.IMAGES_DIE, true);
-            } else if(this.checkIfHurt()) {
+            } else if (this.checkIfHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else {
                 this.playAnimation(this.IMAGES_IDLE);

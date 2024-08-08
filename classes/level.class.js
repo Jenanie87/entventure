@@ -1,10 +1,9 @@
 class Level {
-
     //properties
     enemies;
     pinecones;
     coins;
-    backgroundObjects; 
+    backgroundObjects;
     foregroundObjects;
 
 

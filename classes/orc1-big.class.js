@@ -1,6 +1,5 @@
 class Orc1BigEnemy extends BigEnemy {
     // properties
-
     IMAGES_WALK = [
         'img/enemies/1_ORK/ORK_01_WALK_000.png',
         'img/enemies/1_ORK/ORK_01_WALK_001.png',

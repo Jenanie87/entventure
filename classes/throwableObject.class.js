@@ -1,4 +1,5 @@
 class ThrowableObject extends MovableObject {
+    //properties
     IMAGES_THROW = [
         'img/pinecone/pinecone_rotation/1_pinecone_rotation.png',
         'img/pinecone/pinecone_rotation/2_pinecone_rotation.png',
@@ -25,12 +26,13 @@ class ThrowableObject extends MovableObject {
         this.animate();
     }
 
+    //functions
     throw() {
         if (this.world) {
             this.speedY = 20;
             this.applyGravity();
             setInterval(() => {
-                if (!this.world.character.otherDirection && this.world) {
+                if (this.isMovingRight()) {
                     this.x += 15;
                 } else {
                     this.x -= 15;
@@ -41,10 +43,14 @@ class ThrowableObject extends MovableObject {
 
     animate() {
         setInterval(() => {
-            if(this.isAboveGround(400)) {
+            if (this.isAboveGround(400)) {
                 this.playAnimation(this.IMAGES_THROW);
             }
         }, 100);
+    }
+
+    isMovingRight() {
+        return !this.world.character.otherDirection && this.world;
     }
 }
 

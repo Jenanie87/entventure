@@ -1,6 +1,5 @@
 class GoblinSmallEnemy extends SmallEnemy {
     // properties
-
     IMAGES_RUN = [
         'img/enemies/Goblin/Running/0_Goblin_Running_000.png',
         'img/enemies/Goblin/Running/0_Goblin_Running_001.png',

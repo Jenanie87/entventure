@@ -2,7 +2,6 @@ class SmallEnemy extends Enemy {
     // properties
     damage = 2;
     healthPoints = 10;
-
     offset = {
         top: 25,
         right: 35,
@@ -19,22 +18,21 @@ class SmallEnemy extends Enemy {
     }
 
     // functions
-
     animate() {
         setInterval(() => {
-            if(!this.checkIsDead() && !this.checkIfHurt()) {
+            if (!this.checkIsDead() && !this.checkIfHurt()) {
                 this.moveLeft();
             }
         }, 1000 / 60);
-        
+
         setInterval(() => {
-            if(this.checkIsDead()) {
+            if (this.checkIsDead()) {
                 this.playAnimation(this.IMAGES_DIE, true);
-            } else if(this.checkIfHurt()) {
+            } else if (this.checkIfHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
             } else {
                 this.playAnimation(this.IMAGES_RUN);
             }
-        }, 75); 
+        }, 75);
     }
 }
