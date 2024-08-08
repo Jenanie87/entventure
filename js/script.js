@@ -2,6 +2,8 @@ let canvas;
 let world; // Erstellung des Objektes World
 let keyboard = new Keyboard(); // Erstellung der Instanz Keyboard
 let keyboardListeners = [];
+let soundEnabled = true;
+let musicEnabled = true;
 
 
 function startGame() {
@@ -10,11 +12,32 @@ function startGame() {
     init();
 }
 
+function startEntMode() {
+    document.querySelector('canvas').classList.remove('d_none');
+    document.querySelector('.start_screen').style.display = 'none';
+    initEntMode();
+}
+
 function init() {
     canvas = document.querySelector('canvas');
     enableKeyboard();
+    world = new World(canvas, keyboard, soundEnabled, musicEnabled);
+    if (musicEnabled) {
+        world.audio_bgMusic.play();
+    }
+}
+
+function initEntMode() {
+    canvas = document.querySelector('canvas');
+    enableKeyboard();
     world = new World(canvas, keyboard);
-    world.audio_bgMusic.play();
+    world.character.speed = world.character.speed / 2; // Verlangsamt den Charakter
+    world.character.height *= 1.5; // Vergrößert den Charakter
+    world.character.width *= 1.5; // Vergrößert den Charakter
+    world.character.y = 100;
+    if (musicEnabled) {
+        world.audio_bgMusic.play();
+    }
 }
 
 function disableKeyboard() {
@@ -119,9 +142,14 @@ function openFullscreen(element) {
     if(img.src.match('misic')) {
         img.src = 'img/settings/music_off.png';
         turnSoundOff();
+        soundEnabled = false;
+        musicEnabled = false;
+        console.log(soundEnabled);
     } else {
         img.src = 'img/settings/misic.png';
         turnSoundOn();
+        soundEnabled = true;
+        musicEnabled = true;
     }
   }
 
@@ -130,73 +158,74 @@ function openFullscreen(element) {
     if(img.src.match('sisic')) {
         img.src = 'img/settings/sound_off.png';
         turnMusicOff();
+        musicEnabled = false;
+        console.log(musicEnabled);
     } else {
         img.src = 'img/settings/sisic.png';
         turnMusicOn();
+        musicEnabled = true;
     }
   }
 
   function turnSoundOff() {
-    world.audio_bgMusic.pause();
-    world.level.enemies.forEach(enemy => {
-        if (enemy.audio_endbossMusic) {
-            enemy.audio_endbossMusic.pause();
-        }
-        if (enemy.audio_roar) {
-            enemy.audio_roar.volume = 0.0;
-        }
-    });
-    changeVolume(0.0);
+    if (world) {
+        world.audio_bgMusic.pause();
+        world.level.enemies.forEach(enemy => {
+            if (enemy.audio_endbossMusic) {
+                enemy.audio_endbossMusic.pause();
+            }
+            if (enemy.audio_roar) {
+                enemy.audio_roar.volume = 0.0;
+            }
+        });
+        world.changeVolume(0.0);
+    }
   }
 
   function turnSoundOn() {
-    let endbossMusicPlaying = false;
-    playMusicEndboss();
-    if (!endbossMusicPlaying) {
-        world.audio_bgMusic.play();
+    if (world) {
+        let endbossMusicPlaying = false;
+        playMusicEndboss();
+        if (!endbossMusicPlaying) {
+            world.audio_bgMusic.play();
+        }
+        world.changeVolume(0.3);
     }
-    changeVolume(0.3);
   }
 
   function turnMusicOff() {
-    world.audio_bgMusic.pause();
-    world.level.enemies.forEach(enemy => {
-        if (enemy.endbossMusicPlayed) {
-            enemy.audio_endbossMusic.pause();
-        }
-    });
+    if (world) {
+        world.audio_bgMusic.pause();
+        world.level.enemies.forEach(enemy => {
+            if (enemy.endbossMusicPlayed) {
+                enemy.audio_endbossMusic.pause();
+            }
+        });
+    }
   }
   
   function turnMusicOn() {
-    let endbossMusicPlaying = false;
-    playMusicEndboss();
-    
-    if (!endbossMusicPlaying) {
-        world.audio_bgMusic.play();
+    if (world) {
+        let endbossMusicPlaying = false;
+        playMusicEndboss();
+        
+        if (!endbossMusicPlaying) {
+            world.audio_bgMusic.play();
+        }
     }
+
   }
 
-  function changeVolume(volume) {
-    world.character.audio_jumping.volume = volume;
-    world.character.audio_bouncing.volume = volume;
-    world.audio_roar.volume = volume;
-    world.character.audio_walking.volume = volume;
-    world.audio_wasted.volume = volume;
-    world.level.coins.forEach(coin => {
-        coin.audio_collecting.volume = volume;
-    });
-    world.level.pinecones.forEach(pinecone => {
-        pinecone.audio_collect.volume = volume;
-    });
-  }
 
   function playMusicEndboss() {
-    world.level.enemies.forEach(enemy => {
-        if (enemy.endbossMusicPlayed) {
-            endbossMusicPlaying = true;
-            enemy.audio_endbossMusic.play();
-        }
-    });
+    if (world) {
+        world.level.enemies.forEach(enemy => {
+            if (enemy.endbossMusicPlayed) {
+                endbossMusicPlaying = true;
+                enemy.audio_endbossMusic.play();
+            }
+        });
+    }
   }
 
     function setLostScreen(status) {

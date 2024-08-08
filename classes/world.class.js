@@ -23,15 +23,18 @@ class World {
     audio_roar = new Audio('audio/orc_scream1.mp3');
     roarPlayed = false;
 
-    constructor(canvas, keyboard) {
+    constructor(canvas, keyboard, soundEnabled, musicEnabled) {
         this.audio_roar.volume = 0.3; 
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+        this.soundEnabled = soundEnabled;
+        this.musicEnabled = musicEnabled;
         this.levelBounds = this.calculateLevelBounds(level1.backgroundObjects);
         this.setWorld();
         this.draw();
         this.run();
+        this.initMusic();
     }
 
     //functions
@@ -58,6 +61,29 @@ class World {
             }
         }, 50);
     }
+
+    initMusic() {
+        this.changeVolume(this.soundEnabled ? 1.0 : 0.0);
+        if (this.musicEnabled) {
+            this.audio_bgMusic.play();
+        } else {
+            this.audio_bgMusic.pause();
+        }
+    }
+
+    changeVolume(volume) {
+        this.character.audio_jumping.volume = volume;
+        this.character.audio_bouncing.volume = volume;
+        this.audio_roar.volume = volume;
+        this.character.audio_walking.volume = volume;
+        this.audio_wasted.volume = volume;
+        this.level.coins.forEach(coin => {
+            coin.audio_collecting.volume = volume;
+        });
+        this.level.pinecones.forEach(pinecone => {
+            pinecone.audio_collect.volume = volume;
+        });
+      }
 
     checkCollisions() {
         this.collisionWithEnemy();
