@@ -63,7 +63,7 @@ class World {
     }
 
     initMusic() {
-        this.changeVolume(this.soundEnabled ? 1.0 : 0.0);
+        this.changeVolume(this.soundEnabled ? 0.3 : 0.0);
         if (this.musicEnabled) {
             this.audio_bgMusic.play();
         } else {

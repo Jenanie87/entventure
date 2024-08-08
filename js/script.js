@@ -144,7 +144,6 @@ function openFullscreen(element) {
         turnSoundOff();
         soundEnabled = false;
         musicEnabled = false;
-        console.log(soundEnabled);
     } else {
         img.src = 'img/settings/misic.png';
         turnSoundOn();
@@ -159,7 +158,6 @@ function openFullscreen(element) {
         img.src = 'img/settings/sound_off.png';
         turnMusicOff();
         musicEnabled = false;
-        console.log(musicEnabled);
     } else {
         img.src = 'img/settings/sisic.png';
         turnMusicOn();
@@ -216,7 +214,6 @@ function openFullscreen(element) {
 
   }
 
-
   function playMusicEndboss() {
     if (world) {
         world.level.enemies.forEach(enemy => {
@@ -228,26 +225,26 @@ function openFullscreen(element) {
     }
   }
 
-    function setLostScreen(status) {
-        setTimeout(() => {
-            canvas.classList.add('grayscale');
-            setTimeout(() => {
-                if (status === 'lost') {
-                    world.audio_wasted.play();
-                    canvas.classList.replace('grayscale', 'redtone');
-                    document.querySelector('.lost_screen').classList.remove('d_none');
-                }
-            }, 1500);
-            setTimeout(() => {
-                const endscreen = document.querySelector('.endscreen');
-                document.querySelector('.lost_screen').classList.add('d_none');
-                endscreen.classList.add('show_endscreen');
-                endscreen.style.display = 'flex';
-                endscreen.style.backgroundImage = status === 'win' ? `url('img/settings/menu_win.png')` : '';
-                document.querySelector('.collectableInfos').innerHTML = generateCollectableInfosHTML();
-            }, status === 'lost' ? 4000 : 3000);
-        }, 1000);
-    }
+  function setLostScreen(status) {
+      setTimeout(() => {
+          canvas.classList.add('grayscale');
+          setTimeout(() => {
+              if (status === 'lost') {
+                  world.audio_wasted.play();
+                  canvas.classList.replace('grayscale', 'redtone');
+                  document.querySelector('.lost_screen').classList.remove('d_none');
+              }
+          }, 1500);
+          setTimeout(() => {
+              const endscreen = document.querySelector('.endscreen');
+              document.querySelector('.lost_screen').classList.add('d_none');
+              endscreen.classList.add('show_endscreen');
+              endscreen.style.display = 'flex';
+              endscreen.style.backgroundImage = status === 'win' ? `url('img/settings/menu_win.png')` : '';
+              document.querySelector('.collectableInfos').innerHTML = generateCollectableInfosHTML();
+          }, status === 'lost' ? 4000 : 3000);
+      }, 1000);
+  }
 
     function generateCollectableInfosHTML() {
         return /* HTML */ `
@@ -257,4 +254,21 @@ function openFullscreen(element) {
             <div class="enemies">Killed Enemies ${world.killedEnemies} 
                 <img class="img_endscreen" src="img/settings/enemy.png" alt="enemy"> 
             </div>`;
+    }
+
+    function currentDisplayStyle() {
+        let screenSources = document.querySelector('.screen_sources');
+        let cssObj = window.getComputedStyle(screenSources, null);
+        return cssObj.getPropertyValue('display');
+    }
+
+    function toggleSources() {
+        let currentDisplay = currentDisplayStyle();
+        console.log(currentDisplay);
+        if(currentDisplay == 'none') {
+            document.querySelector('.screen_sources').style.display = 'flex'; 
+        } else {
+            document.querySelector('.screen_sources').style.display = 'none';
+        }
+
     }
