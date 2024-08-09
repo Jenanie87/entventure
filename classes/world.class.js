@@ -283,6 +283,7 @@ class World {
         let imgSound = document.querySelector('.img_sound');
         let imgMusic = document.querySelector('.img_music');
         if (this.areSoundsSet(imgSound, imgMusic)) {
+            this.level.enemies[world.level.enemies.length - 1].audio_endbossMusic.loop = true;
             this.level.enemies[world.level.enemies.length - 1].audio_endbossMusic.play();
             this.level.enemies[world.level.enemies.length - 1].endbossMusicPlayed = true;
         }
@@ -312,6 +313,7 @@ class World {
 
     initializeBossFight() {
         this.endboss = new Endboss();
+        this.endboss.world = this;
         this.level.enemies.push(this.endboss);
         disableKeyboard();
         setTimeout(() => {
@@ -326,13 +328,16 @@ class World {
 
     startBattleMode() {
         this.endbossFightStarted = true;
+
         setTimeout(() => {
             document.querySelector('.screen_endboss').classList.remove('show_screen_endboss');
         }, 2000);
         setTimeout(() => {
+            this.endboss.endbossIsWaiting = false;
             this.healthbar_endboss = new HealthbarEndboss();
             this.playEndbossMusic();
             enableKeyboard();
+            this.endboss.moveEndboss();
         }, 4000);
     }
 

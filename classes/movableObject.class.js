@@ -31,7 +31,10 @@ class MovableObject extends DrawableObject {
 
     moveRight() {
         this.x += this.speed;
-        this.otherDirection = false; // Bild nicht gespiegelt
+        if(!(this instanceof Endboss)) {
+            this.otherDirection = false; // Bild nicht gespiegelt
+        }
+
     }
 
     moveLeft() {

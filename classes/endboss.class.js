@@ -4,9 +4,11 @@ class Endboss extends Enemy {
     height = 800;
     y = -260;
     x = 2200;
-    damage = 10;
+    damage = 5;
     healthPoints = 60;
-
+    currentPosition = 0;
+    stepsRemaining = 0;
+    movingRight = false;
     offset = {
         top: 330,
         right: 330,
@@ -54,9 +56,23 @@ class Endboss extends Enemy {
         'img/enemies/3_ORK/ORK_03_DIE_008.png',
         'img/enemies/3_ORK/ORK_03_DIE_009.png'
     ];
+
+    IMAGES_WALK = [
+        'img/enemies/3_ORK/ORK_03_WALK_000.png',
+        'img/enemies/3_ORK/ORK_03_WALK_001.png',
+        'img/enemies/3_ORK/ORK_03_WALK_002.png',
+        'img/enemies/3_ORK/ORK_03_WALK_003.png',
+        'img/enemies/3_ORK/ORK_03_WALK_004.png',
+        'img/enemies/3_ORK/ORK_03_WALK_005.png',
+        'img/enemies/3_ORK/ORK_03_WALK_006.png',
+        'img/enemies/3_ORK/ORK_03_WALK_007.png',
+        'img/enemies/3_ORK/ORK_03_WALK_008.png',
+        'img/enemies/3_ORK/ORK_03_WALK_009.png',
+    ];
     world;
     audio_endbossMusic = new Audio('audio/endboss.mp3');
     endbossMusicPlayed = false;
+    endbossIsWaiting = true;
 
     constructor(path) {
         super(path);
@@ -64,6 +80,7 @@ class Endboss extends Enemy {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DIE);
+        this.loadImages(this.IMAGES_WALK);
         this.animate();
     }
 
@@ -74,9 +91,59 @@ class Endboss extends Enemy {
                 this.playAnimation(this.IMAGES_DIE, true);
             } else if (this.checkIfHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+            } else if (!this.endbossIsWaiting) {
+                this.playAnimation(this.IMAGES_WALK);
             } else {
                 this.playAnimation(this.IMAGES_IDLE);
             }
         }, 100);
+    }
+
+    moveEndboss() {
+        setInterval(() => {
+            if(this.canRegenerate()) {
+                this.regenerateHealthPoints();
+            } 
+            if (this.hasNoRemainingSteps()) {
+                this.decideNextMove();
+            } else {
+                this.move();
+                this.stepsRemaining--;
+            }
+        }, 1000 / 60);
+    }
+
+    regenerateHealthPoints() {
+        this.healthPoints = this.healthPoints + 0.4;
+        this.world.healthbar_endboss.setPercentage(this.healthPoints);
+        console.log('Regeneration');
+    }
+
+    decideNextMove() {
+        this.movingRight = Math.random() < 0.5; // kleiner gleich 0.5 = true;
+        this.stepsRemaining = Math.floor(Math.random() * 500) + 150;
+        this.speed = Math.random() * 2.0 + 0.50;
+    }
+
+    move() {
+        if (this.x >= 2350) {
+            this.movingRight = false;
+        } else if (this.x <= 0) { 
+            this.movingRight = true;
+        }
+    
+        if (this.movingRight) {
+            this.moveRight();
+        } else {
+            this.moveLeft();
+        }
+    }
+
+    canRegenerate() {
+        return this.x - this.world.character.x > 500 && this.healthPoints < 60;
+    }
+
+    hasNoRemainingSteps() {
+        return this.stepsRemaining <= 0;
     }
 }
