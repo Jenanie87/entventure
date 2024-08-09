@@ -12,6 +12,16 @@ function startGame() {
     init();
 }
 
+
+function restartGame() {
+    disableKeyboard();
+    world = null;
+    canvas.classList.remove('grayscale', 'redtone');
+    const endscreen = document.querySelector('.endscreen');
+    endscreen.classList.remove('show_endscreen');
+    init();
+}
+
 function init() {
     canvas = document.querySelector('canvas');
     enableKeyboard();
@@ -207,6 +217,14 @@ function playMusicEndboss() {
 
 function setLostScreen(status) {
     setTimeout(() => {
+        if (world) {
+            world.level.enemies.forEach(enemy => {
+                if (enemy.endbossMusicPlayed) {
+                    endbossMusicPlaying = true;
+                    enemy.audio_endbossMusic.pause();
+                }
+            });
+        }
         canvas.classList.add('grayscale');
         setTimeout(() => {
             if (isGameLost(status)) {

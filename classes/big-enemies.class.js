@@ -1,6 +1,6 @@
 class BigEnemy extends Enemy {
     // properties
-    damage = 4;
+    damage = 2;
     healthPoints = 25;
     offset = {
         top: 100,

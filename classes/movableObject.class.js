@@ -7,7 +7,7 @@ class MovableObject extends DrawableObject {
     acceleration = 2.5;
     healthPoints = 100;
     lastHit = 0;
-    damage = 5;
+    damage = 3;
     isDead = false;
 
 

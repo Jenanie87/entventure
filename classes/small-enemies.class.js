@@ -1,6 +1,6 @@
 class SmallEnemy extends Enemy {
     // properties
-    damage = 2;
+    damage = 1;
     healthPoints = 10;
     offset = {
         top: 25,

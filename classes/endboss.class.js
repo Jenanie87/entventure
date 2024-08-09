@@ -4,7 +4,7 @@ class Endboss extends Enemy {
     height = 800;
     y = -260;
     x = 2200;
-    damage = 5;
+    damage = 4;
     healthPoints = 60;
     currentPosition = 0;
     stepsRemaining = 0;
@@ -101,22 +101,24 @@ class Endboss extends Enemy {
 
     moveEndboss() {
         setInterval(() => {
-            if(this.canRegenerate()) {
-                this.regenerateHealthPoints();
-            } 
-            if (this.hasNoRemainingSteps()) {
-                this.decideNextMove();
-            } else {
-                this.move();
-                this.stepsRemaining--;
+            if (!this.checkIsDead()) {
+                if(this.canRegenerate()) {
+                    this.regenerateHealthPoints();
+                } 
+                if (this.hasNoRemainingSteps()) {
+                    this.decideNextMove();
+                } else {
+                    this.move();
+                    this.stepsRemaining--;
+                }
             }
+
         }, 1000 / 60);
     }
 
     regenerateHealthPoints() {
-        this.healthPoints = this.healthPoints + 0.4;
+        this.healthPoints = this.healthPoints + 0.2;
         this.world.healthbar_endboss.setPercentage(this.healthPoints);
-        console.log('Regeneration');
     }
 
     decideNextMove() {
@@ -140,7 +142,7 @@ class Endboss extends Enemy {
     }
 
     canRegenerate() {
-        return this.x - this.world.character.x > 500 && this.healthPoints < 60;
+        return this.x - this.world.character.x > 400 && this.healthPoints < 60;
     }
 
     hasNoRemainingSteps() {

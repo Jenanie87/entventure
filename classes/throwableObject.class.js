@@ -7,7 +7,7 @@ class ThrowableObject extends MovableObject {
         'img/pinecone/pinecone_rotation/4_pinecone_rotation.png',
     ];
     world;
-    damage = 7;
+    damage = 5;
     offset = {
         top: 10,
         right: 10,

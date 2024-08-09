@@ -19,11 +19,13 @@ class World {
     endboss = null;
     audio_bgMusic = new Audio('audio/bg_nature.mp3');
     audio_wasted = new Audio('audio/wasted.mp3');
+    audio_win = new Audio('audio/completed.mp3');
     audio_roar = new Audio('audio/orc_scream1.mp3');
     roarPlayed = false;
 
     constructor(canvas, keyboard, soundEnabled, musicEnabled) {
         this.audio_roar.volume = 0.3;
+        this.audio_win.volume = 0.5;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -76,6 +78,7 @@ class World {
         this.audio_roar.volume = volume;
         this.character.audio_walking.volume = volume;
         this.audio_wasted.volume = volume;
+        this.audio_win.volume = volume;
         this.level.coins.forEach(coin => {
             coin.audio_collecting.volume = volume;
         });

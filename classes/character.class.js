@@ -169,6 +169,10 @@ class Character extends MovableObject {
     }
 
     winGame() {
+        setTimeout(() => {
+            console.log(this.world.audio_win.volume);
+            this.world.audio_win.play();
+        }, 750);
         disableKeyboard();
         this.world.isGameOver = true;
         setLostScreen('win');
