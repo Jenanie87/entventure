@@ -5,7 +5,6 @@ let keyboardListeners = [];
 let soundEnabled = true;
 let musicEnabled = true;
 
-
 function startGame() {
     document.querySelector('canvas').classList.remove('d_none');
     document.querySelector('.start_screen').style.display = 'none';
@@ -15,6 +14,7 @@ function startGame() {
 
 function restartGame() {
     disableKeyboard();
+    clearAllIntervals();
     world = null;
     canvas.classList.remove('grayscale', 'redtone');
     const endscreen = document.querySelector('.endscreen');
@@ -22,9 +22,14 @@ function restartGame() {
     init();
 }
 
+function clearAllIntervals() {
+    for (let i = 1; i < 9999; i++) window.clearInterval(i);
+  }
+
 function init() {
     canvas = document.querySelector('canvas');
     enableKeyboard();
+    createLevel();
     world = new World(canvas, keyboard, soundEnabled, musicEnabled);
     if (musicEnabled) {
         world.audio_bgMusic.play();
@@ -47,6 +52,7 @@ function enableKeyboard() {
 }
 
 function handleKeyDown(event) {
+    event.preventDefault();
     switch (event.key) {
         case 'ArrowRight':
             world.keyboard.RIGHT = true;
@@ -71,6 +77,7 @@ function handleKeyDown(event) {
 }
 
 function handleKeyUp(event) {
+    event.preventDefault();
     switch (event.key) {
         case 'ArrowRight':
             world.keyboard.RIGHT = false;
