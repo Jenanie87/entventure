@@ -26,6 +26,15 @@ function clearAllIntervals() {
     for (let i = 1; i < 9999; i++) window.clearInterval(i);
   }
 
+function stopMusic() {
+    world.audio_bgMusic.pause();
+    world.audio_bgMusic.currentTime = 0;
+    if(world.endboss != null) {
+        world.endboss.audio_endbossMusic.pause();
+        world.endboss.audio_endbossMusic.currentTime = 0;
+    }
+}
+
 function init() {
     canvas = document.querySelector('canvas');
     enableKeyboard();
@@ -233,6 +242,7 @@ function setLostScreen(status) {
             });
         }
         canvas.classList.add('grayscale');
+        stopMusic();
         setTimeout(() => {
             if (isGameLost(status)) {
                 handleLoss();
