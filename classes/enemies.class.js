@@ -4,6 +4,6 @@ class Enemy extends MovableObject {
 
     constructor() {
         super();
-        this.x = 250 + Math.floor(Math.random() * 2000);
+        this.x = 350 + Math.floor(Math.random() * 2500);
     }
 }

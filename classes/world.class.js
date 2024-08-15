@@ -309,7 +309,7 @@ class World {
         if (this.canEndbossFightStart()) {
             this.initializeBossFight();
             setTimeout(() => {
-                this.moveCharacterToX(2095);
+                this.moveCharacterToX(2775);
             }, 1500);
         }
     }
@@ -318,7 +318,7 @@ class World {
         this.endboss = new Endboss();
         this.endboss.world = this;
         this.level.enemies.push(this.endboss);
-        disableKeyboard();
+        this.keyboard.disableKeyboard();
         setTimeout(() => {
             this.audio_roar.play();
             this.roarPlayed = true;
@@ -339,7 +339,7 @@ class World {
             this.endboss.endbossIsWaiting = false;
             this.healthbar_endboss = new HealthbarEndboss();
             this.playEndbossMusic();
-            enableKeyboard();
+            this.keyboard.enableKeyboard();
             this.endboss.moveEndboss();
         }, 4000);
     }
@@ -373,6 +373,6 @@ class World {
     }
 
     canEndbossFightStart() {
-        return !this.endbossFightStarted && this.character.x > 1900 && !this.endboss;
+        return !this.endbossFightStarted && this.character.x > 2580 && !this.endboss;
     }
 }

@@ -163,7 +163,7 @@ class Character extends MovableObject {
     }
 
     loseGame() {
-        disableKeyboard();
+        this.world.keyboard.disableKeyboard();
         this.world.isGameOver = true;
         setLostScreen('lost');
     }
@@ -172,7 +172,7 @@ class Character extends MovableObject {
         setTimeout(() => {
             this.world.audio_win.play();
         }, 750);
-        disableKeyboard();
+        this.world.keyboard.disableKeyboard();
         this.world.isGameOver = true;
         setLostScreen('win');
     }

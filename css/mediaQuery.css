@@ -1,0 +1,197 @@
+/* smartphones */
+
+@media screen and (max-width: 930px) {
+  .headline_size {
+    line-height: 55px;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  .keyboard_layout {
+    width: 99%;
+    padding: 4px;
+  }
+}
+
+@media screen and (max-width: 760px) {
+  .main_container {
+    height: 100vh;
+  }
+  canvas,
+  .start_screen,
+  .settings,
+  .keyboard_layout_mobile {
+    width: 100%;
+  }
+  .headline_size {
+    display: none;
+  }
+  .keyboard_content {
+    gap: 8px;
+  }
+  .key_text {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+}
+
+@media screen and (max-height: 740px) {
+  .headline_size {
+    font-size: 32px;
+  }
+}
+
+@media screen and (max-height: 680px) {
+  .main_container {
+    height: unset;
+  }
+}
+
+@media screen and (max-height: 600px) {
+  .headline_size {
+    display: none;
+  }
+  .main_container {
+    height: 100vh;
+  }
+}
+
+@media screen and (max-height: 550px) {
+  .wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+  }
+  canvas,
+  .settings,
+  .start_screen {
+    height: 100%;
+  }
+  .keyboard_layout {
+    padding: 4px;
+    height: 50px;
+  }
+  .keyboard_content {
+    gap: 8px;
+  }
+  .img_keyboard {
+    display: flex;
+  }
+  .keyboard_layout {
+    display: none;
+  }
+  .keyboard_content {
+    gap: 8px;
+  }
+  .key_text {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-height: 480px) {
+  .keyboard_content {
+    gap: 8px;
+  }
+}
+
+@media (pointer: fine) {
+  .img_wrapper:hover {
+    filter: drop-shadow(1px 1px 5px rgb(31, 165, 4));
+    transform: rotate(25deg);
+  }
+  .btn:hover {
+    background-image: linear-gradient(to bottom right, #63aa12, #72d229);
+  }
+}
+
+@media (pointer: coarse) {
+  .main_container {
+    height: 100vh;
+  }
+  .wrapper {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    align-items: center;
+  }
+  canvas,
+  .start_screen {
+    flex: 1;
+  }
+  canvas,
+  .start_screen {
+    height: 100%;
+    width: 100%;
+    max-width: 720px;
+  }
+  .keyboard_layout_mobile {
+    display: flex;
+    height: 64px;
+    padding-top: 4px;
+  }
+  .setting_mobile {
+    display: flex;
+    align-items: flex-end;
+  }
+  .keyboard_layout,
+  .headline_size,
+  .img_keyboard,
+  .settings {
+    display: none;
+  }
+  .left_part {
+    margin-right: 16px;
+    position: unset;
+    bottom: unset;
+    left: unset;
+    gap: 16px;
+  }
+
+  .right_part {
+    gap: 16px;
+    flex: none;
+    position: unset;
+  }
+}
+
+@media screen and (max-height: 550px) {
+  .keyboard_layout_mobile {
+    position: absolute;
+    bottom: 0px;
+    height: unset;
+    z-index: 1;
+  }
+}
+
+@media screen and (orientation: portrait) and (pointer: coarse) {
+  .rotate_screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .img_rotate {
+    width: 104px;
+    height: 104px;
+  }
+  .rotate_text {
+    font-family: "Jungle Adventure", sans-serif;
+    color: #e6c700;
+    font-size: 32px;
+    text-align: center;
+  }
+  .wrapper,
+  canvas,
+  .start_screen,
+  .settings,
+  .keyboard_layout_mobile {
+    display: none;
+  }
+}

@@ -33,7 +33,7 @@ class Pinecone extends MovableObject {
         let attempts = 0;
         let colliding;
         do {
-            this.x = 200 + Math.floor(Math.random() * 2000);
+            this.x = 200 + Math.floor(Math.random() * 2500);
             colliding = this.checkCollisionWithOtherPinecones();
             attempts++;
         } while (colliding && attempts < maxAttempts);

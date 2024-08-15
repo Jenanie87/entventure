@@ -1,30 +1,43 @@
 let canvas;
 let world; // Erstellung des Objektes World
 let keyboard = new Keyboard(); // Erstellung der Instanz Keyboard
-let keyboardListeners = [];
+/* let keyboardListeners = []; */
 let soundEnabled = true;
 let musicEnabled = true;
 
 function startGame() {
     document.querySelector('canvas').classList.remove('d_none');
-    document.querySelector('.start_screen').style.display = 'none';
+    setVisibility('.start_screen', 'none');
     init();
 }
 
-
 function restartGame() {
-    disableKeyboard();
+    resetGame();
+    resetCanvasEndscreen();
+    init();
+}
+
+function getBack() {
+    resetGame();
+    resetCanvasEndscreen();
+    document.querySelector('canvas').classList.add('d_none');
+    setVisibility('.start_screen', 'flex');
+}
+
+function resetGame() {
+    if (world) {
+        keyboard.disableKeyboard();
+    }
     clearAllIntervals();
     world = null;
+}
+
+function resetCanvasEndscreen() {
     canvas.classList.remove('grayscale', 'redtone');
     const endscreen = document.querySelector('.endscreen');
     endscreen.classList.remove('show_endscreen');
-    init();
+    endscreen.style.display = 'none';
 }
-
-function clearAllIntervals() {
-    for (let i = 1; i < 9999; i++) window.clearInterval(i);
-  }
 
 function stopMusic() {
     world.audio_bgMusic.pause();
@@ -37,81 +50,13 @@ function stopMusic() {
 
 function init() {
     canvas = document.querySelector('canvas');
-    enableKeyboard();
+    keyboard.enableKeyboard();
     createLevel();
     world = new World(canvas, keyboard, soundEnabled, musicEnabled);
     if (musicEnabled) {
         world.audio_bgMusic.play();
     }
 }
-
-function disableKeyboard() {
-    keyboardListeners = [
-        { event: 'keydown', listener: handleKeyDown },
-        { event: 'keyup', listener: handleKeyUp }
-    ];
-    keyboardListeners.forEach(({ event, listener }) => window.removeEventListener(event, listener));
-
-    // Reset
-    Object.keys(world.keyboard).forEach(key => world.keyboard[key] = false);
-}
-
-function enableKeyboard() {
-    keyboardListeners.forEach(({ event, listener }) => window.addEventListener(event, listener));
-}
-
-function handleKeyDown(event) {
-    event.preventDefault();
-    switch (event.key) {
-        case 'ArrowRight':
-            world.keyboard.RIGHT = true;
-            break;
-        case 'ArrowLeft':
-            world.keyboard.LEFT = true;
-            break;
-        case 'ArrowUp':
-            world.keyboard.UP = true;
-            break;
-        case 'ArrowDown':
-            world.keyboard.DOWN = true;
-            break;
-        case ' ':
-            world.keyboard.SPACE = true;
-            break;
-        case 'd':
-        case 'D':
-            world.keyboard.THROW = true;
-            break;
-    }
-}
-
-function handleKeyUp(event) {
-    event.preventDefault();
-    switch (event.key) {
-        case 'ArrowRight':
-            world.keyboard.RIGHT = false;
-            break;
-        case 'ArrowLeft':
-            world.keyboard.LEFT = false;
-            break;
-        case 'ArrowUp':
-            world.keyboard.UP = false;
-            break;
-        case 'ArrowDown':
-            world.keyboard.DOWN = false;
-            break;
-        case ' ':
-            world.keyboard.SPACE = false;
-            break;
-        case 'd':
-        case 'D':
-            world.keyboard.THROW = false;
-            break;
-    }
-}
-
-window.addEventListener('keydown', handleKeyDown);
-window.addEventListener('keyup', handleKeyUp);
 
 function toggleFullScreen() {
     let content = document.querySelector('.content');
@@ -122,7 +67,6 @@ function toggleFullScreen() {
     }
 };
 
-/* View in fullscreen */
 function openFullscreen(element) {
     if (element.requestFullscreen) {
         element.requestFullscreen();
@@ -133,7 +77,6 @@ function openFullscreen(element) {
     }
 };
 
-/* Close fullscreen */
 function closeFullscreen() {
     if (document.exitFullscreen) {
         document.exitFullscreen();
@@ -145,31 +88,35 @@ function closeFullscreen() {
 };
 
 function toggleSound() {
-    let img = document.querySelector('.img_sound');
-    if (img.src.match('misic')) {
-        img.src = 'img/settings/music_off.png';
-        turnSoundOff();
-        soundEnabled = false;
-        musicEnabled = false;
-    } else {
-        img.src = 'img/settings/misic.png';
-        turnSoundOn();
-        soundEnabled = true;
-        musicEnabled = true;
-    }
+    let soundIcons = document.querySelectorAll('.img_sound');
+    soundIcons.forEach(img => {
+        if (img.src.includes('misic')) {
+            img.src = 'img/settings/music_off.png';
+            turnSoundOff();
+            soundEnabled = false;
+            musicEnabled = false; 
+        } else {
+            img.src = 'img/settings/misic.png';
+            turnSoundOn();
+            soundEnabled = true;
+            musicEnabled = true; 
+        }
+    });
 }
 
 function toggleMusic() {
-    let img = document.querySelector('.img_music');
-    if (img.src.match('sisic')) {
-        img.src = 'img/settings/sound_off.png';
-        turnMusicOff();
-        musicEnabled = false;
-    } else {
-        img.src = 'img/settings/sisic.png';
-        turnMusicOn();
-        musicEnabled = true;
-    }
+    let musicIcons = document.querySelectorAll('.img_music');
+    musicIcons.forEach(img => {
+        if (img.src.includes('sisic')) {
+            img.src = 'img/settings/sound_off.png';
+            turnMusicOff();
+            musicEnabled = false;
+        } else {
+            img.src = 'img/settings/sisic.png';
+            turnMusicOn();
+            musicEnabled = true;
+        }
+    });
 }
 
 function turnSoundOff() {
@@ -260,9 +207,6 @@ function handleLoss() {
     document.querySelector('.lost_screen').classList.remove('d_none');
 }
 
-function getEndScreenDelay(status) {
-    return this.isGameLost(status) ? 4500 : 3000;
-}
 
 function displayEndScreen(status) {
     const endscreen = document.querySelector('.endscreen');
@@ -273,41 +217,31 @@ function displayEndScreen(status) {
     document.querySelector('.collectableInfos').innerHTML = generateCollectableInfosHTML();
 }
 
-function generateCollectableInfosHTML() {
-    return /* HTML */ `
-            <div class="coins">Collected Coins ${world.coinbar.collectedCoin} 
-                <img class="img_endscreen" src="img/coin/coin_9.png" alt="coin"> 
-            </div>
-            <div class="enemies">Killed Enemies ${world.killedEnemies} 
-                <img class="img_endscreen" src="img/settings/enemy.png" alt="enemy"> 
-            </div>`;
-}
-
-function currentDisplayStyle(className) {
-    let screenSources = document.querySelector(`${className}`);
-    let cssObj = window.getComputedStyle(screenSources, null);
-    return cssObj.getPropertyValue('display');
-}
-
-function toggleScreen(className, openClass) {
+function toggleScreen(className, openClass, anotherClass) {
     let openClassCurrentDisplay = currentDisplayStyle(openClass);
+    let anotherClassCurrentDisplay = currentDisplayStyle(anotherClass);
     if (openClassCurrentDisplay == 'flex') {
-        document.querySelector(`${openClass}`).style.display = 'none';
+        setVisibility(`${openClass}`, 'none');
+    }
+    if (anotherClassCurrentDisplay == 'flex') {
+        setVisibility(`${anotherClass}`, 'none');
     }
     let currentDisplay = currentDisplayStyle(className);
     if (currentDisplay == 'none') {
-        document.querySelector(`${className}`).style.display = 'flex';
+        setVisibility(`${className}`, 'flex');
     } else {
-        document.querySelector(`${className}`).style.display = 'none';
+        setVisibility(`${className}`, 'none');
     }
 }
 
-function closeDialog(classNameSource, classNameKeyboard) {
+function closeDialog(classNameSource, classNameKeyboard, classNameImpressum) {
     let currentDisplaySource = currentDisplayStyle(classNameSource);
     let currentDisplayKeyboard = currentDisplayStyle(classNameKeyboard);
-    if (currentDisplaySource == 'flex' || currentDisplayKeyboard == 'flex') {
-        document.querySelector(`${classNameSource}`).style.display = 'none';
-        document.querySelector(`${classNameKeyboard}`).style.display = 'none';
+    let currentDisplayImpressum = currentDisplayStyle(classNameImpressum);
+    if (currentDisplaySource == 'flex' || currentDisplayKeyboard == 'flex' || currentDisplayImpressum == 'flex') {
+        setVisibility(`${classNameSource}`, 'none');
+        setVisibility(`${classNameKeyboard}`, 'none');
+        setVisibility(`${classNameImpressum}`, 'none');
     } 
 }
 

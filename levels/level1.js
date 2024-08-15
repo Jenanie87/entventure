@@ -6,6 +6,8 @@ function createLevel() {
             new Orc1BigEnemy(),
             new Orc1BigEnemy(),
             new Orc2BigEnemy(),
+            new Orc2BigEnemy(),
+            new OrcSmallEnemy(),
             new OrcSmallEnemy(),
             new GoblinSmallEnemy(),
         ],
@@ -21,11 +23,8 @@ function createLevel() {
             new Coin(700, 200),
             new Coin(750, 250),
 
-            new Coin(1100, 300),
-            new Coin(1200, 275),
-
-            new Coin(1500, 235),
-            new Coin(1500, 175),
+            new Coin(1150, 300),
+            new Coin(1250, 275),
 
             new Coin(1600, 235),
             new Coin(1600, 175),
@@ -33,10 +32,13 @@ function createLevel() {
             new Coin(1700, 235),
             new Coin(1700, 175),
 
-            new Coin(2000, 320),
-            new Coin(2075, 320),
+            new Coin(1800, 235),
+            new Coin(1800, 175),
+
             new Coin(2150, 320),
             new Coin(2225, 320),
+            new Coin(2300, 320),
+            new Coin(2375, 320),
         ],
 
         [
@@ -59,12 +61,18 @@ function createLevel() {
             new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', 720 * 3),
             new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png', 720 * 3),
             new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png', 720 * 3),
+
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Sky.png', 720 * 4),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/BG_Decor.png', 720 * 4),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Middle_Decor.png', 720 * 4),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Foreground.png', 720 * 4),
         ],
         [
             new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', 0),
             new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', 720),
             new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', 720 * 2),
             new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', 720 * 3),
+            new BackgroundObject('img/background/Cartoon_Forest_BG_01/Layers/Ground.png', 720 * 4),
         ]
     );
 }

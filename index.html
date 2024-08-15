@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Entventure: Bark & Bounce</title>
-    <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/fonts.css">
+    <link rel="stylesheet" href="./css/mediaQuery.css">
     <link rel="icon" type="image/svg+xml" href="img/favicon.png"/>
 </head>
 <body>
@@ -17,8 +18,9 @@
             <div class="wrapper">
                 <div class="settings">
                     <div class="left_part">
-                        <img onclick="toggleScreen('.screen_sources', '.screen_keyboard')" class="img_wrapper" src="img/settings/about.png" alt="information icon">
-                        <img onclick="toggleScreen('.screen_keyboard', '.screen_sources')" class="img_wrapper img_keyboard d_none" src="img/settings/leader.png" alt="information icon">
+                        <img onclick="toggleScreen('.screen_sources', '.screen_impressum', '.screen_keyboard')" class="img_wrapper btnInformation" src="img/settings/about.png" alt="information icon">
+                        <img onclick="toggleScreen('.screen_impressum', '.screen_sources', '.screen_keyboard')" class="img_wrapper btnImpressum" src="img/settings/faq.png" alt="faq icon">
+                        <img onclick="toggleScreen('.screen_keyboard', '.screen_impressum', '.screen_sources')" class="img_wrapper img_keyboard d_none" src="img/settings/leader.png" alt="information icon">
                      </div>
                      <div class="right_part">
                         <img onclick="toggleMusic()" class="img_wrapper img_music" src="img/settings/sisic.png" alt="music icon">
@@ -36,8 +38,25 @@
                     </div>
                     <img class="img_startScreen" src="img/start_screen.png" alt="">
                  </div>
+                 <div class="screen_impressum">
+                  <img onclick="closeDialog('.screen_sources', '.screen_keyboard', '.screen_impressum')" class="close" src="img/settings/close.png" alt="close button">
+                  <h3>Impressum</h3>
+                  <div>
+                     <p>Jennifer Dahm</p>
+                     <p>Ericaweg 2c</p>
+                     <p>59174 Kamen</p>
+                  </div>
+                  <div>
+                     <h4>Kontakt</h4>
+                     <p>Telefon: +49 (0) 152 287 098 36</p>
+                     <p>E-Mail: jennifer.dahm87@gmail.com</p>
+                  </div>
+                  <div>
+                     <p>Quelle: <a href="https://www.e-recht24.de">https://www.e-recht24.de</a></p>
+                  </div>
+               </div>
                  <div class="screen_sources">
-                    <img onclick="closeDialog('.screen_sources', '.screen_keyboard')" class="close_sources" src="img/settings/close.png" alt="close button">
+                    <img onclick="closeDialog('.screen_sources', '.screen_keyboard', '.screen_impressum')" class="close" src="img/settings/close.png" alt="close button">
                     <h3>Sources</h3>
                     <div>
                        <h4>Music</h4>
@@ -56,7 +75,7 @@
                     </div>
                  </div>
                  <div class="screen_keyboard">
-                    <img onclick="closeDialog('.screen_sources', '.screen_keyboard')" class="close_sources" src="img/settings/close.png" alt="close button">
+                    <img onclick="closeDialog('.screen_sources', '.screen_keyboard', '.screen_impressum')" class="close" src="img/settings/close.png" alt="close button">
                     <h3>Keyboard Layout</h3>
                     <div class="keyboard_content">
                         <div>
@@ -84,7 +103,10 @@
                  <div class="endscreen">
                     <div class="collectableInfos">
                     </div>
-                    <button  onclick="restartGame()" class="btn">Play again?</button>
+                    <div class="btn_endscreen">
+                     <button  onclick="restartGame()" class="btn">Play again?</button>
+                     <button  onclick="getBack()" class="btn">Home</button>
+                    </div>
                  </div>
                 <canvas class="d_none" height="480px" width="720px"></canvas>
             </div>
@@ -110,12 +132,24 @@
 
              <div class="keyboard_layout_mobile">
                 <div class="mobileButtons_content">
-                      <img class="img_key rotate_left" src="img/settings/arrow_button.png" alt="arrow icon">
-                      <img class="img_key rotate_right" src="img/settings/arrow_button.png" alt="arrow icon">
+                      <img class="img_key rotate_left btnLeft" src="img/settings/arrow_button.png" alt="arrow icon">
+                      <img class="img_key rotate_right btnRight" src="img/settings/arrow_button.png" alt="arrow icon">
                 </div>
+                <div class="setting_mobile">
+                  <div class="left_part">
+                      <img onclick="toggleScreen('.screen_sources', '.screen_impressum', '.screen_keyboard')" class="img_wrapper btnInformation" src="img/settings/about.png" alt="information icon">
+                      <img onclick="toggleScreen('.screen_impressum', '.screen_sources', '.screen_keyboard')" class="img_wrapper btnImpressum" src="img/settings/faq.png" alt="faq icon">
+                      <img onclick="toggleScreen('.screen_keyboard', '.screen_impressum', '.screen_sources')" class="img_wrapper img_keyboard d_none" src="img/settings/leader.png" alt="information icon">
+                   </div>
+                   <div class="right_part">
+                      <img onclick="toggleMusic()" class="img_wrapper img_music" src="img/settings/sisic.png" alt="music icon">
+                      <img onclick="toggleSound()" class="img_wrapper img_sound" src="img/settings/misic.png" alt="sound icon">
+                      <img onclick="toggleFullScreen()" class="img_wrapper" src="img/settings/screen.png" alt="screen img">
+                   </div>
+              </div>
                 <div class="mobileButtons_content">
-                   <img class="img_key" src="img/settings/arrow_button.png" alt="space bar icon">
-                   <img class="img_key" src="img/settings/button_pinecone.png" alt="key d icon">
+                   <img class="img_key btnJump" src="img/settings/arrow_button.png" alt="space bar icon">
+                   <img class="img_key btnThrow" src="img/settings/button_pinecone.png" alt="key d icon">
                 </div>
              </div>
              <div class="rotate_screen">
@@ -126,29 +160,30 @@
 
     </div>
 
-    <script src="classes/drawableObject.class.js"></script>
-    <script src="classes/movableObject.class.js"></script>
-    <script src="classes/character.class.js"></script>
-    <script src="classes/enemies.class.js"></script>
-    <script src="classes/big-enemies.class.js"></script>
-    <script src="classes/small-enemies.class.js"></script>
-    <script src="classes/orc1-big.class.js"></script>
-    <script src="classes/orc2-big.class.js"></script>
-    <script src="classes/orc-small.class.js"></script>
-    <script src="classes/goblin-small.class.js"></script>
-    <script src="classes/endboss.class.js"></script>
-    <script src="classes/background-object.class.js"></script>
-    <script src="classes/world.class.js"></script>
-    <script src="classes/keyboard.class.js"></script>
-    <script src="classes/healthbar.class.js"></script>
-    <script src="classes/healthbar_endboss.class.js"></script>
-    <script src="classes/coinbar.class.js"></script>
-    <script src="classes/pineconebar.class.js"></script>
-    <script src="classes/throwableObject.class.js"></script>
-    <script src="classes/pinecone.class.js"></script>
-    <script src="classes/coin.class.js"></script>
-    <script src="classes/level.class.js"></script>
-    <script src="levels/level1.js"></script>
-    <script src="js/script.js"></script>
+    <script src="./classes/drawableObject.class.js"></script>
+    <script src="./classes/movableObject.class.js"></script>
+    <script src="./classes/character.class.js"></script>
+    <script src="./classes/enemies.class.js"></script>
+    <script src="./classes/big-enemies.class.js"></script>
+    <script src="./classes/small-enemies.class.js"></script>
+    <script src="./classes/orc1-big.class.js"></script>
+    <script src="./classes/orc2-big.class.js"></script>
+    <script src="./classes/orc-small.class.js"></script>
+    <script src="./classes/goblin-small.class.js"></script>
+    <script src="./classes/endboss.class.js"></script>
+    <script src="./classes/background-object.class.js"></script>
+    <script src="./classes/world.class.js"></script>
+    <script src="./classes/keyboard.class.js"></script>
+    <script src="./classes/healthbar.class.js"></script>
+    <script src="./classes/healthbar_endboss.class.js"></script>
+    <script src="./classes/coinbar.class.js"></script>
+    <script src="./classes/pineconebar.class.js"></script>
+    <script src="./classes/throwableObject.class.js"></script>
+    <script src="./classes/pinecone.class.js"></script>
+    <script src="./classes/coin.class.js"></script>
+    <script src="./classes/level.class.js"></script>
+    <script src="./levels/level1.js"></script>
+    <script src="./js/template.js"></script>
+    <script src="./js/script.js"></script>
 </body>
 </html>

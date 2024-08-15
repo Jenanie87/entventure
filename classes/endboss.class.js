@@ -3,7 +3,7 @@ class Endboss extends Enemy {
     width = 800;
     height = 800;
     y = -260;
-    x = 2200;
+    x = 2850;
     damage = 4;
     healthPoints = 60;
     currentPosition = 0;
@@ -128,7 +128,7 @@ class Endboss extends Enemy {
     }
 
     move() {
-        if (this.x >= 2350) {
+        if (this.x >= 30700) {
             this.movingRight = false;
         } else if (this.x <= 0) { 
             this.movingRight = true;
