@@ -283,19 +283,32 @@ function generateCollectableInfosHTML() {
             </div>`;
 }
 
-function currentDisplayStyle() {
-    let screenSources = document.querySelector('.screen_sources');
+function currentDisplayStyle(className) {
+    let screenSources = document.querySelector(`${className}`);
     let cssObj = window.getComputedStyle(screenSources, null);
     return cssObj.getPropertyValue('display');
 }
 
-function toggleSources() {
-    let currentDisplay = currentDisplayStyle();
-    if (currentDisplay == 'none') {
-        document.querySelector('.screen_sources').style.display = 'flex';
-    } else {
-        document.querySelector('.screen_sources').style.display = 'none';
+function toggleScreen(className, openClass) {
+    let openClassCurrentDisplay = currentDisplayStyle(openClass);
+    if (openClassCurrentDisplay == 'flex') {
+        document.querySelector(`${openClass}`).style.display = 'none';
     }
+    let currentDisplay = currentDisplayStyle(className);
+    if (currentDisplay == 'none') {
+        document.querySelector(`${className}`).style.display = 'flex';
+    } else {
+        document.querySelector(`${className}`).style.display = 'none';
+    }
+}
+
+function closeDialog(classNameSource, classNameKeyboard) {
+    let currentDisplaySource = currentDisplayStyle(classNameSource);
+    let currentDisplayKeyboard = currentDisplayStyle(classNameKeyboard);
+    if (currentDisplaySource == 'flex' || currentDisplayKeyboard == 'flex') {
+        document.querySelector(`${classNameSource}`).style.display = 'none';
+        document.querySelector(`${classNameKeyboard}`).style.display = 'none';
+    } 
 }
 
 function isGameLost(status) {
