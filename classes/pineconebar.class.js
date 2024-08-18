@@ -21,12 +21,22 @@ class Pineconebar extends DrawableObject {
         this.setPercentage(10);
     }
 
+    //functions
+
+    /**
+     * Updates the percentage of collected pinecones and changes the displayed image.
+     * @param {number} pineconesCollected - The number of pinecones collected.
+     */
     setPercentage(pineconesCollected) {
         this.percentage = 100 - (pineconesCollected / 10) * 100;
         let imagePath = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[imagePath];
     }
 
+    /**
+     * Determines the index of the image to display based on the percentage.
+     * @returns {number} - The index of the image corresponding to the percentage.
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;

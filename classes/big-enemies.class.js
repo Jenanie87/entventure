@@ -20,17 +20,30 @@ class BigEnemy extends Enemy {
     }
 
     // functions
+
+    /**
+    * This function initializes the animation intervals for the enemy.
+    */
     animate() {
         setInterval(() => this.moveEnemies(), 1000 / 60);
         setInterval(() => this.playEnemiesAnimation(), 175);
     }
 
+    /**
+     * This function moves the enemy left if it is not dead or hurt.
+     */
     moveEnemies() {
         if (!this.checkIsDead() && !this.checkIfHurt()) {
             this.moveLeft();
         }
     }
 
+    /**
+     * Plays the appropriate animation based on the enemy's state:
+     * - Die animation if the enemy is dead.
+     * - Hurt animation and sound if the enemy is hurt.
+     * - Walking animation otherwise.
+     */
     playEnemiesAnimation() {
         if (this.checkIsDead()) {
             this.playAnimation(this.IMAGES_DIE, true);

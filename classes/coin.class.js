@@ -48,6 +48,10 @@ class Coin extends MovableObject {
     }
 
     //functions
+
+    /**
+     * This function initializes the animation intervals for the coin and adjusts its width.
+     */
     animate() {
         setInterval(() => {
             this.playAnimation(this.IMAGES);
@@ -55,14 +59,20 @@ class Coin extends MovableObject {
         }, 90);
     }
 
+    /**
+     * Adjusts the coin's width based on the current image index.
+     */
     adjustWidth() {
         let currentImageIndex = this.currentImage % this.IMAGES.length;
         this.width = this.widthMapping[currentImageIndex];
     }
 
+    /**
+     * This function plays the coin collection sound and removes the coin from the world.
+     * @param {number} index - The index of the coin to remove from the world.
+     */
     collectCoin(index) {
         this.audio_collecting.play();
         this.world.level.coins.splice(index, 1);
     }
-
 }

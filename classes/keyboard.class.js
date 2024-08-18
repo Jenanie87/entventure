@@ -16,7 +16,12 @@ class Keyboard {
         this.bindKeyboardEvents();
     }
 
-    // Touch event handlers
+    //functions
+
+    /**
+     * This function handles touch start events to update button press states.
+     * @param {Event} e - The touch start event.
+     */
     handleTouchStart(e) {
         e.preventDefault();
         const target = e.currentTarget;
@@ -31,6 +36,10 @@ class Keyboard {
         }
     }
 
+    /**
+     * Handles touch end events to update button release states.
+     * @param {Event} e - The touch end event.
+     */
     handleTouchEnd(e) {
         e.preventDefault();
         const target = e.currentTarget;
@@ -45,7 +54,9 @@ class Keyboard {
         }
     }
 
-    // functions
+    /**
+     * This function binds touch events to button elements for press and release actions.
+     */
     bindBtnPressEvents() {
         this.btnLeft = document.querySelector('.btnLeft');
         this.btnRight = document.querySelector('.btnRight');
@@ -62,11 +73,18 @@ class Keyboard {
         this.btnThrow.addEventListener('touchend', this.handleTouchEnd);
     }
 
+    /**
+     * Binds keyboard events for key down and key up actions.
+     */
     bindKeyboardEvents() {
         window.addEventListener('keydown', this.handleKeyDown);
         window.addEventListener('keyup', this.handleKeyUp);
     }
 
+    /**
+     * Handles key down events to update keyboard input states.
+     * @param {KeyboardEvent} event - The key down event.
+     */
     handleKeyDown(event) {
         event.preventDefault();
         switch (event.key) {
@@ -92,6 +110,10 @@ class Keyboard {
         }
     }
 
+    /**
+     * Handles key up events to update keyboard input states.
+     * @param {KeyboardEvent} event - The key up event.
+     */
     handleKeyUp(event) {
         event.preventDefault();
         switch (event.key) {
@@ -117,6 +139,9 @@ class Keyboard {
         }
     }
 
+    /**
+     * This function disables all keyboard and touch event listeners and resets button states.
+     */
     disableKeyboard() {
         window.removeEventListener('keydown', this.handleKeyDown);
         window.removeEventListener('keyup', this.handleKeyUp);
@@ -133,6 +158,10 @@ class Keyboard {
         this.LEFT = this.RIGHT = this.UP = this.DOWN = this.SPACE = this.THROW = false;
     }
 
+
+    /**
+     * Enables all keyboard and touch event listeners.
+     */
     enableKeyboard() {
         window.addEventListener('keydown', this.handleKeyDown);
         window.addEventListener('keyup', this.handleKeyUp);

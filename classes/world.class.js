@@ -40,6 +40,10 @@ class World {
     }
 
     //functions
+
+    /**
+     * Sets the world by assigning the world reference to various objects and initializing their positions.
+     */
     setWorld() {
         this.character.world = this;
         this.level.pinecones.forEach((pinecone) => {
@@ -53,6 +57,9 @@ class World {
         this.throwableObjects.forEach(object => object.world = this);
     }
 
+    /**
+     * Starts the game loop to handle collisions, throwing objects, and the endboss fight.
+     */
     run() {
         setInterval(() => {
             this.checkCollisions();
@@ -64,6 +71,9 @@ class World {
         }, 50);
     }
 
+    /**
+     * Plays background music if enabled.
+     */
     playBackgroundMusic() {
         if (this.musicEnabled) {
             this.audio_bgMusic.volume = 0.3;
@@ -71,6 +81,9 @@ class World {
         }
     }
 
+    /**
+     * Plays endboss music if enabled and if the endboss is present.
+     */
     playEndbossMusic() {
         if (this.endboss && this.musicEnabled) {
             if (!this.endboss.endbossMusicPlayed) {
@@ -84,6 +97,9 @@ class World {
         }
     }
 
+    /**
+     * Checks for collisions between the character and other objects (coins, pinecones, enemies, throwable objects).
+     */
     checkCollisions() {
         this.collisionWithEnemy();
         this.collisionWithPinecone();
@@ -91,6 +107,9 @@ class World {
         this.collisionWithThrowableObjects();
     }
 
+    /**
+     * Checks if new throwable objects can be created and thrown.
+     */
     checkThrowObjects() {
         if (this.canThrowPinecones()) {
             if (this.hasPineconeCapacity()) {
@@ -102,6 +121,9 @@ class World {
         }
     }
 
+    /**
+     * Creates a new throwable pinecone and adds it to the game world.
+     */
     createAndThrowPinecone() {
         let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
         pinecone.world = this;
@@ -114,6 +136,9 @@ class World {
         }, 5000);
     }
 
+    /**
+     * Resets the ability to throw throwable objects after a delay.
+     */
     resetThrowingAbility() {
         this.canThrow = false;
         setTimeout(() => {
@@ -121,6 +146,9 @@ class World {
         }, 500);
     }
 
+    /**
+     * Creates a new pinecone and adds it to the level.
+     */
     createNewPinecone() {
         let newIndex = this.level.pinecones.length;
         let newPinecone = new Pinecone(newIndex);
@@ -129,12 +157,20 @@ class World {
         this.level.pinecones.push(newPinecone);
     }
 
+    /**
+     * Calculates the bounds of the level based on background objects.
+     * @param {Array} backgroundObjects - The array of background objects.
+     * @returns {Object} - The bounds of the level with min and max x values.
+     */
     calculateLevelBounds(backgroundObjects) {
         let minX = Math.min(...backgroundObjects.map(obj => obj.x));
         let maxX = Math.max(...backgroundObjects.map(obj => obj.x + obj.width));
         return { minX, maxX };
     }
 
+    /**
+     * Draws all game elements on the canvas.
+     */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -152,12 +188,20 @@ class World {
         });
     }
 
+    /**
+     * Adds an array of objects to the canvas.
+     * @param {Array} objects - The array of objects to add.
+     */
     addObjectsArrayToCanvas(objects) {
         objects.forEach(object => {
             this.addToCanvas(object);
         });
     }
 
+    /**
+     * Adds a single object to the canvas.
+     * @param {MovableObject} object - The object to add.
+     */
     addToCanvas(MovableObject) {
         if (MovableObject.otherDirection) {
             this.flipImage(MovableObject);
@@ -168,6 +212,9 @@ class World {
         }
     }
 
+    /**
+     * Draws fixed UI elements on the canvas.
+     */
     drawFixedUIElements() {
         this.addToCanvas(this.healthbar);
         this.addToCanvas(this.coinbar);
@@ -177,6 +224,9 @@ class World {
         };
     }
 
+    /**
+     * Draws moving objects on the canvas.
+     */
     drawingMovingObjects() {
         this.addToCanvas(this.character);
         this.addObjectsArrayToCanvas(this.throwableObjects);
@@ -186,6 +236,10 @@ class World {
         this.addObjectsArrayToCanvas(this.level.foregroundObjects);
     }
 
+    /**
+     * Flips an object's image horizontally.
+     * @param {MovableObject} object - The object to flip.
+     */
     flipImage(object) {
         this.ctx.save();
         this.ctx.translate(object.width, 0);
@@ -193,11 +247,18 @@ class World {
         object.x = object.x * -1;
     }
 
+    /**
+     * Flips an object's image back to its original orientation.
+     * @param {MovableObject} object - The object to flip back.
+     */
     flipImageBack(object) {
         object.x = object.x * -1;
         this.ctx.restore();
     }
 
+    /**
+     * Checks for collisions between the character and coins.
+     */
     collisionWithCoin() {
         this.level.coins.forEach((coin, index) => {
             if (this.character.isColliding(coin)) {
@@ -208,6 +269,9 @@ class World {
         })
     };
 
+    /**
+     * Checks for collisions between the character and pinecones.
+     */
     collisionWithPinecone() {
         this.level.pinecones.forEach((pinecone) => {
             if (this.character.isColliding(pinecone)) {
@@ -217,6 +281,9 @@ class World {
         })
     }
 
+    /**
+     * Checks for collisions between the character and enemies.
+     */
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy, index) => {
             if (this.characterHitsAliveEnemy(enemy)) {
@@ -230,6 +297,9 @@ class World {
         });
     }
 
+    /**
+     * Checks for collisions between the character and enemies.
+     */
     handleEnemyStomp(enemy, index) {
         this.character.bounceOffEnemy();
         enemy.hit(this.character.damage);
@@ -238,6 +308,9 @@ class World {
         }
     }
 
+    /**
+     * Checks for collisions between throwable objects and enemies.
+     */
     collisionWithThrowableObjects() {
         this.throwableObjects.forEach((pinecone) => {
             this.level.enemies.forEach((enemy, index) => {
@@ -248,6 +321,12 @@ class World {
         });
     }
 
+    /**
+     * Handles the collision between a pinecone and an enemy.
+     * @param {ThrowableObject} pinecone - The pinecone that collided.
+     * @param {Enemy} enemy - The enemy that was hit.
+     * @param {number} index - The index of the enemy in the enemies array.
+     */
     handlePineconeCollisionWithEnemy(pinecone, enemy, index) {
         enemy.hit(pinecone.damage);
         if (enemy.checkIsDead()) {
@@ -262,6 +341,12 @@ class World {
         }
     }
 
+
+    /**
+     * Removes a dead enemy from the level after a delay.
+     * @param {Enemy} enemy - The enemy to remove.
+     * @param {number} index - The index of the enemy in the enemies array.
+     */
     removeEnemy(enemy) {
         setTimeout(() => {
             this.level.enemies = this.level.enemies.filter(e => e !== enemy);
@@ -272,6 +357,9 @@ class World {
         this.killedEnemies++;
     }
 
+    /**
+     * Starts the endboss fight if conditions are met.
+     */
     startEndboss() {
         if (this.canEndbossFightStart()) {
             this.initializeBossFight();
@@ -281,6 +369,9 @@ class World {
         }
     }
 
+    /**
+     * Initializes the endboss fight, including creating the endboss and playing the roar sound.
+     */
     initializeBossFight() {
         this.createEndboss();
         this.keyboard.disableKeyboard();
@@ -292,12 +383,18 @@ class World {
         }, 1000);
     }
 
+    /**
+     * Creates a new endboss and adds it to the level.
+     */
     createEndboss() {
         this.endboss = new Endboss();
         this.endboss.world = this;
         this.level.enemies.push(this.endboss);
     }
 
+    /**
+     * Plays the endboss roar sound after a delay.
+     */
     playRoarSound() {
         setTimeout(() => {
             this.endboss.audio_roar.play();
@@ -305,6 +402,9 @@ class World {
         }, 500);
     }
 
+    /**
+     * Starts battle mode with the endboss.
+     */
     startBattleMode() {
         this.endbossFightStarted = true;
         setTimeout(() => {
@@ -319,6 +419,10 @@ class World {
         }, 4000);
     }
 
+
+    /**
+     * Sets the volumes for endboss sounds based on sound icons.
+     */
     setEndbossSoundVolumes() {
         let soundIcons = document.querySelectorAll('.img_sound');
         soundIcons.forEach(img => {
@@ -332,30 +436,64 @@ class World {
         });
     }
 
+    /**
+     * Checks if pinecones can be thrown based on keyboard input and throw ability.
+     * @returns {boolean} True if pinecones can be thrown, false otherwise.
+     */
     canThrowPinecones() {
         return this.keyboard.THROW && this.canThrow;
     }
 
+    /**
+     * Checks if there is capacity to throw more pinecones.
+     * @returns {boolean} True if there is capacity, false otherwise.
+     */
     hasPineconeCapacity() {
         return this.throwableObjects.length < 10;
     }
 
+    /**
+     * Checks if the character is colliding with an enemy and the enemy is alive.
+     * @param {Enemy} enemy - The enemy to check for collision.
+     * @returns {boolean} True if colliding with an alive enemy, false otherwise.
+     */
     characterHitsAliveEnemy(enemy) {
         return this.character.isColliding(enemy) && !enemy.checkIsDead();
     }
 
+    /**
+     * Checks if the character is stomping on an enemy.
+     * @param {Enemy} enemy - The enemy to check.
+     * @returns {boolean} True if the character is stomping on the enemy, false otherwise.
+     */
     characterStompsEnemy(enemy) {
         return this.character.isAboveEnemy(enemy) && this.character.isAboveGround();
     }
 
+    /**
+     * Checks if a pinecone hit on an enemy is valid.
+     * @param {ThrowableObject} pinecone - The pinecone to check.
+     * @param {Enemy} enemy - The enemy to check.
+     * @returns {boolean} True if the pinecone hit is valid, false otherwise.
+     */
     isValidPineconeHit(pinecone, enemy) {
         return pinecone.isColliding(enemy) && !enemy.isHitByPinecone;
     }
 
+    /**
+     * Checks if both sound and music icons are set.
+     * @param {HTMLImageElement} imgSound - The sound icon image element.
+     * @param {HTMLImageElement} imgMusic - The music icon image element.
+     * @returns {boolean} True if both sound and music icons are set, false otherwise.
+     */
     areSoundsSet(imgSound, imgMusic) {
         return imgSound.src.includes('misic.png') && imgMusic.src.includes('sisic.png');
     }
 
+    /**
+     * Checks if the endboss fight can start based on game state.
+     * @returns {boolean} True if the endboss fight can start, false otherwise.
+     */
     canEndbossFightStart() {
         return !this.endbossFightStarted && this.character.x > 2580 && !this.endboss;
     }

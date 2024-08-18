@@ -89,6 +89,10 @@ class Endboss extends Enemy {
     }
 
     // functions
+
+    /**
+     * This function initializes the animation for the endboss, switching between idle, hurt, and walk animations based on state.
+     */
     animate() {
         setInterval(() => {
             if (this.checkIsDead()) {
@@ -104,6 +108,9 @@ class Endboss extends Enemy {
         }, 100);
     }
 
+    /**
+     * Moves the endboss, regenerating health if necessary and deciding next move when steps run out.
+     */
     moveEndboss() {
         setInterval(() => {
             if (!this.checkIsDead()) {
@@ -120,24 +127,32 @@ class Endboss extends Enemy {
         }, 1000 / 60);
     }
 
+    /**
+     * Regenerates the endboss's health points and updates the health bar.
+     */
     regenerateHealthPoints() {
         this.healthPoints = this.healthPoints + 0.2;
         this.world.healthbar_endboss.setPercentage(this.healthPoints);
     }
 
+    /**
+     * This function decides the endboss's next move, including direction and speed.
+     */
     decideNextMove() {
         this.movingRight = Math.random() < 0.5; // kleiner gleich 0.5 = true;
         this.stepsRemaining = Math.floor(Math.random() * 500) + 150;
         this.speed = Math.random() * 2.0 + 0.50;
     }
 
+    /**
+     * Moves the endboss left or right based on its current direction.
+     */
     move() {
         if (this.x >= 3070) {
             this.movingRight = false;
         } else if (this.x <= 0) {
             this.movingRight = true;
         }
-
         if (this.movingRight) {
             this.moveRight();
         } else {
@@ -145,10 +160,18 @@ class Endboss extends Enemy {
         }
     }
 
+    /**
+     * Determines if the endboss can regenerate health based on distance from the character and current health.
+     * @returns {boolean} - True if the endboss can regenerate health.
+     */
     canRegenerate() {
         return Math.abs(this.x - this.world.character.x) > 400 && this.healthPoints < 60;
     }
 
+    /**
+     * Checks if the endboss has no remaining steps before deciding the next move.
+     * @returns {boolean} - True if there are no remaining steps.
+     */
     hasNoRemainingSteps() {
         return this.stepsRemaining <= 0;
     }

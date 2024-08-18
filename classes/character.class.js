@@ -103,6 +103,10 @@ class Character extends MovableObject {
     }
 
     // functions
+
+    /**
+     * Loads all images required for character animations.
+     */
     loadAllImages() {
         this.loadImages(this.IMAGES_WALK);
         this.loadImages(this.IMAGES_JUMP);
@@ -112,11 +116,17 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_DIE);
     }
 
+    /**
+     * Initializes the animation intervals for the character.
+     */
     animate() {
         setInterval(() => this.moveCharacter(), 1000 / 60);
         setInterval(() => this.playCharacterAnimation(), 100);
     }
 
+    /**
+     * Moves the character based on keyboard input and updates the camera.
+     */
     moveCharacter() {
         this.audio_walking.pause();
         if (this.canMoveRight()) {
@@ -134,6 +144,9 @@ class Character extends MovableObject {
         this.updateCamera();
     }
 
+    /**
+     * This function plays the appropriate animation based on the character's state.
+     */
     playCharacterAnimation() {
         if (this.checkIsDead()) {
             this.playAnimation(this.IMAGES_DIE, true);
@@ -150,6 +163,9 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Ends the game if the character is dead or if the endboss is dead.
+     */
     endGame() {
         if (this.checkIsDead()) {
             this.loseGame();
@@ -161,12 +177,18 @@ class Character extends MovableObject {
         }
     }
 
+    /**
+     * Handles the game loss scenario.
+     */
     loseGame() {
         this.world.keyboard.disableKeyboard();
         this.world.isGameOver = true;
         setLostScreen('lost');
     }
 
+    /**
+     * This function handles the game win scenario.
+     */
     winGame() {
         setTimeout(() => {
             this.world.audio_win.play();
@@ -176,6 +198,9 @@ class Character extends MovableObject {
         setLostScreen('win');
     }
 
+    /**
+     * Updates the camera position based on the character's position.
+     */
     updateCamera() {
         let halfCanvasWidth = this.world.canvas.width / 2;
         let cameraOffsetToLeft = 250;
@@ -185,32 +210,59 @@ class Character extends MovableObject {
         this.world.camera_x = newCameraX;
     }
 
+    /**
+     * Makes the character bounce off an enemy.
+     */
     bounceOffEnemy() {
         this.speedY = 15;
         this.audio_bouncing.currentTime = 0;
         this.audio_bouncing.play();
     }
 
+    /**
+     * Checks if the character can move right based on keyboard input and level bounds.
+     * @returns {boolean} - Whether the character can move right.
+     */
     canMoveRight() {
         return this.world.keyboard.RIGHT && this.x < this.world.levelBounds.maxX - this.world.canvas.width / 2;
     }
 
+    /**
+     * Checks if the character can move left based on keyboard input and level bounds.
+     * @returns {boolean} - Whether the character can move left.
+     */
     canMoveLeft() {
         return this.world.keyboard.LEFT && this.x > this.world.levelBounds.minX - 100;
     }
 
+    /**
+     * Checks if the character can jump based on keyboard input and current position.
+     * @returns {boolean} - Whether the character can jump.
+     */
     canJump() {
         return this.world.keyboard.SPACE && !this.isAboveGround();
     }
 
+    /**
+     * Checks if the character is throwing a pinecone.
+     * @returns {boolean} - Whether the character is throwing a pinecone.
+     */
     throwsPinecone() {
         return this.world.isThrowing;
     }
 
+    /**
+     * Checks if the character is moving based on keyboard input.
+     * @returns {boolean} - Whether the character is moving.
+     */
     isMoving() {
         return this.world.keyboard.RIGHT || this.world.keyboard.LEFT;
     }
 
+    /**
+     * Checks if the endboss is present in the world.
+     * @returns {boolean} - Whether the endboss is present.
+     */
     isEndbossPresent() {
         return this.world.endboss != null;
     }

@@ -23,12 +23,21 @@ class Healthbar extends DrawableObject {
     }
 
     //functions
+
+        /**
+     * This function sets the character health bar percentage and updates the image based on the percentage.
+     * @param {number} percentage - The percentage of health points.
+     */
     setPercentage(percentage) {
         this.percentage = percentage;
         let imagePath = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[imagePath];
     }
 
+    /**
+     * Determines the image index based on the current percentage.
+     * @returns {number} - The index of the image corresponding to the current percentage.
+     */
     resolveImageIndex() {
         if (this.percentage == 100) {
             return 5;

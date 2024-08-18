@@ -27,6 +27,10 @@ class ThrowableObject extends MovableObject {
     }
 
     //functions
+
+    /**
+     * Throws the throwable object, applying gravity and horizontal movement.
+     */
     throw() {
         if (this.world) {
             this.speedY = 20;
@@ -41,6 +45,9 @@ class ThrowableObject extends MovableObject {
         }
     }
 
+    /**
+     * Starts the animation for the throwable object while it is above ground.
+     */
     animate() {
         setInterval(() => {
             if (this.isAboveGround(400)) {
@@ -49,6 +56,10 @@ class ThrowableObject extends MovableObject {
         }, 100);
     }
 
+    /**
+     * Determines if the throwable object is moving to the right based on the character's direction.
+     * @returns {boolean} - True if moving right, false otherwise.
+     */
     isMovingRight() {
         return !this.world.character.otherDirection && this.world;
     }

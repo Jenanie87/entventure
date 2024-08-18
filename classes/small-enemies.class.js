@@ -20,17 +20,27 @@ class SmallEnemy extends Enemy {
     }
 
     // functions
+
+    /**
+     * Starts animation and movement intervals for the small enemy.
+     */
     animate() {
         setInterval(() => this.moveEnemies(), 1000 / 60);
         setInterval(() => this.playEnemiesAnimation(), 75);
     }
 
+    /**
+     * Moves the enemy to the left if it is not dead or hurt.
+     */
     moveEnemies() {
         if (!this.checkIsDead() && !this.checkIfHurt()) {
             this.moveLeft();
         }
     }
 
+    /**
+     * Plays the appropriate animation based on the enemy's state (dead, hurt, or running).
+     */
     playEnemiesAnimation() {
         if (this.checkIsDead()) {
             this.playAnimation(this.IMAGES_DIE, true);
