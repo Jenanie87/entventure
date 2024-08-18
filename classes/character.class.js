@@ -90,14 +90,13 @@ class Character extends MovableObject {
     audio_jumping = new Audio('audio/jumping2.mp3');
     audio_bouncing = new Audio('audio/boing1.mp3');
 
-
     constructor() {
         super();
         this.x = -100;
+        this.audio_bouncing.volume = 0.1;
+        this.audio_jumping.volume = 0.2;
         this.loadImage('img/character/1/Ent_01__IDLE_000.png');
         this.audio_walking.playbackRate = 0.5;
-        this.audio_jumping.volume = 0.3;
-        this.audio_bouncing.volume = 0.3;
         this.loadAllImages();
         this.applyGravity(280);
         this.animate();

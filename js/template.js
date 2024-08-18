@@ -28,3 +28,22 @@ function generateCollectableInfosHTML() {
                 <img class="img_endscreen" src="img/settings/enemy.png" alt="enemy"> 
             </div>`;
 }
+
+function updateVisibility (openClassCurrentDisplay, anotherClassCurrentDisplay, className, openClass, anotherClass) {
+    if (openClassCurrentDisplay == 'flex') {
+        setVisibility(`${openClass}`, 'none');
+    }
+    if (anotherClassCurrentDisplay == 'flex') {
+        setVisibility(`${anotherClass}`, 'none');
+    }
+    let currentDisplay = currentDisplayStyle(className);
+    if (currentDisplay == 'none') {
+        setVisibility(`${className}`, 'flex');
+    } else {
+        setVisibility(`${className}`, 'none');
+    }
+}
+
+function isGameLost(status) {
+    return status === 'lost';
+}

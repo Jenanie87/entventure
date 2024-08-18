@@ -5,7 +5,7 @@ class MovableObject extends DrawableObject {
     offsetY = 0;
     speedY = 0;
     acceleration = 2.5;
-    healthPoints = 100;
+    healthPoints = 80;
     lastHit = 0;
     damage = 3;
     isDead = false;
@@ -31,15 +31,14 @@ class MovableObject extends DrawableObject {
 
     moveRight() {
         this.x += this.speed;
-        if(!(this instanceof Endboss)) {
-            this.otherDirection = false; // Bild nicht gespiegelt
+        if (!(this instanceof Endboss)) {
+            this.otherDirection = false;
         }
-
     }
 
     moveLeft() {
         this.x -= this.speed;
-        this.otherDirection = true; // Bild gespiegelt
+        this.otherDirection = true;
     }
 
     applyGravity() {
@@ -86,13 +85,28 @@ class MovableObject extends DrawableObject {
         if (this.healthPoints > 0) {
             this.healthPoints -= damage;
         }
-        this.lastHit = new Date().getTime(); // Aktualisiert die Zeit des letzten Treffers
+        this.lastHit = new Date().getTime();
     }
 
-    checkIfHurt() { // Speichert Zeitpunkt wann man zuletzt verletzt wurde
-        let timePassed = new Date().getTime() - this.lastHit; // Differenz in Millisekunden - Zeitspanne
-        timePassed = timePassed / 1000; // Differenz in Sekunden
-        return timePassed < 0.75; // Wenn Zeit mehr als 0.75 Sekunden in der Vergangenheit, dann false
+    checkIfHurt() {
+        let timePassed = new Date().getTime() - this.lastHit;
+        timePassed = timePassed / 1000;
+        return timePassed < 0.75;
+    }
+
+    moveCharacterToX(xPosition) {
+        let moveToPosition = () => {
+            if (this.isCharacterLeftOf(xPosition)) {
+                this.moveRight();
+                requestAnimationFrame(moveToPosition);
+            } else {
+                this.x = xPosition;
+                if (this instanceof Character && this.world) {
+                    this.world.startBattleMode();
+                }
+            }
+        };
+        moveToPosition();
     }
 
     hasMoreFrames(array) {
@@ -105,5 +119,9 @@ class MovableObject extends DrawableObject {
 
     isOutOfHealth() {
         return this.healthPoints <= 0;
+    }
+
+    isCharacterLeftOf(xPosition) {
+        return this.x < xPosition;
     }
 }

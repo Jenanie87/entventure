@@ -9,6 +9,8 @@ class World {
     canvas;
     ctx;
     keyboard;
+    soundEnabled;
+    musicEnabled;
     healthbar_endboss;
     isThrowing = false;
     canThrow = true;
@@ -20,11 +22,10 @@ class World {
     audio_bgMusic = new Audio('audio/bg_nature.mp3');
     audio_wasted = new Audio('audio/wasted.mp3');
     audio_win = new Audio('audio/completed.mp3');
-    audio_roar = new Audio('audio/orc_scream1.mp3');
     roarPlayed = false;
 
+
     constructor(canvas, keyboard, soundEnabled, musicEnabled) {
-        this.audio_roar.volume = 0.3;
         this.audio_win.volume = 0.5;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
@@ -35,7 +36,7 @@ class World {
         this.setWorld();
         this.draw();
         this.run();
-        this.initMusic();
+        this.playBackgroundMusic();
     }
 
     //functions
@@ -63,28 +64,24 @@ class World {
         }, 50);
     }
 
-    initMusic() {
-        this.changeVolume(this.soundEnabled ? 0.3 : 0.0);
+    playBackgroundMusic() {
         if (this.musicEnabled) {
+            this.audio_bgMusic.volume = 0.3;
             this.audio_bgMusic.play();
-        } else {
-            this.audio_bgMusic.pause();
         }
     }
 
-    changeVolume(volume) {
-        this.character.audio_jumping.volume = volume;
-        this.character.audio_bouncing.volume = volume;
-        this.audio_roar.volume = volume;
-        this.character.audio_walking.volume = volume;
-        this.audio_wasted.volume = volume;
-        this.audio_win.volume = volume;
-        this.level.coins.forEach(coin => {
-            coin.audio_collecting.volume = volume;
-        });
-        this.level.pinecones.forEach(pinecone => {
-            pinecone.audio_collect.volume = volume;
-        });
+    playEndbossMusic() {
+        if (this.endboss && this.musicEnabled) {
+            if (!this.endboss.endbossMusicPlayed) {
+                this.endboss.audio_endbossMusic.volume = 0.3;
+                this.endboss.audio_endbossMusic.play();
+                this.endboss.endbossMusicPlayed = true;
+            }
+        } else if (this.endboss) {
+            this.endboss.audio_endbossMusic.pause();
+            this.endboss.audio_endbossMusic.currentTime = 0;
+        }
     }
 
     checkCollisions() {
@@ -138,19 +135,19 @@ class World {
         return { minX, maxX };
     }
 
-    draw() { // Damit die Welt gezeichnet wird
-        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height); // cleart einmal die canvas
+    draw() {
+        this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsArrayToCanvas(this.level.backgroundObjects);
 
-        this.ctx.translate(-this.camera_x, 0); // Back
+        this.ctx.translate(-this.camera_x, 0);
         this.drawFixedUIElements();
-        this.ctx.translate(this.camera_x, 0); //Forwards
+        this.ctx.translate(this.camera_x, 0);
 
         this.drawingMovingObjects();
         this.ctx.translate(-this.camera_x, 0);
-        requestAnimationFrame(() => { //draw wird immer wieder aufgerufen
+        requestAnimationFrame(() => {
             this.draw();
         });
     }
@@ -166,8 +163,7 @@ class World {
             this.flipImage(MovableObject);
         }
         MovableObject.draw(this.ctx);
-        MovableObject.drawRect(this.ctx);
-        if (MovableObject.otherDirection) { // Bedingung - wenn ctx verändert wurde
+        if (MovableObject.otherDirection) {
             this.flipImageBack(MovableObject);
         }
     }
@@ -182,7 +178,7 @@ class World {
     }
 
     drawingMovingObjects() {
-        this.addToCanvas(this.character); // Die Funktion kann nun auf ctx zugreifen, um auf weitere Methoden zugreifen zu können
+        this.addToCanvas(this.character);
         this.addObjectsArrayToCanvas(this.throwableObjects);
         this.addObjectsArrayToCanvas(this.level.enemies);
         this.addObjectsArrayToCanvas(this.level.pinecones);
@@ -191,21 +187,15 @@ class World {
     }
 
     flipImage(object) {
-        this.ctx.save(); // Aktuellen Zustand/Status von ctx speichern
-        this.ctx.translate(object.width, 0); // Ursprung des Koordinatensystems nach rechts verschieben
-        this.ctx.scale(-1, 1); // Bild horizontal spiegeln (an der y-Achse)
-        object.x = object.x * -1; // x-Koordinate invertieren für die Spiegelung
+        this.ctx.save();
+        this.ctx.translate(object.width, 0);
+        this.ctx.scale(-1, 1);
+        object.x = object.x * -1;
     }
 
     flipImageBack(object) {
-        object.x = object.x * -1; // x-Koordinate wieder zurückinvertieren
-        this.ctx.restore(); // Ursprünglichen Zustand von ctx wiederherstellen
-    }
-
-    playBgMusicLoop() {
-        this.audio_bgMusic.volume = 0.3;
-        this.audio_bgMusic.loop = true;
-        this.audio_bgMusic.play();
+        object.x = object.x * -1;
+        this.ctx.restore();
     }
 
     collisionWithCoin() {
@@ -282,56 +272,41 @@ class World {
         this.killedEnemies++;
     }
 
-    playEndbossMusic() {
-        let imgSound = document.querySelector('.img_sound');
-        let imgMusic = document.querySelector('.img_music');
-        if (this.areSoundsSet(imgSound, imgMusic)) {
-            this.level.enemies[world.level.enemies.length - 1].audio_endbossMusic.loop = true;
-            this.level.enemies[world.level.enemies.length - 1].audio_endbossMusic.play();
-            this.level.enemies[world.level.enemies.length - 1].endbossMusicPlayed = true;
-        }
-    }
-
-    moveCharacterToX(xPosition) {
-        let moveToPosition = () => {
-            if (this.isCharacterLeftOf(xPosition)) {
-                this.character.moveRight();
-                requestAnimationFrame(moveToPosition);
-            } else {
-                this.character.x = xPosition;
-                this.startBattleMode();
-            }
-        };
-        moveToPosition();
-    }
-
     startEndboss() {
         if (this.canEndbossFightStart()) {
             this.initializeBossFight();
             setTimeout(() => {
-                this.moveCharacterToX(2775);
+                this.character.moveCharacterToX(2775);
             }, 1500);
         }
     }
 
     initializeBossFight() {
-        this.endboss = new Endboss();
-        this.endboss.world = this;
-        this.level.enemies.push(this.endboss);
+        this.createEndboss();
         this.keyboard.disableKeyboard();
-        setTimeout(() => {
-            this.audio_roar.play();
-            this.roarPlayed = true;
-        }, 500);
+        this.setEndbossSoundVolumes();
+        this.playRoarSound();
         setTimeout(() => {
             document.querySelector('.screen_endboss').classList.add('show_screen_endboss');
             this.audio_bgMusic.pause();
         }, 1000);
     }
 
+    createEndboss() {
+        this.endboss = new Endboss();
+        this.endboss.world = this;
+        this.level.enemies.push(this.endboss);
+    }
+
+    playRoarSound() {
+        setTimeout(() => {
+            this.endboss.audio_roar.play();
+            this.roarPlayed = true;
+        }, 500);
+    }
+
     startBattleMode() {
         this.endbossFightStarted = true;
-
         setTimeout(() => {
             document.querySelector('.screen_endboss').classList.remove('show_screen_endboss');
         }, 2000);
@@ -342,6 +317,19 @@ class World {
             this.keyboard.enableKeyboard();
             this.endboss.moveEndboss();
         }, 4000);
+    }
+
+    setEndbossSoundVolumes() {
+        let soundIcons = document.querySelectorAll('.img_sound');
+        soundIcons.forEach(img => {
+            if (img.src.includes('misic.png')) {
+                this.endboss.audio_roar.volume = 0.1;
+                this.endboss.audio_hurt.volume = 0.5;
+            } else {
+                this.endboss.audio_roar.volume = 0.0;
+                this.endboss.audio_hurt.volume = 0.0;
+            }
+        });
     }
 
     canThrowPinecones() {
@@ -366,10 +354,6 @@ class World {
 
     areSoundsSet(imgSound, imgMusic) {
         return imgSound.src.includes('misic.png') && imgMusic.src.includes('sisic.png');
-    }
-
-    isCharacterLeftOf(xPosition) {
-        return this.character.x < xPosition;
     }
 
     canEndbossFightStart() {

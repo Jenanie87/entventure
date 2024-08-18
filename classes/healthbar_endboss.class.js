@@ -28,7 +28,7 @@ class HealthbarEndboss extends DrawableObject {
     }
 
     resolveImageIndex() {
-        if (this.percentage == 60) {
+        if (this.percentage >= 60) {
             return 5;
         } else if (this.percentage > 48) {
             return 4;

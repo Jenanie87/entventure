@@ -130,7 +130,6 @@ class Keyboard {
         this.btnThrow.removeEventListener('touchstart', this.handleTouchStart);
         this.btnThrow.removeEventListener('touchend', this.handleTouchEnd);
 
-        // Reset keys
         this.LEFT = this.RIGHT = this.UP = this.DOWN = this.SPACE = this.THROW = false;
     }
 

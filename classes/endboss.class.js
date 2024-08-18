@@ -4,8 +4,8 @@ class Endboss extends Enemy {
     height = 800;
     y = -260;
     x = 2850;
-    damage = 4;
-    healthPoints = 60;
+    damage = 5;
+    healthPoints = 30;
     currentPosition = 0;
     stepsRemaining = 0;
     movingRight = false;
@@ -71,6 +71,8 @@ class Endboss extends Enemy {
     ];
     world;
     audio_endbossMusic = new Audio('audio/endboss.mp3');
+    audio_hurt = new Audio('audio/endboss_hurt.mp3');
+    audio_roar = new Audio('audio/orc_scream1.mp3');
     endbossMusicPlayed = false;
     endbossIsWaiting = true;
 
@@ -81,6 +83,8 @@ class Endboss extends Enemy {
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DIE);
         this.loadImages(this.IMAGES_WALK);
+        this.audio_hurt.volume = 0.5;
+        this.audio_roar.volume = 0.1;
         this.animate();
     }
 
@@ -91,6 +95,7 @@ class Endboss extends Enemy {
                 this.playAnimation(this.IMAGES_DIE, true);
             } else if (this.checkIfHurt()) {
                 this.playAnimation(this.IMAGES_HURT);
+                this.audio_hurt.play();
             } else if (!this.endbossIsWaiting) {
                 this.playAnimation(this.IMAGES_WALK);
             } else {
@@ -102,9 +107,9 @@ class Endboss extends Enemy {
     moveEndboss() {
         setInterval(() => {
             if (!this.checkIsDead()) {
-                if(this.canRegenerate()) {
+                if (this.canRegenerate()) {
                     this.regenerateHealthPoints();
-                } 
+                }
                 if (this.hasNoRemainingSteps()) {
                     this.decideNextMove();
                 } else {
@@ -112,7 +117,6 @@ class Endboss extends Enemy {
                     this.stepsRemaining--;
                 }
             }
-
         }, 1000 / 60);
     }
 
@@ -128,12 +132,12 @@ class Endboss extends Enemy {
     }
 
     move() {
-        if (this.x >= 30700) {
+        if (this.x >= 3070) {
             this.movingRight = false;
-        } else if (this.x <= 0) { 
+        } else if (this.x <= 0) {
             this.movingRight = true;
         }
-    
+
         if (this.movingRight) {
             this.moveRight();
         } else {
@@ -142,7 +146,7 @@ class Endboss extends Enemy {
     }
 
     canRegenerate() {
-        return this.x - this.world.character.x > 400 && this.healthPoints < 60;
+        return Math.abs(this.x - this.world.character.x) > 400 && this.healthPoints < 60;
     }
 
     hasNoRemainingSteps() {

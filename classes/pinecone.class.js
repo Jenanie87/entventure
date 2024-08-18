@@ -62,6 +62,7 @@ class Pinecone extends MovableObject {
                 pinecone.index = index;
             });
             this.world.throwableObjects.pop();
+            this.setCollectPineconeVolumes();
             this.audio_collect.play();
         }
     }
@@ -76,5 +77,16 @@ class Pinecone extends MovableObject {
 
     isTooClose(pinecone) {
         return Math.abs(this.x - pinecone.x) < this.minDistance;
+    }
+
+    setCollectPineconeVolumes() {
+        let soundIcons = document.querySelectorAll('.img_sound');
+        soundIcons.forEach(img => {
+            if (img.src.includes('misic.png')) {
+                this.audio_collect.volume = 0.3;
+            } else {
+                this.audio_collect.volume = 0.0;
+            }
+        });
     }
 }

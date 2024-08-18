@@ -1,7 +1,7 @@
 let canvas;
 let world; // Erstellung des Objektes World
 let keyboard = new Keyboard(); // Erstellung der Instanz Keyboard
-/* let keyboardListeners = []; */
+let endbossMusicPlaying = false;
 let soundEnabled = true;
 let musicEnabled = true;
 
@@ -42,10 +42,11 @@ function resetCanvasEndscreen() {
 function stopMusic() {
     world.audio_bgMusic.pause();
     world.audio_bgMusic.currentTime = 0;
-    if(world.endboss != null) {
+    if (world.endboss) {
         world.endboss.audio_endbossMusic.pause();
         world.endboss.audio_endbossMusic.currentTime = 0;
     }
+    endbossMusicPlaying = false;
 }
 
 function init() {
@@ -53,9 +54,7 @@ function init() {
     keyboard.enableKeyboard();
     createLevel();
     world = new World(canvas, keyboard, soundEnabled, musicEnabled);
-    if (musicEnabled) {
-        world.audio_bgMusic.play();
-    }
+    initializeSoundVolume();
 }
 
 function toggleFullScreen() {
@@ -94,14 +93,15 @@ function toggleSound() {
             img.src = 'img/settings/music_off.png';
             turnSoundOff();
             soundEnabled = false;
-            musicEnabled = false; 
+            musicEnabled = false;
         } else {
             img.src = 'img/settings/misic.png';
             turnSoundOn();
             soundEnabled = true;
-            musicEnabled = true; 
+            musicEnabled = true;
         }
     });
+    changeVolume(soundEnabled ? 1.0 : 0.0);
 }
 
 function toggleMusic() {
@@ -122,91 +122,86 @@ function toggleMusic() {
 function turnSoundOff() {
     if (world) {
         world.audio_bgMusic.pause();
-        world.level.enemies.forEach(enemy => {
-            if (enemy.audio_endbossMusic) {
-                enemy.audio_endbossMusic.pause();
-            }
-            if (enemy.audio_roar) {
-                enemy.audio_roar.volume = 0.0;
-            }
-        });
-        world.changeVolume(0.0);
+        if (world.endboss) {
+            world.endboss.audio_endbossMusic.pause();
+        }
+        changeVolume(0.0);
     }
+    endbossMusicPlaying = false; // Auch hier wird die Endboss-Musik als nicht aktiv markiert
 }
 
 function turnSoundOn() {
     if (world) {
-        let endbossMusicPlaying = false;
         playMusicEndboss();
         if (!endbossMusicPlaying) {
+            world.audio_bgMusic.volume = 0.3;
             world.audio_bgMusic.play();
         }
-        world.changeVolume(0.3);
+        changeVolume(1.0);
     }
 }
 
 function turnMusicOff() {
     if (world) {
         world.audio_bgMusic.pause();
-        world.level.enemies.forEach(enemy => {
-            if (enemy.endbossMusicPlayed) {
-                enemy.audio_endbossMusic.pause();
-            }
-        });
+        if (world.endboss) {
+            world.endboss.audio_endbossMusic.pause();
+        }
     }
+    endbossMusicPlaying = false; // Auch hier wird die Endboss-Musik als nicht aktiv markiert
 }
 
 function turnMusicOn() {
     if (world) {
-        let endbossMusicPlaying = false;
         playMusicEndboss();
         if (!endbossMusicPlaying) {
+            world.audio_bgMusic.volume = 0.3;
             world.audio_bgMusic.play();
         }
     }
-
 }
 
 function playMusicEndboss() {
-    if (world) {
-        world.level.enemies.forEach(enemy => {
-            if (enemy.endbossMusicPlayed) {
-                endbossMusicPlaying = true;
-                enemy.audio_endbossMusic.play();
-            }
-        });
+    if (world && world.endboss) {
+        if (!endbossMusicPlaying) {
+            endbossMusicPlaying = true;
+            world.endboss.audio_endbossMusic.play();
+        }
     }
 }
 
 function setLostScreen(status) {
     setTimeout(() => {
-        if (world) {
-            world.level.enemies.forEach(enemy => {
-                if (enemy.endbossMusicPlayed) {
-                    endbossMusicPlaying = true;
-                    enemy.audio_endbossMusic.pause();
-                }
-            });
-        }
+        pauseEndbossMusic();
         canvas.classList.add('grayscale');
         stopMusic();
-        setTimeout(() => {
-            if (isGameLost(status)) {
-                handleLoss();
-            }
-        }, 1500);
-        setTimeout(() => {
-            displayEndScreen(status);
-        }, getEndScreenDelay(status));
+        scheduleEndScreenDisplay(status);
     }, 1000);
 }
 
+function pauseEndbossMusic() {
+    if (world && world.endboss) {
+        world.endboss.audio_endbossMusic.pause();
+    }
+}
+
+function scheduleEndScreenDisplay(status) {
+    setTimeout(() => {
+        if (isGameLost(status)) {
+            handleLoss();
+        }
+    }, 1500);
+    setTimeout(() => {
+        displayEndScreen(status);
+    }, getEndScreenDelay(status));
+}
+
 function handleLoss() {
+    world.audio_wasted.volume = 0.5;
     world.audio_wasted.play();
     canvas.classList.replace('grayscale', 'redtone');
     document.querySelector('.lost_screen').classList.remove('d_none');
 }
-
 
 function displayEndScreen(status) {
     const endscreen = document.querySelector('.endscreen');
@@ -220,18 +215,7 @@ function displayEndScreen(status) {
 function toggleScreen(className, openClass, anotherClass) {
     let openClassCurrentDisplay = currentDisplayStyle(openClass);
     let anotherClassCurrentDisplay = currentDisplayStyle(anotherClass);
-    if (openClassCurrentDisplay == 'flex') {
-        setVisibility(`${openClass}`, 'none');
-    }
-    if (anotherClassCurrentDisplay == 'flex') {
-        setVisibility(`${anotherClass}`, 'none');
-    }
-    let currentDisplay = currentDisplayStyle(className);
-    if (currentDisplay == 'none') {
-        setVisibility(`${className}`, 'flex');
-    } else {
-        setVisibility(`${className}`, 'none');
-    }
+    updateVisibility(openClassCurrentDisplay, anotherClassCurrentDisplay, className, openClass, anotherClass)
 }
 
 function closeDialog(classNameSource, classNameKeyboard, classNameImpressum) {
@@ -242,9 +226,45 @@ function closeDialog(classNameSource, classNameKeyboard, classNameImpressum) {
         setVisibility(`${classNameSource}`, 'none');
         setVisibility(`${classNameKeyboard}`, 'none');
         setVisibility(`${classNameImpressum}`, 'none');
-    } 
+    }
 }
 
-function isGameLost(status) {
-    return status === 'lost';
+function changeVolume(factor) {
+    if (!world) return;  // Sicherheitsabfrage, falls world noch nicht initialisiert ist
+
+    world.character.audio_jumping.volume = 0.2 * factor;
+    world.character.audio_bouncing.volume = 0.1 * factor;
+    world.character.audio_walking.volume = 0.3 * factor;
+    world.audio_wasted.volume = 0.5 * factor;
+    world.audio_win.volume = 0.3 * factor;
+
+    if (world.endboss) {
+        world.endboss.audio_hurt.volume = 0.5 * factor;
+        world.endboss.audio_roar.volume = 0.1 * factor;
+    }
+
+    world.level.coins.forEach(coin => {
+        coin.audio_collecting.volume = 0.2 * factor;
+    });
+
+    world.level.pinecones.forEach(pinecone => {
+        pinecone.audio_collect.volume = 0.3 * factor;
+    });
+
+    world.level.enemies.forEach(enemy => {
+        if (enemy.height == 220) {
+            enemy.audio_hurt.volume = 0.5 * factor;
+        }
+        if (enemy.height == 100) {
+            enemy.audio_hurt.volume = 0.3 * factor;
+        }
+    });
 }
+
+function initializeSoundVolume() {
+    let volumeFactor = soundEnabled ? 1.0 : 0.0;
+    changeVolume(volumeFactor);
+}
+
+
+
