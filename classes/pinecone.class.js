@@ -1,5 +1,4 @@
 class Pinecone extends MovableObject {
-    //properties
     y = 330;
     minDistance = 100;
     offset = {
@@ -26,8 +25,6 @@ class Pinecone extends MovableObject {
     }
     audio_collect = new Audio('audio/collect.mp3');
     world;
-
-    //functions
 
     /**
      * Sets a random position for the pinecone, ensuring it doesn't collide with other pinecones.

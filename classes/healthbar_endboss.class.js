@@ -12,16 +12,13 @@ class HealthbarEndboss extends DrawableObject {
         'img/statusbar/4_statusbar_endboss/80.png',
         'img/statusbar/4_statusbar_endboss/100.png',
     ];
-
-    percentage = 60;
+    percentage = 30;
 
     constructor() {
         super();
         this.loadImages(this.IMAGES);
-        this.setPercentage(60);
+        this.setPercentage(30);
     }
-
-    //functions
 
     /**
      * This function sets the endboss health bar percentage and updates the image based on the percentage.
@@ -38,15 +35,15 @@ class HealthbarEndboss extends DrawableObject {
      * @returns {number} - The index of the image corresponding to the current percentage.
      */
     resolveImageIndex() {
-        if (this.percentage >= 60) {
+        if (this.percentage == 30) {
             return 5;
-        } else if (this.percentage > 48) {
-            return 4;
-        } else if (this.percentage > 36) {
-            return 3;
         } else if (this.percentage > 24) {
-            return 2;
+            return 4;
+        } else if (this.percentage > 18) {
+            return 3;
         } else if (this.percentage > 12) {
+            return 2;
+        } else if (this.percentage > 0) {
             return 1;
         } else {
             return 0;

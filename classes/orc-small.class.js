@@ -1,5 +1,4 @@
 class OrcSmallEnemy extends SmallEnemy {
-    // properties
     IMAGES_RUN = [
         'img/enemies/Orc/Running/0_Orc_Running_000.png',
         'img/enemies/Orc/Running/0_Orc_Running_001.png',
@@ -54,6 +53,5 @@ class OrcSmallEnemy extends SmallEnemy {
         this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DIE);
-        this.animate();
     }
 }

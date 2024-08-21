@@ -1,7 +1,5 @@
 class Coin extends MovableObject {
-    // properties
     height = 50;
-
     offset = {
         top: 0,
         right: 30,
@@ -10,16 +8,16 @@ class Coin extends MovableObject {
     };
 
     widthMapping = {
-        0: 50, // img_1 
-        1: 45, // img_2
-        2: 37.5, // img_3
-        3: 30, // img_4
-        4: 25, // img_5
-        5: 12.5, // img_6 
-        6: 25, // img_7
-        7: 30, // img_8
-        8: 37.5, // img_9
-        9: 45  // img_10 
+        0: 50, 
+        1: 45, 
+        2: 37.5, 
+        3: 30, 
+        4: 25, 
+        5: 12.5, 
+        6: 25, 
+        7: 30, 
+        8: 37.5, 
+        9: 45  
     };
 
     IMAGES = [
@@ -46,8 +44,6 @@ class Coin extends MovableObject {
         this.loadImages(this.IMAGES);
         this.animate();
     }
-
-    //functions
 
     /**
      * This function initializes the animation intervals for the coin and adjusts its width.

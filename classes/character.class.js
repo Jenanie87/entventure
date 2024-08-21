@@ -1,5 +1,4 @@
 class Character extends MovableObject {
-    // properties
     speed = 5;
     offset = {
         top: 10,
@@ -86,23 +85,18 @@ class Character extends MovableObject {
         'img/character/1/Ent_01__DIE_009.png',
     ];
     world;
-    audio_walking = new Audio('audio/walking.mp3');
-    audio_jumping = new Audio('audio/jumping2.mp3');
-    audio_bouncing = new Audio('audio/boing1.mp3');
 
     constructor() {
         super();
         this.x = -100;
-        this.audio_bouncing.volume = 0.1;
-        this.audio_jumping.volume = 0.2;
+        audio_char_bouncing.volume = 0.1;
+        audio_char_jumping.volume = 0.2;
+        audio_char_walking.playbackRate = 0.5;
         this.loadImage('img/character/1/Ent_01__IDLE_000.png');
-        this.audio_walking.playbackRate = 0.5;
         this.loadAllImages();
         this.applyGravity(280);
         this.animate();
     }
-
-    // functions
 
     /**
      * Loads all images required for character animations.
@@ -128,18 +122,18 @@ class Character extends MovableObject {
      * Moves the character based on keyboard input and updates the camera.
      */
     moveCharacter() {
-        this.audio_walking.pause();
+        audio_char_walking.pause();
         if (this.canMoveRight()) {
-            this.audio_walking.play();
+            audio_char_walking.play();
             this.moveRight();
         }
         if (this.canMoveLeft()) {
-            this.audio_walking.play();
+            audio_char_walking.play();
             this.moveLeft();
         }
         if (this.canJump()) {
             this.jump();
-            this.audio_jumping.play();
+            audio_char_jumping.play();
         }
         this.updateCamera();
     }
@@ -191,7 +185,7 @@ class Character extends MovableObject {
      */
     winGame() {
         setTimeout(() => {
-            this.world.audio_win.play();
+            audio_win.play();
         }, 750);
         this.world.keyboard.disableKeyboard();
         this.world.isGameOver = true;
@@ -215,8 +209,28 @@ class Character extends MovableObject {
      */
     bounceOffEnemy() {
         this.speedY = 15;
-        this.audio_bouncing.currentTime = 0;
-        this.audio_bouncing.play();
+        audio_char_bouncing.currentTime = 0;
+        audio_char_bouncing.play();
+    }
+
+    /**
+    * Checks for collisions between the character and enemies.
+    */
+    handleEnemyStomp(enemy, index) {
+        this.bounceOffEnemy();
+        enemy.hit(this.damage);
+        if (enemy.checkIsDead()) {
+            this.world.removeEnemy(enemy, index);
+        }
+    }
+
+    /**
+     * Checks if the character is colliding with an enemy and the enemy is alive.
+     * @param {Enemy} enemy - The enemy to check for collision.
+     * @returns {boolean} True if colliding with an alive enemy, false otherwise.
+     */
+    hitsAliveEnemy(enemy) {
+        return this.isColliding(enemy) && !enemy.checkIsDead();
     }
 
     /**

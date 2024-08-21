@@ -1,5 +1,4 @@
 class Keyboard {
-    // properties
     LEFT = false;
     RIGHT = false;
     UP = false;
@@ -15,8 +14,6 @@ class Keyboard {
         this.bindBtnPressEvents();
         this.bindKeyboardEvents();
     }
-
-    //functions
 
     /**
      * This function handles touch start events to update button press states.

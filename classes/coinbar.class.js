@@ -1,9 +1,8 @@
 class Coinbar extends DrawableObject {
-    //properties
-    x = 20;
-    y = 45;
-    width = 200;
-    height = 60;
+    x = 22;
+    y = 108;
+    width = 35;
+    height = 40;
     collectedCoin = 0;
 
     IMAGES = [
@@ -15,13 +14,37 @@ class Coinbar extends DrawableObject {
         'img/statusbar/1_statusbar_coin/100.png',
     ];
 
+    IMAGE = [
+        'img/coin/coin_3.png'
+    ];
+
     constructor() {
         super();
-        this.loadImages(this.IMAGES);
-        this.setPercentage(this.collectedCoin);
+        this.coinImage = new Image();
+        this.coinImage.src = this.IMAGE;
+/*         this.loadImages(this.IMAGES); */
+/*         this.setPercentage(this.collectedCoin); */
     }
 
-    //functions
+    drawCoinIcon(ctx) {
+ /*        this.loadImage(this.IMAGE[0]); */
+        ctx.drawImage(this.coinImage, this.x + 10, this.y, this.width, this.height);
+    }
+
+    drawText(ctx, text, x, y) {
+        ctx.save();  // Den aktuellen Zustand des Kontexts speichern
+        ctx.font = '40px Jungle Adventure';
+        ctx.fillStyle = "#FDE282";
+        
+        // Schatten-Eigenschaften nur für den Text setzen
+        ctx.shadowColor = 'black';
+        ctx.shadowOffsetX = 3;
+        ctx.shadowOffsetY = 3;
+    
+        ctx.fillText(text, x, y);
+    
+        ctx.restore();
+    }
 
     /**
      * This function sets the coin bar percentage and updates the image based on the percentage.

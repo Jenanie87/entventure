@@ -1,5 +1,4 @@
 class Endboss extends Enemy {
-    // properties
     width = 800;
     height = 800;
     y = -260;
@@ -11,9 +10,9 @@ class Endboss extends Enemy {
     movingRight = false;
     offset = {
         top: 330,
-        right: 330,
+        right: 300,
         bottom: 90,
-        left: 350
+        left: 250
     };
 
     otherDirection = true; // Mit Setzen der Variable auf true, werden die enemies gespiegelt, durch Methode addToCanvas
@@ -75,6 +74,7 @@ class Endboss extends Enemy {
     audio_roar = new Audio('audio/orc_scream1.mp3');
     endbossMusicPlayed = false;
     endbossIsWaiting = true;
+    roarPlayed = false;
 
     constructor(path) {
         super(path);
@@ -87,8 +87,6 @@ class Endboss extends Enemy {
         this.audio_roar.volume = 0.1;
         this.animate();
     }
-
-    // functions
 
     /**
      * This function initializes the animation for the endboss, switching between idle, hurt, and walk animations based on state.
@@ -158,6 +156,48 @@ class Endboss extends Enemy {
         } else {
             this.moveLeft();
         }
+    }
+
+    /**
+    * Sets the volumes for endboss sounds based on sound icons.
+    */
+    setSoundVolumes() {
+        let soundIcons = document.querySelectorAll('.img_sound');
+        soundIcons.forEach(img => {
+            if (img.src.includes('misic.png')) {
+                this.audio_roar.volume = 0.1;
+                this.audio_hurt.volume = 0.5;
+            } else {
+                this.audio_roar.volume = 0.0;
+                this.audio_hurt.volume = 0.0;
+            }
+        });
+    }
+
+    /**
+     * Plays endboss music if enabled and if the endboss is present.
+     */
+    playEndbossMusic() {
+        if (this.world.endboss && this.world.musicEnabled || this.world.soundEnabled) {
+            if (!this.endbossMusicPlayed) {
+                this.audio_endbossMusic.volume = 0.3;
+                this.audio_endbossMusic.play();
+                this.endbossMusicPlayed = true;
+            }
+        } else if (this.world.endboss) {
+            this.audio_endbossMusic.pause();
+            this.audio_endbossMusic.currentTime = 0;
+        }
+    }
+
+    /**
+    * Plays the endboss roar sound after a delay.
+    */
+    playRoarSound() {
+        setTimeout(() => {
+            this.audio_roar.play();
+            this.world.roarPlayed = true;
+        }, 500);
     }
 
     /**

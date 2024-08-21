@@ -1,5 +1,4 @@
 class DrawableObject {
-    // properties
     x;
     y = 280;
     width = 450;
@@ -11,8 +10,6 @@ class DrawableObject {
     constructor() {
 
     }
-
-    // functions
 
     /**
      * This function loads an image from the specified path and assigns it to the img property.

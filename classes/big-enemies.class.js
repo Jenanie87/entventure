@@ -1,12 +1,11 @@
 class BigEnemy extends Enemy {
-    // properties
     damage = 2;
     healthPoints = 9;
     offset = {
         top: 100,
         right: 185,
         bottom: 30,
-        left: 200
+        left: 145
     };
     audio_hurt = new Audio('audio/bigEnemies_hurt.mp3');
 
@@ -15,11 +14,9 @@ class BigEnemy extends Enemy {
         this.width = 450;
         this.height = 220;
         this.y = 250;
-        this.speed = 0.05 + Math.random();
+        this.speed = 0.10 + Math.random();
         this.audio_hurt.volume = 0.5;
     }
-
-    // functions
 
     /**
     * This function initializes the animation intervals for the enemy.

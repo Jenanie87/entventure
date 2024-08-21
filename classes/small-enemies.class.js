@@ -1,5 +1,4 @@
 class SmallEnemy extends Enemy {
-    // properties
     damage = 1;
     healthPoints = 3;
     offset = {
@@ -18,8 +17,6 @@ class SmallEnemy extends Enemy {
         this.speed = 1.50 + Math.random();
         this.audio_hurt.volume = 0.3;
     }
-
-    // functions
 
     /**
      * Starts animation and movement intervals for the small enemy.

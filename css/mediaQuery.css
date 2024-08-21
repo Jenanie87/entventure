@@ -120,6 +120,7 @@
     height: 100%;
     width: 100%;
     align-items: center;
+    justify-content: center;
   }
   canvas,
   .start_screen {
@@ -130,6 +131,7 @@
     height: 100%;
     width: 100%;
     max-width: 720px;
+    max-height: 480px;
   }
   .keyboard_layout_mobile {
     display: flex;

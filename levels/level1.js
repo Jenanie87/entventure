@@ -12,7 +12,7 @@ function createLevel() {
             new GoblinSmallEnemy(),
         ],
 
-        Array.from({ length: 10 }, (_, index) => new Pinecone(index)),
+        Array.from({ length: 5 }, (_, index) => new Pinecone(index)),
         [
             new Coin(500, 250),
             new Coin(550, 200),

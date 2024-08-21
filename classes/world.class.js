@@ -1,10 +1,9 @@
 class World {
-    //properties
     character = new Character();
     healthbar = new Healthbar();
     coinbar = new Coinbar();
     pineconebar = new Pineconebar();
-    throwableObjects = [new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject()];
+    throwableObjects = [new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject(), new ThrowableObject()];
     level = level1;
     canvas;
     ctx;
@@ -19,14 +18,9 @@ class World {
     isGameOver = false;
     endbossFightStarted = false;
     endboss = null;
-    audio_bgMusic = new Audio('audio/bg_nature.mp3');
-    audio_wasted = new Audio('audio/wasted.mp3');
-    audio_win = new Audio('audio/completed.mp3');
-    roarPlayed = false;
-
 
     constructor(canvas, keyboard, soundEnabled, musicEnabled) {
-        this.audio_win.volume = 0.5;
+        audio_win.volume = 0.5;
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
@@ -38,8 +32,6 @@ class World {
         this.run();
         this.playBackgroundMusic();
     }
-
-    //functions
 
     /**
      * Sets the world by assigning the world reference to various objects and initializing their positions.
@@ -76,24 +68,8 @@ class World {
      */
     playBackgroundMusic() {
         if (this.musicEnabled) {
-            this.audio_bgMusic.volume = 0.3;
-            this.audio_bgMusic.play();
-        }
-    }
-
-    /**
-     * Plays endboss music if enabled and if the endboss is present.
-     */
-    playEndbossMusic() {
-        if (this.endboss && this.musicEnabled) {
-            if (!this.endboss.endbossMusicPlayed) {
-                this.endboss.audio_endbossMusic.volume = 0.3;
-                this.endboss.audio_endbossMusic.play();
-                this.endboss.endbossMusicPlayed = true;
-            }
-        } else if (this.endboss) {
-            this.endboss.audio_endbossMusic.pause();
-            this.endboss.audio_endbossMusic.currentTime = 0;
+            audio_bgMusic.volume = 0.3;
+            audio_bgMusic.play();
         }
     }
 
@@ -111,8 +87,8 @@ class World {
      * Checks if new throwable objects can be created and thrown.
      */
     checkThrowObjects() {
-        if (this.canThrowPinecones()) {
-            if (this.hasPineconeCapacity()) {
+        if (this.keyboard.THROW && this.canThrow) {
+            if (this.throwableObjects.length < 5) {
                 this.createAndThrowPinecone();
             }
             this.resetThrowingAbility();
@@ -128,7 +104,7 @@ class World {
         let pinecone = new ThrowableObject(this.character.x + 200, this.character.y + 70);
         pinecone.world = this;
         this.throwableObjects.push(pinecone);
-        this.pineconebar.setPercentage(this.throwableObjects.length - 1);
+        this.pineconebar.setPercentage(this.throwableObjects.length);
         pinecone.throw();
         this.isThrowing = true;
         setTimeout(() => {
@@ -173,14 +149,11 @@ class World {
      */
     draw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsArrayToCanvas(this.level.backgroundObjects);
-
         this.ctx.translate(-this.camera_x, 0);
         this.drawFixedUIElements();
         this.ctx.translate(this.camera_x, 0);
-
         this.drawingMovingObjects();
         this.ctx.translate(-this.camera_x, 0);
         requestAnimationFrame(() => {
@@ -217,7 +190,8 @@ class World {
      */
     drawFixedUIElements() {
         this.addToCanvas(this.healthbar);
-        this.addToCanvas(this.coinbar);
+        this.coinbar.drawCoinIcon(this.ctx);
+        this.coinbar.drawText(this.ctx, this.coinbar.collectedCoin, this.coinbar.x + 55, this.coinbar.y + 33);
         this.addToCanvas(this.pineconebar);
         if (this.healthbar_endboss) {
             this.addToCanvas(this.healthbar_endboss);
@@ -264,7 +238,8 @@ class World {
             if (this.character.isColliding(coin)) {
                 coin.collectCoin(index);
                 this.coinbar.collectedCoin++;
-                this.coinbar.setPercentage(this.coinbar.collectedCoin);
+                this.coinbar.drawCoinIcon(this.ctx);
+                this.coinbar.drawText(this.ctx, this.coinbar.collectedCoin, this.coinbar.x + 50, this.coinbar.y + 20);
             }
         })
     };
@@ -286,26 +261,15 @@ class World {
      */
     collisionWithEnemy() {
         this.level.enemies.forEach((enemy, index) => {
-            if (this.characterHitsAliveEnemy(enemy)) {
-                if (this.characterStompsEnemy(enemy)) {
-                    this.handleEnemyStomp(enemy, index);
+            if (this.character.hitsAliveEnemy(enemy)) {
+                if (this.character.stompsEnemy(enemy)) {
+                    this.character.handleEnemyStomp(enemy, index);
                 } else {
                     this.character.hit(enemy.damage);
                 }
                 this.healthbar.setPercentage(this.character.healthPoints);
             };
         });
-    }
-
-    /**
-     * Checks for collisions between the character and enemies.
-     */
-    handleEnemyStomp(enemy, index) {
-        this.character.bounceOffEnemy();
-        enemy.hit(this.character.damage);
-        if (enemy.checkIsDead()) {
-            this.removeEnemy(enemy, index);
-        }
     }
 
     /**
@@ -375,11 +339,11 @@ class World {
     initializeBossFight() {
         this.createEndboss();
         this.keyboard.disableKeyboard();
-        this.setEndbossSoundVolumes();
-        this.playRoarSound();
+        this.endboss.setSoundVolumes();
+        this.endboss.playRoarSound();
         setTimeout(() => {
             document.querySelector('.screen_endboss').classList.add('show_screen_endboss');
-            this.audio_bgMusic.pause();
+            audio_bgMusic.pause();
         }, 1000);
     }
 
@@ -393,16 +357,6 @@ class World {
     }
 
     /**
-     * Plays the endboss roar sound after a delay.
-     */
-    playRoarSound() {
-        setTimeout(() => {
-            this.endboss.audio_roar.play();
-            this.roarPlayed = true;
-        }, 500);
-    }
-
-    /**
      * Starts battle mode with the endboss.
      */
     startBattleMode() {
@@ -413,63 +367,12 @@ class World {
         setTimeout(() => {
             this.endboss.endbossIsWaiting = false;
             this.healthbar_endboss = new HealthbarEndboss();
-            this.playEndbossMusic();
+            this.endboss.playEndbossMusic();
             this.keyboard.enableKeyboard();
             this.endboss.moveEndboss();
         }, 4000);
     }
-
-
-    /**
-     * Sets the volumes for endboss sounds based on sound icons.
-     */
-    setEndbossSoundVolumes() {
-        let soundIcons = document.querySelectorAll('.img_sound');
-        soundIcons.forEach(img => {
-            if (img.src.includes('misic.png')) {
-                this.endboss.audio_roar.volume = 0.1;
-                this.endboss.audio_hurt.volume = 0.5;
-            } else {
-                this.endboss.audio_roar.volume = 0.0;
-                this.endboss.audio_hurt.volume = 0.0;
-            }
-        });
-    }
-
-    /**
-     * Checks if pinecones can be thrown based on keyboard input and throw ability.
-     * @returns {boolean} True if pinecones can be thrown, false otherwise.
-     */
-    canThrowPinecones() {
-        return this.keyboard.THROW && this.canThrow;
-    }
-
-    /**
-     * Checks if there is capacity to throw more pinecones.
-     * @returns {boolean} True if there is capacity, false otherwise.
-     */
-    hasPineconeCapacity() {
-        return this.throwableObjects.length < 10;
-    }
-
-    /**
-     * Checks if the character is colliding with an enemy and the enemy is alive.
-     * @param {Enemy} enemy - The enemy to check for collision.
-     * @returns {boolean} True if colliding with an alive enemy, false otherwise.
-     */
-    characterHitsAliveEnemy(enemy) {
-        return this.character.isColliding(enemy) && !enemy.checkIsDead();
-    }
-
-    /**
-     * Checks if the character is stomping on an enemy.
-     * @param {Enemy} enemy - The enemy to check.
-     * @returns {boolean} True if the character is stomping on the enemy, false otherwise.
-     */
-    characterStompsEnemy(enemy) {
-        return this.character.isAboveEnemy(enemy) && this.character.isAboveGround();
-    }
-
+    
     /**
      * Checks if a pinecone hit on an enemy is valid.
      * @param {ThrowableObject} pinecone - The pinecone to check.
@@ -478,16 +381,6 @@ class World {
      */
     isValidPineconeHit(pinecone, enemy) {
         return pinecone.isColliding(enemy) && !enemy.isHitByPinecone;
-    }
-
-    /**
-     * Checks if both sound and music icons are set.
-     * @param {HTMLImageElement} imgSound - The sound icon image element.
-     * @param {HTMLImageElement} imgMusic - The music icon image element.
-     * @returns {boolean} True if both sound and music icons are set, false otherwise.
-     */
-    areSoundsSet(imgSound, imgMusic) {
-        return imgSound.src.includes('misic.png') && imgMusic.src.includes('sisic.png');
     }
 
     /**

@@ -1,5 +1,4 @@
 class BackgroundObject extends MovableObject {
-    //properties
     y = 0;
 
     constructor(path, x) {

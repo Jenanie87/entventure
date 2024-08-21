@@ -1,5 +1,4 @@
 class GoblinSmallEnemy extends SmallEnemy {
-    // properties
     IMAGES_RUN = [
         'img/enemies/Goblin/Running/0_Goblin_Running_000.png',
         'img/enemies/Goblin/Running/0_Goblin_Running_001.png',
@@ -54,6 +53,5 @@ class GoblinSmallEnemy extends SmallEnemy {
         this.loadImages(this.IMAGES_RUN);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DIE);
-        this.animate();
     }
 }

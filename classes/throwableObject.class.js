@@ -1,5 +1,4 @@
 class ThrowableObject extends MovableObject {
-    //properties
     IMAGES_THROW = [
         'img/pinecone/pinecone_rotation/1_pinecone_rotation.png',
         'img/pinecone/pinecone_rotation/2_pinecone_rotation.png',
@@ -25,8 +24,6 @@ class ThrowableObject extends MovableObject {
         this.loadImages(this.IMAGES_THROW);
         this.animate();
     }
-
-    //functions
 
     /**
      * Throws the throwable object, applying gravity and horizontal movement.

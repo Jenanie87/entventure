@@ -1,5 +1,4 @@
 class MovableObject extends DrawableObject {
-    // properties
     speed = 0.15;
     otherDirection = false;
     offsetY = 0;
@@ -10,18 +9,15 @@ class MovableObject extends DrawableObject {
     damage = 3;
     isDead = false;
 
-
     constructor() {
         super();
     }
-
-    // functions
 
     /**
      * This function plays an animation from the given array of image paths.
      * @param {string[]} array - The array of image paths for the animation.
      * @param {boolean} [stopAtEnd=false] - Whether to stop at the last frame of the animation.
-     */   
+     */
     playAnimation(array, stopAtEnd = false) {
         if (this.hasMoreFrames(array)) {
             let i = this.currentImage % array.length;
@@ -85,6 +81,15 @@ class MovableObject extends DrawableObject {
     }
 
     /**
+    * Checks if the character is stomping on an enemy.
+    * @param {Enemy} enemy - The enemy to check.
+    * @returns {boolean} True if the character is stomping on the enemy, false otherwise.
+    */
+    stompsEnemy(enemy) {
+        return this.isAboveEnemy(enemy) && this.isFallingOrJumping() && this.speedY < 0;
+    }
+
+    /**
      * Checks if the object is colliding with another object.
      * @param {MovableObject} obj - The other object to check for collision.
      * @returns {boolean} - True if the objects are colliding, false otherwise.
@@ -103,7 +108,7 @@ class MovableObject extends DrawableObject {
      */
     isAboveEnemy(obj) {
         return this.x + this.width - this.offset.right > obj.x + obj.offset.left &&
-            this.y + this.height - this.offset.bottom > obj.y + obj.offset.top
+            this.y + this.height - this.offset.bottom > obj.y + obj.offset.top;
     }
 
     /**

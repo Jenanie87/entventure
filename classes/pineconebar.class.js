@@ -1,6 +1,6 @@
 class Pineconebar extends DrawableObject {
     x = 20;
-    y = 90;
+    y = 45;
     width = 200;
     height = 60;
 
@@ -12,7 +12,6 @@ class Pineconebar extends DrawableObject {
         'img/statusbar/3_statusbar_pinecone/80.png',
         'img/statusbar/3_statusbar_pinecone/100.png',
     ];
-
     percentage = 100;
 
     constructor() {
@@ -21,14 +20,12 @@ class Pineconebar extends DrawableObject {
         this.setPercentage(10);
     }
 
-    //functions
-
     /**
      * Updates the percentage of collected pinecones and changes the displayed image.
      * @param {number} pineconesCollected - The number of pinecones collected.
      */
     setPercentage(pineconesCollected) {
-        this.percentage = 100 - (pineconesCollected / 10) * 100;
+        this.percentage = 100 - (pineconesCollected / 5) * 100;
         let imagePath = this.IMAGES[this.resolveImageIndex()];
         this.img = this.imageCache[imagePath];
     }
